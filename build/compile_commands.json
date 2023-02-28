@@ -1,0 +1,7 @@
+[
+{
+  "directory": "C:/Users/berna/Documents/INFI/MES/build",
+  "command": "C:/MinGW/bin/g++.exe   -g -std=gnu++11 -o CMakeFiles/MES.dir/C_/Users/berna/Documents/INFI/MES/main.cpp.obj -c C:/Users/berna/Documents/INFI/MES/main.cpp",
+  "file": "C:/Users/berna/Documents/INFI/MES/main.cpp"
+}
+]
