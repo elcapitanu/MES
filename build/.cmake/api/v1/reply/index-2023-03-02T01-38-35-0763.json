@@ -8,34 +8,34 @@
 		},
 		"paths" : 
 		{
-			"cmake" : "C:/Program Files/CMake/bin/cmake.exe",
-			"cpack" : "C:/Program Files/CMake/bin/cpack.exe",
-			"ctest" : "C:/Program Files/CMake/bin/ctest.exe",
-			"root" : "C:/Program Files/CMake/share/cmake-3.25"
+			"cmake" : "C:/Program Files/Cmake/bin/cmake.exe",
+			"cpack" : "C:/Program Files/Cmake/bin/cpack.exe",
+			"ctest" : "C:/Program Files/Cmake/bin/ctest.exe",
+			"root" : "C:/Program Files/Cmake/share/cmake-3.26"
 		},
 		"version" : 
 		{
 			"isDirty" : false,
 			"major" : 3,
-			"minor" : 25,
+			"minor" : 26,
 			"patch" : 0,
-			"string" : "3.25.0",
-			"suffix" : ""
+			"string" : "3.26.0-rc5",
+			"suffix" : "rc5"
 		}
 	},
 	"objects" : 
 	[
 		{
-			"jsonFile" : "codemodel-v2-2932e96b434456c7d15d.json",
+			"jsonFile" : "codemodel-v2-a493fc8d2202515df13c.json",
 			"kind" : "codemodel",
 			"version" : 
 			{
 				"major" : 2,
-				"minor" : 4
+				"minor" : 5
 			}
 		},
 		{
-			"jsonFile" : "cache-v2-ef70e7fcc13a09406d94.json",
+			"jsonFile" : "cache-v2-193a0f5d432002210e66.json",
 			"kind" : "cache",
 			"version" : 
 			{
@@ -44,7 +44,7 @@
 			}
 		},
 		{
-			"jsonFile" : "cmakeFiles-v1-c5a7d59e3a377893f1c4.json",
+			"jsonFile" : "cmakeFiles-v1-6b24981a69200b7e8e29.json",
 			"kind" : "cmakeFiles",
 			"version" : 
 			{
@@ -90,7 +90,7 @@
 				"responses" : 
 				[
 					{
-						"jsonFile" : "cache-v2-ef70e7fcc13a09406d94.json",
+						"jsonFile" : "cache-v2-193a0f5d432002210e66.json",
 						"kind" : "cache",
 						"version" : 
 						{
@@ -99,12 +99,12 @@
 						}
 					},
 					{
-						"jsonFile" : "codemodel-v2-2932e96b434456c7d15d.json",
+						"jsonFile" : "codemodel-v2-a493fc8d2202515df13c.json",
 						"kind" : "codemodel",
 						"version" : 
 						{
 							"major" : 2,
-							"minor" : 4
+							"minor" : 5
 						}
 					},
 					{
@@ -117,7 +117,7 @@
 						}
 					},
 					{
-						"jsonFile" : "cmakeFiles-v1-c5a7d59e3a377893f1c4.json",
+						"jsonFile" : "cmakeFiles-v1-6b24981a69200b7e8e29.json",
 						"kind" : "cmakeFiles",
 						"version" : 
 						{

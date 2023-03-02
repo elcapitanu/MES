@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/MES.dir/C_/Users/berna/Documents/INFI/MES/main.cpp.obj"
-  "CMakeFiles/MES.dir/C_/Users/berna/Documents/INFI/MES/main.cpp.obj.d"
+  "CMakeFiles/MES.dir/main.cpp.obj"
+  "CMakeFiles/MES.dir/main.cpp.obj.d"
   "MES.exe"
   "MES.exe.manifest"
   "MES.pdb"

@@ -9,7 +9,7 @@
 					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
 					"minimumCMakeVersion" : 
 					{
-						"string" : "3.10"
+						"string" : "3.26"
 					},
 					"projectIndex" : 0,
 					"source" : ".",
@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "MES::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-MES-Debug-d41c23439196d7631ddc.json",
+					"jsonFile" : "target-MES-Debug-a6b63095f26c77ab5c0a.json",
 					"name" : "MES",
 					"projectIndex" : 0
 				}
@@ -50,11 +50,11 @@
 	"paths" : 
 	{
 		"build" : "C:/Users/berna/Documents/INFI/MES/build",
-		"source" : "C:/Users/berna/Documents/INFI/MES/build"
+		"source" : "C:/Users/berna/Documents/INFI/MES"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 4
+		"minor" : 5
 	}
 }
