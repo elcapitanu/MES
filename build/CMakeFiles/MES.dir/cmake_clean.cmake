@@ -1,10 +1,8 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/MES.dir/main.cpp.obj"
-  "CMakeFiles/MES.dir/main.cpp.obj.d"
-  "MES.exe"
-  "MES.exe.manifest"
+  "CMakeFiles/MES.dir/main.cpp.o"
+  "CMakeFiles/MES.dir/main.cpp.o.d"
+  "MES"
   "MES.pdb"
-  "libMES.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.

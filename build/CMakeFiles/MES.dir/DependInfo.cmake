@@ -8,11 +8,11 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/berna/Documents/INFI/MES/main.cpp" "CMakeFiles/MES.dir/main.cpp.obj" "gcc" "CMakeFiles/MES.dir/main.cpp.obj.d"
+  "/home/bogas/Desktop/INFI/MES/main.cpp" "CMakeFiles/MES.dir/main.cpp.o" "gcc" "CMakeFiles/MES.dir/main.cpp.o.d"
   )
 
-# Targets to which this target links which contain Fortran sources.
-set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
+# Targets to which this target links.
+set(CMAKE_TARGET_LINKED_INFO_FILES
   )
 
 # Fortran module output directory.
