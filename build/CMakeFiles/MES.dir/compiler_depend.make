@@ -136,7 +136,8 @@ CMakeFiles/MES.dir/main.cpp.obj: C:/Users/berna/Documents/INFI/MES/main.cpp \
   C:/MinGW/include/c++/11.2.0/bits/basic_ios.tcc \
   C:/MinGW/include/c++/11.2.0/bits/ostream.tcc \
   C:/MinGW/include/c++/11.2.0/istream \
-  C:/MinGW/include/c++/11.2.0/bits/istream.tcc
+  C:/MinGW/include/c++/11.2.0/bits/istream.tcc \
+  C:/Users/berna/Documents/INFI/MES/lib/driver.h
 
 
 C:/Users/berna/Documents/INFI/MES/main.cpp:
@@ -410,3 +411,5 @@ C:/MinGW/include/c++/11.2.0/bits/locale_facets.tcc:
 C:/MinGW/include/c++/11.2.0/bits/ostream.tcc:
 
 C:/MinGW/include/c++/11.2.0/istream:
+
+C:/Users/berna/Documents/INFI/MES/lib/driver.h:

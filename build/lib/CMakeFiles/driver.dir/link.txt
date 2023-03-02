@@ -1,0 +1,2 @@
+C:/MinGW/bin/ar.exe qc libdriver.a CMakeFiles/driver.dir/driver.cpp.obj
+C:/MinGW/bin/ranlib.exe libdriver.a

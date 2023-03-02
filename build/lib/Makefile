@@ -87,14 +87,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/berna/Documents/INFI/MES/build/CMakeFiles C:/Users/berna/Documents/INFI/MES/build//CMakeFiles/progress.marks
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
+	cd C:/Users/berna/Documents/INFI/MES/build && $(CMAKE_COMMAND) -E cmake_progress_start C:/Users/berna/Documents/INFI/MES/build/CMakeFiles C:/Users/berna/Documents/INFI/MES/build/lib//CMakeFiles/progress.marks
+	cd C:/Users/berna/Documents/INFI/MES/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lib/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/berna/Documents/INFI/MES/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 clean
+	cd C:/Users/berna/Documents/INFI/MES/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lib/clean
 .PHONY : clean
 
 # The main clean target
@@ -103,68 +103,56 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 preinstall
+	cd C:/Users/berna/Documents/INFI/MES/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lib/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 preinstall
+	cd C:/Users/berna/Documents/INFI/MES/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lib/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd C:/Users/berna/Documents/INFI/MES/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-#=============================================================================
-# Target rules for targets named MES
+# Convenience name for target.
+lib/CMakeFiles/driver.dir/rule:
+	cd C:/Users/berna/Documents/INFI/MES/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lib/CMakeFiles/driver.dir/rule
+.PHONY : lib/CMakeFiles/driver.dir/rule
 
-# Build rule for target.
-MES: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 MES
-.PHONY : MES
-
-# fast build rule for target.
-MES/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MES.dir/build.make CMakeFiles/MES.dir/build
-.PHONY : MES/fast
-
-#=============================================================================
-# Target rules for targets named driver
-
-# Build rule for target.
-driver: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 driver
+# Convenience name for target.
+driver: lib/CMakeFiles/driver.dir/rule
 .PHONY : driver
 
 # fast build rule for target.
 driver/fast:
-	$(MAKE) $(MAKESILENT) -f lib/CMakeFiles/driver.dir/build.make lib/CMakeFiles/driver.dir/build
+	cd C:/Users/berna/Documents/INFI/MES/build && $(MAKE) $(MAKESILENT) -f lib/CMakeFiles/driver.dir/build.make lib/CMakeFiles/driver.dir/build
 .PHONY : driver/fast
 
-main.obj: main.cpp.obj
-.PHONY : main.obj
+driver.obj: driver.cpp.obj
+.PHONY : driver.obj
 
 # target to build an object file
-main.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MES.dir/build.make CMakeFiles/MES.dir/main.cpp.obj
-.PHONY : main.cpp.obj
+driver.cpp.obj:
+	cd C:/Users/berna/Documents/INFI/MES/build && $(MAKE) $(MAKESILENT) -f lib/CMakeFiles/driver.dir/build.make lib/CMakeFiles/driver.dir/driver.cpp.obj
+.PHONY : driver.cpp.obj
 
-main.i: main.cpp.i
-.PHONY : main.i
+driver.i: driver.cpp.i
+.PHONY : driver.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MES.dir/build.make CMakeFiles/MES.dir/main.cpp.i
-.PHONY : main.cpp.i
+driver.cpp.i:
+	cd C:/Users/berna/Documents/INFI/MES/build && $(MAKE) $(MAKESILENT) -f lib/CMakeFiles/driver.dir/build.make lib/CMakeFiles/driver.dir/driver.cpp.i
+.PHONY : driver.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+driver.s: driver.cpp.s
+.PHONY : driver.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MES.dir/build.make CMakeFiles/MES.dir/main.cpp.s
-.PHONY : main.cpp.s
+driver.cpp.s:
+	cd C:/Users/berna/Documents/INFI/MES/build && $(MAKE) $(MAKESILENT) -f lib/CMakeFiles/driver.dir/build.make lib/CMakeFiles/driver.dir/driver.cpp.s
+.PHONY : driver.cpp.s
 
 # Help Target
 help:
@@ -174,11 +162,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... MES"
 	@echo "... driver"
-	@echo "... main.obj"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... driver.obj"
+	@echo "... driver.i"
+	@echo "... driver.s"
 .PHONY : help
 
 
@@ -190,6 +177,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd C:/Users/berna/Documents/INFI/MES/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

@@ -144,6 +144,9 @@
 			"isCMake" : true,
 			"isExternal" : true,
 			"path" : "C:/Program Files/Cmake/share/cmake-3.26/Modules/CMakeCommonLanguageInclude.cmake"
+		},
+		{
+			"path" : "lib/CMakeLists.txt"
 		}
 	],
 	"kind" : "cmakeFiles",

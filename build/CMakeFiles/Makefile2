@@ -64,21 +64,38 @@ CMAKE_BINARY_DIR = C:/Users/berna/Documents/INFI/MES/build
 
 # The main recursive "all" target.
 all: CMakeFiles/MES.dir/all
+all: lib/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
-preinstall:
+preinstall: lib/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
 clean: CMakeFiles/MES.dir/clean
+clean: lib/clean
 .PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory lib
+
+# Recursive "all" directory target.
+lib/all: lib/CMakeFiles/driver.dir/all
+.PHONY : lib/all
+
+# Recursive "preinstall" directory target.
+lib/preinstall:
+.PHONY : lib/preinstall
+
+# Recursive "clean" directory target.
+lib/clean: lib/CMakeFiles/driver.dir/clean
+.PHONY : lib/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/MES.dir
 
 # All Build rule for target.
-CMakeFiles/MES.dir/all:
+CMakeFiles/MES.dir/all: lib/CMakeFiles/driver.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MES.dir/build.make CMakeFiles/MES.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MES.dir/build.make CMakeFiles/MES.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:/Users/berna/Documents/INFI/MES/build/CMakeFiles --progress-num=1,2 "Built target MES"
@@ -86,7 +103,7 @@ CMakeFiles/MES.dir/all:
 
 # Build rule for subdir invocation for target.
 CMakeFiles/MES.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/berna/Documents/INFI/MES/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/berna/Documents/INFI/MES/build/CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/MES.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/berna/Documents/INFI/MES/build/CMakeFiles 0
 .PHONY : CMakeFiles/MES.dir/rule
@@ -99,6 +116,32 @@ MES: CMakeFiles/MES.dir/rule
 CMakeFiles/MES.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MES.dir/build.make CMakeFiles/MES.dir/clean
 .PHONY : CMakeFiles/MES.dir/clean
+
+#=============================================================================
+# Target rules for target lib/CMakeFiles/driver.dir
+
+# All Build rule for target.
+lib/CMakeFiles/driver.dir/all:
+	$(MAKE) $(MAKESILENT) -f lib/CMakeFiles/driver.dir/build.make lib/CMakeFiles/driver.dir/depend
+	$(MAKE) $(MAKESILENT) -f lib/CMakeFiles/driver.dir/build.make lib/CMakeFiles/driver.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:/Users/berna/Documents/INFI/MES/build/CMakeFiles --progress-num=3,4 "Built target driver"
+.PHONY : lib/CMakeFiles/driver.dir/all
+
+# Build rule for subdir invocation for target.
+lib/CMakeFiles/driver.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/berna/Documents/INFI/MES/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lib/CMakeFiles/driver.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/berna/Documents/INFI/MES/build/CMakeFiles 0
+.PHONY : lib/CMakeFiles/driver.dir/rule
+
+# Convenience name for target.
+driver: lib/CMakeFiles/driver.dir/rule
+.PHONY : driver
+
+# clean rule for target.
+lib/CMakeFiles/driver.dir/clean:
+	$(MAKE) $(MAKESILENT) -f lib/CMakeFiles/driver.dir/build.make lib/CMakeFiles/driver.dir/clean
+.PHONY : lib/CMakeFiles/driver.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

@@ -1,11 +1,9 @@
 {
+	"archive" : {},
 	"artifacts" : 
 	[
 		{
-			"path" : "MES.exe"
-		},
-		{
-			"path" : "MES.pdb"
+			"path" : "lib/libdriver.a"
 		}
 	],
 	"backtrace" : 1,
@@ -13,11 +11,11 @@
 	{
 		"commands" : 
 		[
-			"add_executable"
+			"add_library"
 		],
 		"files" : 
 		[
-			"CMakeLists.txt"
+			"lib/CMakeLists.txt"
 		],
 		"nodes" : 
 		[
@@ -27,7 +25,7 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 3,
+				"line" : 1,
 				"parent" : 0
 			}
 		]
@@ -48,32 +46,13 @@
 			]
 		}
 	],
-	"id" : "MES::@6890427a1f51a3e7e1df",
-	"link" : 
-	{
-		"commandFragments" : 
-		[
-			{
-				"fragment" : "-g",
-				"role" : "flags"
-			},
-			{
-				"fragment" : "",
-				"role" : "flags"
-			},
-			{
-				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
-				"role" : "libraries"
-			}
-		],
-		"language" : "CXX"
-	},
-	"name" : "MES",
-	"nameOnDisk" : "MES.exe",
+	"id" : "driver::@306ed2d68c6501e8728f",
+	"name" : "driver",
+	"nameOnDisk" : "libdriver.a",
 	"paths" : 
 	{
-		"build" : ".",
-		"source" : "."
+		"build" : "lib",
+		"source" : "lib"
 	},
 	"sourceGroups" : 
 	[
@@ -90,9 +69,9 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "main.cpp",
+			"path" : "lib/driver.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],
-	"type" : "EXECUTABLE"
+	"type" : "STATIC_LIBRARY"
 }
