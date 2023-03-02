@@ -1,3 +1,0 @@
-/home/bogas/Desktop/INFI/MES/build/CMakeFiles/MES.dir
-/home/bogas/Desktop/INFI/MES/build/CMakeFiles/edit_cache.dir
-/home/bogas/Desktop/INFI/MES/build/CMakeFiles/rebuild_cache.dir
