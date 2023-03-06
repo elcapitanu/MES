@@ -2,7 +2,7 @@
 
 #Compiling
 
-After cloning the repository, enter in build folder and use the command: ```cmake -S ../ -B```.
+After cloning the repository, enter in build folder and use the command: ```cmake -S ../ -B .```
 
 Then, you can compile using: ```make```
 
