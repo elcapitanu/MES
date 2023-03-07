@@ -8,10 +8,7 @@ int main()
 {
     GUI gui;
     while (1)
-    {
-        gui.show();
-        std::cout << "ola\n";
-        std::cout << sum(5.4f, 7.2f) << "\n";
-    }
+        gui.ui();
+
     return 0;
 }
