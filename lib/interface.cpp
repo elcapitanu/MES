@@ -1,8 +1,4 @@
 #include "interface.hpp"
-#include "driver.hpp"
-
-#include <sys/time.h>
-#include <stdint.h>
 
 using namespace Interface;
 
@@ -34,8 +30,13 @@ void GUI::ui(void)
 
 void GUI::show(void)
 {
-    //system("clear");
-    std::cout << i << "\n"; // sum(5.4f, 7.2f) << "\n";
+    system("clear");
+    time(&date);
+    std::cout << "*********************MES**********************" << std::endl
+              << std::endl
+              << name << "      " << ctime(&date) << std::endl
+              << std::endl
+              << "************Ainda não faço nada :)************" << std::endl;
 }
 
 GUI::GUI(/* args */)
@@ -45,6 +46,7 @@ GUI::GUI(/* args */)
     fps = 20;
     step = interval / fps;
     i = 0;
+    name.append("Bernardo Gabriel");
 }
 
 GUI::~GUI()
