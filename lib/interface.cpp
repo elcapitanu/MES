@@ -8,7 +8,7 @@ uint64_t GUI::getMillis(struct timeval time_now)
     return (uint64_t)(time_now.tv_sec * 1000) + (time_now.tv_usec / 1000);
 }
 
-void GUI::ui(void)
+void GUI::ui(Algorithm mes)
 {
     new_t = getMillis(time_now);
     if (new_t != t)
@@ -17,7 +17,7 @@ void GUI::ui(void)
         if (t - init == i * step + step)
         {
             i++;
-            show();
+            show(mes);
         }
     }
 
@@ -28,18 +28,20 @@ void GUI::ui(void)
     }
 }
 
-void GUI::show(void)
+void GUI::show(Algorithm mes)
 {
     system("clear");
     time(&date);
-    std::cout << "*********************MES**********************" << std::endl
-              << std::endl
-              << name << "      " << ctime(&date) << std::endl
-              << std::endl
-              << "************Ainda não faço nada :)************" << std::endl;
+    cout << "*********************MES**********************" << endl
+              << endl
+              << name << "      " << ctime(&date) << endl
+              << endl
+              << "Number of orders: " << mes.orders << endl
+              << endl
+              << "************Ainda não faço nada :)************" << endl;
 }
 
-GUI::GUI(/* args */)
+GUI::GUI()
 {
     time_now = {};
     interval = 1000;
