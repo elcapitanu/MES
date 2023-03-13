@@ -10,6 +10,14 @@ Socket::~Socket()
 {
 }
 
+OpcUa::OpcUa()
+{
+}
+
+OpcUa::~OpcUa()
+{
+}
+
 Database::Database()
 {
 }

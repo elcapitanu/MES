@@ -13,6 +13,14 @@ namespace MES
         ~Socket();
     };
 
+    class OpcUa
+    {
+    private:
+    public:
+        OpcUa();
+        ~OpcUa();
+    };
+
     class Database
     {
     private:
