@@ -2,8 +2,14 @@
 
 #Compiling
 
-After cloning the repository, enter in build folder and use the command: ```cmake -S ../ -B .```
+After cloning the repository, do the following:
 
-Then, you can compile using: ```make```
+```mkdir build```
+```cmake -S ../ -B .```
+```make```
 
-It will generate MES.exe inside build folder.
+It will generate MES executable inside build folder.
+
+Use:
+```./MES``` - to run the program
+```./MES teste``` - to run the test
