@@ -9,3 +9,6 @@ add_subdirectory(lib)
 target_include_directories(${PROJECT_NAME} PUBLIC lib)
 target_link_directories(${PROJECT_NAME} PRIVATE lib)
 target_link_libraries(${PROJECT_NAME} time interface mes)
+
+find_package(open62541)
+target_link_libraries(${PROJECT_NAME} open62541)

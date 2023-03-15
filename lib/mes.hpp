@@ -2,6 +2,12 @@
 #define MES_HPP
 
 #include <stdint.h>
+#include <open62541/plugin/log_stdout.h>
+#include <open62541/server.h>
+#include <open62541/server_config_default.h>
+
+#include <signal.h>
+#include <stdlib.h>
 
 namespace MES
 {
@@ -19,6 +25,7 @@ namespace MES
     public:
         OpcUa();
         ~OpcUa();
+        int OpcUa_Connect();
     };
 
     class Database

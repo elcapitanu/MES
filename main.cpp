@@ -18,9 +18,9 @@ int main(int argc, char **argv)
     {
         GUI gui;
         Algorithm mes;
-
+        OpcUa opcua;
         initTime();
-
+        opcua.OpcUa_Connect();
         while (1)
         {
             if (refresh())
