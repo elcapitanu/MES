@@ -40,7 +40,9 @@ namespace MES
 
         void connectToDatabase(void);
 
-        void connectToERP(void);        
+        void connectToERP(void);
+
+        void connectToPLC(void);
 
         Algorithm();
         ~Algorithm();

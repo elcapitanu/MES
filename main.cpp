@@ -1,5 +1,5 @@
 #include <iostream>
-#include "lib/driver.hpp"
+#include "lib/time.hpp"
 #include "lib/interface.hpp"
 #include "lib/mes.hpp"
 
@@ -19,15 +19,20 @@ int main(int argc, char **argv)
         GUI gui;
         Algorithm mes;
 
+        initTime();
+
         while (1)
         {
-            mes.addNumberOfOrders(1);
-            gui.ui(mes);
+            if (refresh())
+            {
+                mes.addNumberOfOrders(1);
+                gui.show(mes);
+            }
         }
 
         return 0;
     }
-    else if (argc == 2 && !strcmp(argv[1],"teste"))
+    else if (argc == 2 && !strcmp(argv[1], "teste"))
     {
         cout << "MODO DE TESTE!" << endl;
         return 0;
