@@ -12,6 +12,8 @@ void GUI::show(MES::Algorithm mes)
          << endl
          << "Number of orders: " << mes.orders << endl
          << endl
+         << "Server: " << mes.message << endl
+         << endl
          << "************Ainda não faço nada :)************" << endl;
 }
 
