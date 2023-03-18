@@ -7,8 +7,8 @@
 #include <time.h>
 #include <stdint.h>
 
-void initTime(void);
+uint64_t initTime(struct timeval time_now);
 uint64_t getMillis(struct timeval time_now);
-int refresh(void);
+int refresh(struct timeval time_now);
 
 #endif

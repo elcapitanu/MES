@@ -57,6 +57,10 @@ namespace MES
     public:
         Socket soc;
 
+        struct timeval time_now;
+
+        uint64_t init_t;
+
         uint16_t orders;
 
         char message[100] = {};
@@ -65,7 +69,7 @@ namespace MES
 
         void connectToDatabase(void);
 
-        void connectToERP(void);
+        int connectToERP(void);
 
         void connectToPLC(void);
 

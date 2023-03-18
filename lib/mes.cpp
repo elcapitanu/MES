@@ -79,14 +79,18 @@ Database::~Database()
 {
 }
 
-void Algorithm::connectToERP(void)
+int Algorithm::connectToERP(void)
 {
-    while (1)
-        if (refresh())
+    while (getMillis(time_now) - init_t <= 10000)
+    {
+        if (refresh(time_now))
+        {
             if (soc.initConnection() == 1)
-                break;
+                return 0;
+        }
+    }
 
-    return;
+    return -1;
 }
 
 int Algorithm::sendValuesToERP(void)

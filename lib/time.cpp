@@ -1,10 +1,8 @@
 #include "time.hpp"
 
-struct timeval time_now;
-
 uint64_t init, t, new_t, interval, fps, step, i;
 
-void initTime(void)
+uint64_t initTime(struct timeval time_now)
 {
     time_now = {};
     interval = 1000;
@@ -16,7 +14,7 @@ void initTime(void)
 
     t = 0;
 
-    return;
+    return init;
 }
 
 uint64_t getMillis(struct timeval time_now)
@@ -25,7 +23,7 @@ uint64_t getMillis(struct timeval time_now)
     return (uint64_t)(time_now.tv_sec * 1000) + (time_now.tv_usec / 1000);
 }
 
-int refresh(void)
+int refresh(struct timeval time_now)
 {
     new_t = getMillis(time_now);
     if (new_t != t)
