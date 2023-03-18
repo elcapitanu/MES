@@ -23,18 +23,18 @@ int main(int argc, char **argv)
 
         initTime();
 
-        mes.connectToERP();
+        //mes.connectToERP();
 
         while (1)
         {
             
-            if (mes.receiveValuesFromERP() == -1)
-                break;
+            /* if (mes.receiveValuesFromERP() == -1)
+                break; */
 
             if (refresh())
             {
-                if (mes.sendValuesToERP() == -1)
-                    break;
+                /* if (mes.sendValuesToERP() == -1)
+                    break; */
 
                 mes.addNumberOfOrders(1);
                 gui.show(mes);
