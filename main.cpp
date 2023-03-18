@@ -5,6 +5,8 @@
 
 #include <string.h>
 
+#include <string>
+
 using std::cin;
 using std::cout;
 using std::endl;
@@ -21,10 +23,19 @@ int main(int argc, char **argv)
 
         initTime();
 
+        mes.connectToERP();
+
         while (1)
         {
+            
+            if (mes.receiveValuesFromERP() == -1)
+                break;
+
             if (refresh())
             {
+                if (mes.sendValuesToERP() == -1)
+                    break;
+
                 mes.addNumberOfOrders(1);
                 gui.show(mes);
             }
