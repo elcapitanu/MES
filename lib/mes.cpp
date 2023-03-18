@@ -20,7 +20,6 @@ int Socket::sendMessage(uint16_t orders)
 {
     char msg[1500];
     memset(&msg, 0, sizeof(msg)); // clear the buffer
-    // strcpy(msg, "ola");
     sprintf(msg, "%hd", orders);
     return send(clientSd, (char *)&msg, strlen(msg), MSG_DONTWAIT);
 }
@@ -32,16 +31,6 @@ int Socket::receiveMessage(char *message)
     int bytesRead = recv(clientSd, (char *)&msg, sizeof(msg), MSG_DONTWAIT);
     if (bytesRead > 0)
         strcpy(message, msg);
-
-    /* message->erase();
-    char msg[1500];
-    memset(&msg, 0, sizeof(msg)); // clear the buffer
-    int bytesRead = recv(clientSd, (char *)&msg, strlen(msg), MSG_DONTWAIT);
-
-    // cout << msg << endl;
-    if (bytesRead != -1)
-        cout << msg << endl;
-    // message->append(msg); */
 
     return 0;
 }
@@ -95,8 +84,7 @@ int Algorithm::connectToERP(void)
 
 int Algorithm::sendValuesToERP(void)
 {
-    if (orders % 100 == 0)
-        return soc.sendMessage(orders);
+    return soc.sendMessage(0);
 
     return 0;
 }
