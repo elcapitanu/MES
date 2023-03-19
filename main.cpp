@@ -21,7 +21,7 @@ int main(int argc, char **argv)
         OpcUa opcua;
         initTime();
         opcua.OpcUa_Connect();
-        while (1)
+        while (0)
         {
             if (refresh())
             {
