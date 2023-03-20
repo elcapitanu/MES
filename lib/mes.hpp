@@ -2,6 +2,13 @@
 #define MES_HPP
 
 #include <stdint.h>
+#include <open62541/client_config_default.h>
+#include <open62541/client_highlevel.h>
+#include <open62541/client_subscriptions.h>
+#include <open62541/plugin/log_stdout.h>
+
+#include <signal.h>
+#include <stdlib.h>
 
 #include <iostream>
 #include <string>
@@ -36,9 +43,20 @@ namespace MES
     class OpcUa
     {
     private:
+        UA_Client* client;
     public:
         OpcUa();
         ~OpcUa();
+        int OpcUaConnect();
+        void OpcUaWriteVariable();
+        bool OpcUaReadVariableBool(int nodeid, char* stringid);
+        int OpcUaReadVariableInt16(int nodeid, char* stringid);
+        int OpcUaReadVariableInt32(int nodeid, char* stringid);
+        int OpcUaReadVariableInt64(int nodeid, char* stringid);
+        void OpcUaWriteVariableBool(int nodeid, char* stringid, bool value);
+        void OpcUaWriteVariableInt16(int nodeid, char* stringid, u_int16_t value);
+        void OpcUaWriteVariableInt32(int nodeid, char* stringid, u_int32_t value);
+        void OpcUaWriteVariableInt64(int nodeid, char* stringid, u_int64_t value);
     };
 
     class Database
@@ -56,6 +74,7 @@ namespace MES
 
     public:
         Socket soc;
+        OpcUa op;
 
         struct timeval time_now;
 
@@ -71,7 +90,7 @@ namespace MES
 
         int connectToERP(void);
 
-        void connectToPLC(void);
+        int connectToPLC(void);
 
         int sendValuesToERP(void);
 
