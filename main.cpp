@@ -5,6 +5,8 @@
 
 #include <string.h>
 
+#include <string>
+
 using std::cin;
 using std::cout;
 using std::endl;
@@ -19,13 +21,26 @@ int main(int argc, char **argv)
         GUI gui;
         Algorithm mes;
 
-        initTime();
-        mes.connectToPLC();
-        
-        while (0)
+        mes.init_t = initTime(mes.time_now);
+
+        cout << "Waiting for Server...\n";
+        if (mes.connectToERP() == -1)
         {
-            if (refresh())
+            cout << "Failed to connect to Server :(\n";
+            return 0;
+        }
+
+        while (1)
+        {
+
+            if (mes.receiveValuesFromERP() == -1)
+                break;
+
+            if (refresh(mes.time_now))
             {
+                if (mes.sendValuesToERP() == -1)
+                    break;
+
                 mes.addNumberOfOrders(1);
                 gui.show(mes);
             }

@@ -1,6 +1,6 @@
 # MES
 
-#Compiling
+# Compiling
 
 After cloning the repository, do the following:
 
