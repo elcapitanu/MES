@@ -20,7 +20,7 @@ int main(int argc, char **argv)
         Algorithm mes;
         OpcUa opcua;
         initTime();
-        opcua.OpcUa_Connect();
+        opcua.OpcUaConnect();
         while (0)
         {
             if (refresh())

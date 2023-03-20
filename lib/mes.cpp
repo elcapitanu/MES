@@ -12,80 +12,108 @@ Socket::~Socket()
 
 OpcUa::OpcUa()
 {
+    client = UA_Client_new();
+    UA_ClientConfig_setDefault(UA_Client_getConfig(client));
 }
 
 OpcUa::~OpcUa()
 {
+    UA_Client_delete(client);
 }
 
 static volatile UA_Boolean running = true;
 
-int OpcUa::OpcUa_Connect()
+int OpcUa::OpcUaConnect()
 {
-
-    UA_Client *client = UA_Client_new();
-    UA_ClientConfig_setDefault(UA_Client_getConfig(client));
-    
     UA_StatusCode  retval = UA_Client_connect(client, "opc.tcp://localhost:4840");
-
     if(retval != UA_STATUSCODE_GOOD) {
-        UA_Client_delete(client);
-        return EXIT_FAILURE;
+        return -1;
     }
     
-    /* UA_Int32 value = 0;
-    printf("\nReading the value of node (4, \"|var|CODESYS Control Win V3 x64.Application.POU.int_var\"):\n");
-    UA_Variant *val = UA_Variant_new();
-    retval = UA_Client_readValueAttribute(client, UA_NODEID_STRING(4, "|var|CODESYS Control Win V3 x64.Application.POU.int_var"), val);
-    printf("the value is: %i\n", *(UA_Int32*)val->data);
-    if(retval == UA_STATUSCODE_GOOD && UA_Variant_isScalar(val)) {
-            value = *(UA_Int32*)val->data;
-    }
-    UA_Variant_delete(val); */
-
-
-    UA_Boolean v = true;
-    UA_Variant *myVariant = UA_Variant_new();
-    UA_Variant_setScalarCopy(myVariant, &v, &UA_TYPES[UA_TYPES_BOOLEAN]);
-    UA_Client_writeValueAttribute(client, UA_NODEID_STRING(4, "|var|CODESYS Control Win V3 x64.Application.OPC.M1"), myVariant);
-    UA_Variant_delete(myVariant);
-
-    UA_Int16 value = 6;
-    myVariant = UA_Variant_new();
-    UA_Variant_setScalarCopy(myVariant, &value, &UA_TYPES[UA_TYPES_INT16]);
-    UA_Client_writeValueAttribute(client, UA_NODEID_STRING(4, "|var|CODESYS Control Win V3 x64.Application.OPC.P"), myVariant);
-    UA_Variant_delete(myVariant);
-
-    value = 0;
-    myVariant = UA_Variant_new();
-    UA_Variant_setScalarCopy(myVariant, &value, &UA_TYPES[UA_TYPES_INT16]);
-    UA_Client_writeValueAttribute(client, UA_NODEID_STRING(4, "|var|CODESYS Control Win V3 x64.Application.OPC.rot1"), myVariant);
-    UA_Variant_delete(myVariant);
-
-    UA_Int64 valuet = 30000;
-    myVariant = UA_Variant_new();
-    UA_Variant_setScalarCopy(myVariant, &valuet, &UA_TYPES[UA_TYPES_INT64]);
-    UA_Client_writeValueAttribute(client, UA_NODEID_STRING(4, "|var|CODESYS Control Win V3 x64.Application.OPC.timer1"), myVariant);
-    UA_Variant_delete(myVariant);
-
-    myVariant = UA_Variant_new();
-    UA_Variant_setScalarCopy(myVariant, &v, &UA_TYPES[UA_TYPES_BOOLEAN]);
-    UA_Client_writeValueAttribute(client, UA_NODEID_STRING(4, "|var|CODESYS Control Win V3 x64.Application.OPC.ST2_rot"), myVariant);
-    UA_Variant_delete(myVariant);
-
-    myVariant = UA_Variant_new();
-    UA_Variant_setScalarCopy(myVariant, &v, &UA_TYPES[UA_TYPES_BOOLEAN]);
-    UA_Client_writeValueAttribute(client, UA_NODEID_STRING(4, "|var|CODESYS Control Win V3 x64.Application.OPC.ST6_rot"), myVariant);
-    UA_Variant_delete(myVariant);
-
-    myVariant = UA_Variant_new();
-    UA_Variant_setScalarCopy(myVariant, &v, &UA_TYPES[UA_TYPES_BOOLEAN]);
-    UA_Client_writeValueAttribute(client, UA_NODEID_STRING(4, "|var|CODESYS Control Win V3 x64.Application.OPC.Start"), myVariant);
-    UA_Variant_delete(myVariant);
- 
     return 1;
 
 }
+
+bool OpcUa::OpcUaReadVariableBool(int nodeid, char* stringid)
+{   
+    UA_Variant *val = UA_Variant_new();
+    UA_StatusCode retval = UA_Client_readValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), val);
+    
+    if(retval == UA_STATUSCODE_GOOD) {
+        return *(UA_Boolean*)val->data;
+    }
+    UA_Variant_delete(val);
+
+}
+
+int OpcUa::OpcUaReadVariableInt16(int nodeid, char* stringid)
+{
+    UA_Variant *val = UA_Variant_new();
+    UA_StatusCode retval = UA_Client_readValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), val);
+    
+    if(retval == UA_STATUSCODE_GOOD) {
+        return *(UA_Int16*)val->data;
+    }
+    UA_Variant_delete(val);
+
+}
+
+int OpcUa::OpcUaReadVariableInt32(int nodeid, char* stringid)
+{
+    UA_Variant *val = UA_Variant_new();
+    UA_StatusCode retval = UA_Client_readValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), val);
+    
+    if(retval == UA_STATUSCODE_GOOD) {
+        return *(UA_Int32*)val->data;
+    }
+    UA_Variant_delete(val);
+
+}
+
+int OpcUa::OpcUaReadVariableInt64(int nodeid, char* stringid)
+{
+    UA_Variant *val = UA_Variant_new();
+    UA_StatusCode retval = UA_Client_readValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), val);
+    
+    if(retval == UA_STATUSCODE_GOOD) {
+        return *(UA_Int64*)val->data;
+    }
+    UA_Variant_delete(val);
+
+}
+
+void OpcUa::OpcUaWriteVariableBool(int nodeid, char* stringid, bool value)
+{    
+    UA_Variant *myVariant = UA_Variant_new();
+    UA_Variant_setScalarCopy(myVariant, &value, &UA_TYPES[UA_TYPES_BOOLEAN]);
+    UA_Client_writeValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), myVariant);
+    UA_Variant_delete(myVariant);
+}
+
+void OpcUa::OpcUaWriteVariableInt16(int nodeid, char* stringid, u_int16_t value)
+{    
+    UA_Variant *myVariant = UA_Variant_new();
+    UA_Variant_setScalarCopy(myVariant, &value, &UA_TYPES[UA_TYPES_INT16]);
+    UA_Client_writeValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), myVariant);
+    UA_Variant_delete(myVariant);
+}
+
+void OpcUa::OpcUaWriteVariableInt32(int nodeid, char* stringid, u_int32_t value)
+{    
+    UA_Variant *myVariant = UA_Variant_new();
+    UA_Variant_setScalarCopy(myVariant, &value, &UA_TYPES[UA_TYPES_INT32]);
+    UA_Client_writeValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), myVariant);
+    UA_Variant_delete(myVariant);
+}
+
+void OpcUa::OpcUaWriteVariableInt64(int nodeid, char* stringid, u_int64_t value)
+{    
+    UA_Variant *myVariant = UA_Variant_new();
+    UA_Variant_setScalarCopy(myVariant, &value, &UA_TYPES[UA_TYPES_INT64]);
+    UA_Client_writeValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), myVariant);
+    UA_Variant_delete(myVariant);
+}
+
 
 Database::Database()
 {
