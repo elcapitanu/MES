@@ -8,7 +8,7 @@ add_executable(${PROJECT_NAME} main.cpp)
 add_subdirectory(lib)
 target_include_directories(${PROJECT_NAME} PUBLIC lib)
 target_link_directories(${PROJECT_NAME} PRIVATE lib)
-target_link_libraries(${PROJECT_NAME} time interface mes)
+target_link_libraries(${PROJECT_NAME} time interface mes opc-ua)
 
 find_package(open62541)
 target_link_libraries(${PROJECT_NAME} open62541)

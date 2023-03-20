@@ -18,9 +18,10 @@ int main(int argc, char **argv)
     {
         GUI gui;
         Algorithm mes;
-        OpcUa opcua;
+
         initTime();
-        opcua.OpcUaConnect();
+        mes.connectToPLC();
+        
         while (0)
         {
             if (refresh())
