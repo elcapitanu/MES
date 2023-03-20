@@ -1,5 +1,5 @@
-#ifndef OPCUA_HPP
-#define OPCUA_HPP
+#ifndef OPCUA_CPP
+#define OPCUA_CPP
 
 #define OPCUA_Start 0
 #define OPCUA_P 1
