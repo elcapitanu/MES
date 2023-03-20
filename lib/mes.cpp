@@ -40,7 +40,7 @@ int Socket::receiveMessage(char *message)
 Socket::Socket()
 {
     char *serverIp = "127.0.0.1";
-    int port = 8080;
+    int port = 2223;
     // setup a socket and connection tools
     host = gethostbyname(serverIp);
     bzero((char *)&sendSockAddr, sizeof(sendSockAddr));
@@ -62,7 +62,7 @@ OpcUa::OpcUa()
 
 OpcUa::~OpcUa()
 {
-    UA_Client_delete(client);
+    //UA_Client_delete(client);
 }
 
 static volatile UA_Boolean running = true;
