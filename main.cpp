@@ -23,15 +23,27 @@ int main(int argc, char **argv)
 
         mes.init_t = initTime(mes.time_now);
 
-        /* cout << "Waiting for Server...\n";
-        if (mes.connectToERP() == -1)
+        cout << "Waiting for ERP...\n";
+        while (mes.connectToERP() == -1)
         {
-            cout << "Failed to connect to Server :(\n";
+            cout << "Failed to connect to ERP :(\n";
             return 0;
-        } */
+        }
+        cout << "Connected to ERP\n";
+
+        cout << "Waiting for PLC...\n";
+        while (mes.connectToPLC() == -1)
+        {
+            cout << "Failed to connect to PLC :(\n";
+            return 0;
+        }
+        cout << "Connected to PLC\n";
+
+        mes.sendValuesToPLC();
 
         while (1)
         {
+            mes.receiveValuesFromERP();
 
             if (refresh(mes.time_now))
             {

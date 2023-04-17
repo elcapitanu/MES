@@ -62,14 +62,14 @@ OpcUa::OpcUa()
 
 OpcUa::~OpcUa()
 {
-    //UA_Client_delete(client);
+    // UA_Client_delete(client);
 }
 
 static volatile UA_Boolean running = true;
 
 int OpcUa::OpcUaConnect()
 {
-    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://localhost:4840");
+    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://192.168.56.1:4840");
     if (retval != UA_STATUSCODE_GOOD)
     {
         return -1;
@@ -173,7 +173,6 @@ Database::~Database()
 {
 }
 
-
 int Algorithm::connectToPLC(void)
 {
     return op.OpcUaConnect();
@@ -203,6 +202,15 @@ int Algorithm::sendValuesToERP(void)
 int Algorithm::receiveValuesFromERP(void)
 {
     return soc.receiveMessage(message);
+}
+
+void Algorithm::sendValuesToPLC(void)
+{
+    op.OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_M1], true);
+    op.OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], 1);
+    op.OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_timer1], 25000);
+    op.OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_ST2_rot], true);
+    op.OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
 }
 
 void Algorithm::addNumberOfOrders(uint16_t number)
