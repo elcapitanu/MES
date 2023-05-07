@@ -3,14 +3,18 @@
 
 #include "my_time.hpp"
 #include "threads/Mthread.hpp"
-#include "threads/WritePipe.hpp"
+
+using std::cin;
+using std::cout;
+using std::endl;
 
 class MES : public Tasks::Thread
 {
 public:
-    MES(Pipeline::AbstractPipe<std::vector<int>> *ptr)
-        : m_pipe(ptr)
+    MES()
     {
+        cout << "MES: ola" << endl;
+
         orders = 0;
         init_t = initTime(time_now);
         sprintf(message, "OLA :)\n");
@@ -35,8 +39,6 @@ private:
     }
 
     void onMain() override;
-
-    Pipeline::WritePipe<std::vector<int>> m_pipe;
 };
 
 #endif

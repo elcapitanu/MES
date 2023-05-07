@@ -11,7 +11,6 @@
 #include "mes.hpp"
 
 #include "threads/Mthread.hpp"
-#include "threads/ReadPipe.hpp"
 
 using std::cin;
 using std::cout;
@@ -27,15 +26,15 @@ struct state_machine
 class GUI : public Tasks::Thread
 {
 public:
-    GUI(Pipeline::AbstractPipe<std::vector<int>> *ptr, MES *mes)
-        : m_pipe(ptr), messi(mes)
+    GUI(MES *mes, char *ptr)
+        : messi(mes), input(ptr)
     {
+        cout << "GUI: ola" << endl;
+
         name.append("Bernardo Gabriel");
     }
 
     ~GUI();
-
-    MES *messi;
 
     char *input;
 
@@ -49,7 +48,7 @@ private:
 
     void onMain() override;
 
-    Pipeline::ReadPipe<std::vector<int>> m_pipe;
+    MES *messi;
 
     std::string name;
     time_t date;

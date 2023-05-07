@@ -8,24 +8,21 @@ using std::vector;
 #include "lib/interface.hpp"
 #include "lib/inputs.hpp"
 #include "lib/mes.hpp"
-
-#include "threads/AbstractPipe.hpp"
+#include "lib/tcp.hpp"
 
 int main(int argc, char **argv)
 {
     if (argc == 1)
     {
-        Pipeline::AbstractPipe<vector<int>> mintPipe("MES<->GUI");
-
-        MES messi(&mintPipe);
-        GUI gui(&mintPipe, &messi);
-        KEY key(&mintPipe);
-
-        gui.input = &key.input;
+        MES messi;
+        KEY key;
+        GUI gui(&messi, &key.input);
+        Socket soc;
 
         messi.start();
-        gui.start();
+        //gui.start();
         key.start();
+        soc.start();
 
         while (1)
         {
@@ -34,6 +31,7 @@ int main(int argc, char **argv)
                 messi.stop();
                 gui.stop();
                 key.stop();
+                soc.stop();
                 break;
             }
         }
