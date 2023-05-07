@@ -1,54 +1,40 @@
-#include <iostream>
-#include "lib/time.hpp"
-#include "lib/interface.hpp"
-#include "lib/mes.hpp"
-
-#include <string.h>
-
-#include <string>
+#include "main.hpp"
 
 using std::cin;
 using std::cout;
 using std::endl;
+using std::vector;
 
-using namespace Interface;
-using namespace MES;
+#include "lib/interface.hpp"
+#include "lib/inputs.hpp"
+#include "lib/mes.hpp"
+
+#include "threads/AbstractPipe.hpp"
 
 int main(int argc, char **argv)
 {
     if (argc == 1)
     {
-        GUI gui;
-        Algorithm mes;
+        Pipeline::AbstractPipe<vector<int>> mintPipe("MES<->GUI");
 
-        mes.init_t = initTime(mes.time_now);
+        MES messi(&mintPipe);
+        GUI gui(&mintPipe, &messi);
+        KEY key(&mintPipe);
 
-        cout << "Waiting for ERP...\n";
-        while (mes.connectToERP() == -1)
-        {
-            cout << "Failed to connect to ERP :(\n";
-            return 0;
-        }
-        cout << "Connected to ERP\n";
+        gui.input = &key.input;
 
-        cout << "Waiting for PLC...\n";
-        while (mes.connectToPLC() == -1)
-        {
-            cout << "Failed to connect to PLC :(\n";
-            return 0;
-        }
-        cout << "Connected to PLC\n";
-
-        mes.sendValuesToPLC();
+        messi.start();
+        gui.start();
+        key.start();
 
         while (1)
         {
-            mes.receiveValuesFromERP();
-
-            if (refresh(mes.time_now))
+            if (key.input == 'x')
             {
-                mes.addNumberOfOrders(1);
-                gui.show(mes);
+                messi.stop();
+                gui.stop();
+                key.stop();
+                break;
             }
         }
 

@@ -1,4 +1,4 @@
-#include "time.hpp"
+#include "my_time.hpp"
 
 uint64_t init, t, new_t, interval, fps, step, i;
 

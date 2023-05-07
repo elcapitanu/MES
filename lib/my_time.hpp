@@ -1,5 +1,5 @@
-#ifndef TIME_HPP
-#define TIME_HPP
+#ifndef MY_TIME_HPP
+#define MY_TIME_HPP
 
 #include <iostream>
 #include <string>

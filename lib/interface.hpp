@@ -7,29 +7,54 @@
 #include <time.h>
 #include <stdint.h>
 
-#include "time.hpp"
+#include "my_time.hpp"
 #include "mes.hpp"
+
+#include "threads/Mthread.hpp"
+#include "threads/ReadPipe.hpp"
 
 using std::cin;
 using std::cout;
 using std::endl;
 
-namespace Interface
+struct state_machine
 {
-    class GUI
+    uint16_t state;
+
+    /* add more features to sate machine */
+};
+
+class GUI : public Tasks::Thread
+{
+public:
+    GUI(Pipeline::AbstractPipe<std::vector<int>> *ptr, MES *mes)
+        : m_pipe(ptr), messi(mes)
     {
-    private:
-        std::string name;
+        name.append("Bernardo Gabriel");
+    }
 
-        time_t date;
+    ~GUI();
 
-    public:
-        void show(MES::Algorithm mes);
+    MES *messi;
 
-        GUI(void);
-        ~GUI();
-    };
+    char *input;
 
-}
+    void show();
+
+private:
+    inline std::string getName() override
+    {
+        return "GUI";
+    }
+
+    void onMain() override;
+
+    Pipeline::ReadPipe<std::vector<int>> m_pipe;
+
+    std::string name;
+    time_t date;
+
+    struct state_machine display;
+};
 
 #endif
