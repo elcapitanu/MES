@@ -1,6 +1,6 @@
 # MES
 
-# Compiling
+## Compiling
 
 After cloning the repository, do the following:
 
@@ -14,7 +14,7 @@ Use:
 ```./MES``` - to run the program
 ```./MES teste``` - to run the test
 
-# Dependencies
+## Dependencies
 
 Opcua library
 
