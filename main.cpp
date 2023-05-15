@@ -9,6 +9,7 @@ using std::vector;
 #include "lib/inputs.hpp"
 #include "lib/mes.hpp"
 #include "lib/tcp.hpp"
+#include "lib/opc-ua.hpp"
 
 int main(int argc, char **argv)
 {
@@ -16,22 +17,24 @@ int main(int argc, char **argv)
     {
         MES messi;
         KEY key;
-        GUI gui(&messi, &key.input);
+        //GUI gui(&messi, &key.input);
         Socket soc;
+        OpcUa op;
 
         messi.start();
         //gui.start();
         key.start();
         soc.start();
+        op.start();
 
         while (1)
         {
             if (key.input == 'x')
             {
                 messi.stop();
-                gui.stop();
+                //gui.stop();
                 key.stop();
-                soc.stop();
+                op.stop();
                 break;
             }
         }

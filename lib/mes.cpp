@@ -2,10 +2,13 @@
 
 MES::~MES()
 {
+    cout << "MES: adeus" << endl;
 }
 
 void MES::onMain()
 {
+    cout << "MES: tou vivo" << endl;
+
     while (1)
     {
         if (refresh(time_now))

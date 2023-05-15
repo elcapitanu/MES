@@ -2,6 +2,7 @@
 
 Socket::~Socket()
 {
+    cout << "SOCKET: adeus" << endl;
 }
 
 void Socket::onMain()
