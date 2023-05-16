@@ -2,14 +2,20 @@
 
 GUI::~GUI()
 {
-    system("clear");
+#if DEBUG_THR
+    cout << "GUI: adeus" << endl;
+#endif
 }
 
 void GUI::onMain()
 {
+#if DEBUG_THR
+    cout << "GUI: tou vivo" << endl;
+#endif
+
     display.state = 0;
 
-    while (1)
+    while (!stopRequested())
     {
         if (refresh(messi->time_now) /* && if state is not a state to input long text */)
         {

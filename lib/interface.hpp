@@ -29,16 +29,14 @@ public:
     GUI(MES *mes, char *ptr)
         : messi(mes), input(ptr)
     {
+#if DEBUG_THR
         cout << "GUI: ola" << endl;
+#endif
 
         name.append("Bernardo Gabriel");
     }
 
     ~GUI();
-
-    char *input;
-
-    void show();
 
 private:
     inline std::string getName() override
@@ -49,6 +47,9 @@ private:
     void onMain() override;
 
     MES *messi;
+    char *input;
+
+    void show();
 
     std::string name;
     time_t date;
