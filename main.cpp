@@ -17,27 +17,26 @@ int main(int argc, char **argv)
     {
         MES messi;
         KEY key;
-        //GUI gui(&messi, &key.input);
+        GUI gui(&messi, &key.input);
         Socket soc;
         OpcUa op;
 
         messi.start();
-        //gui.start();
         key.start();
-        soc.start();
-        op.start();
+        gui.start();
+        // soc.start();
+        // op.start();
 
-        while (1)
-        {
-            if (key.input == 'x')
-            {
-                messi.stop();
-                //gui.stop();
-                key.stop();
-                op.stop();
-                break;
-            }
-        }
+        while (key.input != 'x')
+            ;
+
+        // op.stop();
+        // soc.stop();
+        gui.stop();
+        key.stop();
+        messi.stop();
+
+        system("clear");
 
         return 0;
     }
@@ -51,4 +50,6 @@ int main(int argc, char **argv)
         cout << "NENHUM MODO!" << endl;
         return 0;
     }
+
+    return -1;
 }
