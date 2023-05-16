@@ -55,7 +55,7 @@ void GUI::show()
     time(&date);
     if (display.state == 0)
     {
-        cout << "*********************Menu**********************" << endl
+        cout << "\033[7;32m*********************Menu**********************\033[0m" << endl
              << endl
              << "a. MES1" << endl
              << "b. MES2" << endl
@@ -63,14 +63,14 @@ void GUI::show()
              << endl
              << "x. Close" << endl
              << endl
-             << "***********************************************" << endl
+             << "\033[7;32m***********************************************\033[0m" << endl
              << endl
              << "          " << ctime(&date) << endl
-             << "***********************************************" << endl;
+             << "\033[7;32m***********************************************\033[0m" << endl;
     }
     else if (display.state == 1)
     {
-        cout << "*********************MES1**********************" << endl
+        cout << "\033[7;31m*********************MES1**********************\033[0m" << endl
              << endl
              << name << "      " << ctime(&date) << endl
              << endl
@@ -78,11 +78,11 @@ void GUI::show()
              << endl
              << "Server: " << messi->message << endl
              << endl
-             << "************Ainda não faço nada :)*************" << endl;
+             << "\033[7;31m************Ainda não faço nada :)*************\033[0m" << endl;
     }
     else if (display.state == 2)
     {
-        cout << "*********************MES2**********************" << endl
+        cout << "\033[7;33m*********************MES2**********************\033[0m" << endl
              << endl
              << name << "      " << ctime(&date) << endl
              << endl
@@ -90,11 +90,11 @@ void GUI::show()
              << endl
              << "Server: " << messi->message << endl
              << endl
-             << "************Ainda não faço nada :)*************" << endl;
+             << "\033[7;33m************Ainda não faço nada :)*************\033[0m" << endl;
     }
     else if (display.state == 3)
     {
-        cout << "*********************MES3**********************" << endl
+        cout << "\033[7;36m*********************MES3**********************\033[0m" << endl
              << endl
              << name << "      " << ctime(&date) << endl
              << endl
@@ -102,6 +102,6 @@ void GUI::show()
              << endl
              << "Server: " << messi->message << endl
              << endl
-             << "************Ainda não faço nada :)*************" << endl;
+             << "\033[7;36m************Ainda não faço nada :)*************\033[0m" << endl;
     }
 }
