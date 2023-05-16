@@ -8,12 +8,26 @@ using std::cin;
 using std::cout;
 using std::endl;
 
+struct state
+{
+    uint32_t id;
+    char transition[100];
+};
+
+struct state_mahcine
+{
+    state states[100];
+    uint32_t curr_state;
+};
+
 class MES : public Tasks::Thread
 {
 public:
     MES()
     {
+#if DEBUG_THR
         cout << "MES: ola" << endl;
+#endif
 
         orders = 0;
         init_t = initTime(time_now);
