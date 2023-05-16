@@ -22,9 +22,11 @@ class Socket : public Tasks::Thread
 public:
     Socket()
     {
+#if DEBUG_THR
         cout << "SOCKET: ola" << endl;
+#endif
 
-        char *serverIp = "127.0.0.1";
+        char *serverIp = (char *)"127.0.0.1";
         int port = 2223;
         // setup a socket and connection tools
         host = gethostbyname(serverIp);
@@ -52,7 +54,7 @@ private:
     int clientSd;
     int initConnection(void);
     int sendMessage(uint16_t orders);
-    int receiveMessage(char *message);
+    int receiveMessage();
 };
 
 #endif

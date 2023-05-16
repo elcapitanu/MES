@@ -2,19 +2,25 @@
 
 Socket::~Socket()
 {
+#if DEBUG_THR
     cout << "SOCKET: adeus" << endl;
+#endif
 }
 
 void Socket::onMain()
 {
+#if DEBUG_THR
     cout << "SOCKET: tou vivo" << endl;
+#endif
 
     while (initConnection() != 1)
         ;
 
-    while (1)
+    while (!stopRequested())
     {
-        receiveMessage(message);
+        receiveMessage();
+
+        cout << "ERP: " << message << endl;
     }
 }
 
@@ -36,7 +42,7 @@ int Socket::sendMessage(uint16_t orders)
     return send(clientSd, (char *)&msg, strlen(msg), MSG_DONTWAIT);
 }
 
-int Socket::receiveMessage(char *message)
+int Socket::receiveMessage()
 {
     char msg[1500];
     memset(&msg, 0, sizeof(msg)); // clear the buffer
