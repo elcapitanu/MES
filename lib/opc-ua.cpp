@@ -54,24 +54,48 @@ char OPCUA_VARIABLES[25][58] = {"|var|CODESYS Control Win V3 x64.Application.OPC
 
 OpcUa::~OpcUa()
 {
+#if DEBUG_THR
     cout << "OpcUa: adeus" << endl;
-
-    UA_Client_delete(client);
+#endif
 }
 
 void OpcUa::onMain()
 {
+#if DEBUG_THR
     cout << "OpcUa: tou vivo" << endl;
+#endif
 
-    while (1)
+    client = UA_Client_new();
+    UA_ClientConfig_setDefault(UA_Client_getConfig(client));
+
+    OpcUaConnect();
+
+    OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_M1], true);
+    OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], 1);
+    OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_timer1], 25000);
+    OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_ST2_rot], true);
+    OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
+
+    std::this_thread::sleep_for(std::chrono::seconds(60));
+
+    OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_M1], false);
+    OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], 6);
+    OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_ST2_rot], false);
+    OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_CT2_rot], true);
+    OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Push], true);
+    OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
+
+    while (!stopRequested())
         ;
+
+    UA_Client_delete(client);
 }
 
 static volatile UA_Boolean running = true;
 
 int OpcUa::OpcUaConnect()
 {
-    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://192.168.56.1:4840");
+    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://10.227.149.125:4840");
     if (retval != UA_STATUSCODE_GOOD)
     {
         return -1;

@@ -19,13 +19,22 @@ class OpcUa : public Tasks::Thread
 public:
     OpcUa()
     {
+#if DEBUG_THR
         cout << "OpcUa: ola" << endl;
-
-        client = UA_Client_new();
-        UA_ClientConfig_setDefault(UA_Client_getConfig(client));
+#endif
     }
 
     ~OpcUa();
+
+private:
+    inline std::string getName() override
+    {
+        return "OPCUA";
+    }
+
+    void onMain() override;
+
+    UA_Client *client;
 
     int OpcUaConnect();
     void OpcUaWriteVariable();
@@ -37,16 +46,6 @@ public:
     void OpcUaWriteVariableInt16(int nodeid, char *stringid, u_int16_t value);
     void OpcUaWriteVariableInt32(int nodeid, char *stringid, u_int32_t value);
     void OpcUaWriteVariableInt64(int nodeid, char *stringid, u_int64_t value);
-
-private:
-    inline std::string getName() override
-    {
-        return "OPCUA";
-    }
-
-    void onMain() override;
-
-    UA_Client *client;
 };
 
 #endif
