@@ -16,7 +16,9 @@ class KEY : public Tasks::Thread
 public:
     KEY()
     {
+#if DEBUG_THR
         cout << "KEY: ola" << endl;
+#endif
     }
 
     ~KEY();
