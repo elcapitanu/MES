@@ -44,6 +44,10 @@ void MES::onMain()
             /* send order to PLC*/
             /* while - until order completed */
             /* send feedback to ERP */
+
+            /* go throught plc orders FIFO */
+                /* send order to PLC */
+                /* if order completed send next order */
         }
     }
 }
@@ -125,6 +129,8 @@ void MES::planDay()
     day++;
     newDay = 0;
     ordersLeft = orders;
+
+    /* creates a FIFO with orders to PLC for the day */
 
     return;
 }

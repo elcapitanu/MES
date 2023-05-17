@@ -7,16 +7,24 @@
 
 #include "threads/Mthread.hpp"
 
-struct state
+struct message2PLC
 {
-    uint32_t id;
-    char transition[100];
+    /* content of message */
 };
 
-struct state_mahcine
+struct orderPLC
 {
-    state states[100];
-    uint32_t curr_state;
+    int pos;
+    struct orderPLC *next;
+
+    struct message2PLC;
+};
+
+struct fifoPLC
+{
+    int total;
+
+    struct orderPLC *first;
 };
 
 class MES : public Tasks::Thread
@@ -64,6 +72,8 @@ private:
     int newDay;
 
     int order[18];
+
+    struct fifoPLC fifo;
 
     int type2pos(char *type);
     int parser(char *m);
