@@ -69,7 +69,8 @@ void GUI::show()
 
         if (!soc->isConnected())
         {
-            cout << "            \033[5;31mNot connected to ERP\033[0m" << endl;
+            cout << "            \033[5;31mNot connected to ERP\033[0m" << endl
+                 << endl;
         }
 
         cout << "\033[7;32m***********************************************\033[0m" << endl;

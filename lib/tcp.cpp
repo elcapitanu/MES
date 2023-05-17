@@ -49,6 +49,8 @@ int Socket::receiveMessage()
     char msg[1500];
     bzero(msg, sizeof(msg));
     int bytesRead = recv(clientSd, (char *)&msg, sizeof(msg), MSG_NOSIGNAL);
+    // change MSG_NOSIGNAL to MSG_DONTWAIT
+    // then need to change the way MES checks if lost connection to ERP - if then there is no way to check if lost connection, keep MSG_NOSIGNAL
 
     // msg[strlen(msg) - 3] = '\0';
 
