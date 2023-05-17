@@ -7,6 +7,13 @@
 
 #include "threads/Mthread.hpp"
 
+struct factory
+{
+    int war_space; // remaining space in warehouse
+    int p[9];      // total of pieces from each type
+    int m[4];      // current tool in each machine
+};
+
 struct message2PLC
 {
     /* content of message */
@@ -53,6 +60,8 @@ public:
     int ordersLeft;
 
     int day;
+    
+    struct factory fac = {0};
 
 private:
     inline std::string getName() override
@@ -78,6 +87,7 @@ private:
     int type2pos(char *type);
     int parser(char *m);
     void planDay();
+    void updateFactory();
 };
 
 #endif

@@ -49,6 +49,8 @@ void MES::onMain()
                 /* send order to PLC */
                 /* if order completed send next order */
         }
+
+        updateFactory();
     }
 }
 
@@ -132,5 +134,10 @@ void MES::planDay()
 
     /* creates a FIFO with orders to PLC for the day */
 
+    return;
+}
+
+void MES::updateFactory()
+{
     return;
 }
