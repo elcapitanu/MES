@@ -79,13 +79,17 @@ void GUI::show()
         cout << "\033[7;31m*********************MES1**********************\033[0m" << endl
              << endl
              << name << "      " << ctime(&date) << endl
-             << endl
-             << "Number of orders: " << messi->orders << endl
-             << endl
-             << "Day: " << messi->day << endl
-             << endl
+             << endl;
+
+        if (messi->day > 0)
+        {
+            cout << "Day: " << messi->day << endl
+                 << endl
+                 << "Number of orders: " << messi->orders << endl
+                 << endl;
+        }
+        cout << "\033[7;31m***********************************************\033[0m" << endl
              << "Server: " << soc->message << endl
-             << endl
              << "\033[7;31m************Ainda não faço nada :)*************\033[0m" << endl;
     }
     else if (display.state == 2)
@@ -93,13 +97,16 @@ void GUI::show()
         cout << "\033[7;33m*********************MES2**********************\033[0m" << endl
              << endl
              << name << "      " << ctime(&date) << endl
-             << endl
-             << "Number of orders: " << messi->orders << endl
-             << endl
-             << "Day: " << messi->day << endl
-             << endl
+             << endl;
+        if (messi->day > 0)
+        {
+            cout << "Day: " << messi->day << endl
+                 << endl
+                 << "Number of orders: " << messi->orders << endl
+                 << endl;
+        }
+        cout << "\033[7;33m***********************************************\033[0m" << endl
              << "Server: " << soc->message << endl
-             << endl
              << "\033[7;33m************Ainda não faço nada :)*************\033[0m" << endl;
     }
     else if (display.state == 3)
@@ -107,13 +114,17 @@ void GUI::show()
         cout << "\033[7;36m*********************MES3**********************\033[0m" << endl
              << endl
              << name << "      " << ctime(&date) << endl
-             << endl
-             << "Number of orders: " << messi->orders << endl
-             << endl
-             << "Day: " << messi->day << endl
-             << endl
+             << endl;
+
+        if (messi->day > 0)
+        {
+            cout << "Day: " << messi->day << endl
+                 << endl
+                 << "Number of orders: " << messi->orders << endl
+                 << endl;
+        }
+        cout << "\033[7;36m***********************************************\033[0m" << endl
              << "Server: " << soc->message << endl
-             << endl
              << "\033[7;36m************Ainda não faço nada :)*************\033[0m" << endl;
     }
 }

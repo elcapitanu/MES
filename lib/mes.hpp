@@ -41,7 +41,8 @@ public:
 
     struct timeval time_now;
 
-    uint16_t orders;
+    int orders;
+    int ordersLeft;
 
     int day;
 

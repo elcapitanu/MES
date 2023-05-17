@@ -19,6 +19,8 @@ void MES::onMain()
         /* parse message */
         /* if new day */
         /* calculate plan for the day */
+
+        /* execute plan */
         /* while - until last order */
         /* send order to PLC*/
         /* while - until order completed */
@@ -34,6 +36,14 @@ void MES::onMain()
             {
                 planDay(); /* calculate plan for the day */
             }
+        }
+
+        /* execute plan */
+        if (day && ordersLeft) /* while - until last order */
+        {
+            /* send order to PLC*/
+            /* while - until order completed */
+            /* send feedback to ERP */
         }
     }
 }
@@ -114,6 +124,7 @@ void MES::planDay()
 {
     day++;
     newDay = 0;
+    ordersLeft = orders;
 
     return;
 }
