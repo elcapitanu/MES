@@ -5,6 +5,8 @@ Socket::~Socket()
 #if DEBUG_THR
     cout << "SOCKET: adeus" << endl;
 #endif
+
+    close(clientSd);
 }
 
 void Socket::onMain()
@@ -13,31 +15,31 @@ void Socket::onMain()
     cout << "SOCKET: tou vivo" << endl;
 #endif
 
-    while (initConnection() != 1)
+    while (initConnection() != 0)
         ;
+
+    connected = true;
 
     while (!stopRequested())
     {
-        receiveMessage();
+        if (!connected)
+            initConnection();
 
-        cout << "ERP: " << message << endl;
+        if (receiveMessage())
+        {
+        }
     }
 }
 
 int Socket::initConnection(void)
 {
-    // try to connect...
-    if (connect(clientSd, (sockaddr *)&sendSockAddr, sizeof(sendSockAddr)) < 0)
-        return 0;
-
-    cout << "Connected to ERP!" << endl;
-    return 1;
+    return connect(clientSd, (struct sockaddr *)&servaddr, sizeof(servaddr));
 }
 
 int Socket::sendMessage(uint16_t orders)
 {
     char msg[1500];
-    memset(&msg, 0, sizeof(msg)); // clear the buffer
+    bzero(msg, sizeof(msg));
     sprintf(msg, "%hd", orders);
     return send(clientSd, (char *)&msg, strlen(msg), MSG_DONTWAIT);
 }
@@ -45,10 +47,18 @@ int Socket::sendMessage(uint16_t orders)
 int Socket::receiveMessage()
 {
     char msg[1500];
-    memset(&msg, 0, sizeof(msg)); // clear the buffer
-    int bytesRead = recv(clientSd, (char *)&msg, sizeof(msg), MSG_DONTWAIT);
-    if (bytesRead > 0)
-        strcpy(message, msg);
+    bzero(msg, sizeof(msg));
+    int bytesRead = recv(clientSd, (char *)&msg, sizeof(msg), MSG_NOSIGNAL);
 
-    return 0;
+    // msg[strlen(msg) - 3] = '\0';
+
+    if (bytesRead > 0)
+    {
+        strcpy(message, msg);
+        newMessage = true;
+    }
+    else if (bytesRead <= 0)
+        connected = false;
+
+    return bytesRead;
 }

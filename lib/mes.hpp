@@ -2,11 +2,10 @@
 #define MES_HPP
 
 #include "my_time.hpp"
-#include "threads/Mthread.hpp"
+#include "tcp.hpp"
+#include "opc-ua.hpp"
 
-using std::cin;
-using std::cout;
-using std::endl;
+#include "threads/Mthread.hpp"
 
 struct state
 {
@@ -23,28 +22,28 @@ struct state_mahcine
 class MES : public Tasks::Thread
 {
 public:
-    MES()
+    MES(Socket *s, OpcUa *o)
+        : soc(s), op(o)
     {
 #if DEBUG_THR
         cout << "MES: ola" << endl;
 #endif
 
         orders = 0;
+        memset(order, 0, sizeof(order));
         init_t = initTime(time_now);
-        sprintf(message, "OLA :)\n");
+
+        day = 0;
+        newDay = 0;
     }
 
     ~MES();
 
     struct timeval time_now;
 
-    uint64_t init_t;
-
     uint16_t orders;
 
-    char message[100] = {};
-
-    void addNumberOfOrders(uint16_t number);
+    int day;
 
 private:
     inline std::string getName() override
@@ -53,6 +52,21 @@ private:
     }
 
     void onMain() override;
+
+    Socket *soc;
+    OpcUa *op;
+
+    uint64_t init_t;
+
+    char msg[1500];
+
+    int newDay;
+
+    int order[18];
+
+    int type2pos(char *type);
+    int parser(char *m);
+    void planDay();
 };
 
 #endif

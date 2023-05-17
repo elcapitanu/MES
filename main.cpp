@@ -1,10 +1,5 @@
 #include "main.hpp"
 
-using std::cin;
-using std::cout;
-using std::endl;
-using std::vector;
-
 #include "lib/interface.hpp"
 #include "lib/inputs.hpp"
 #include "lib/mes.hpp"
@@ -15,23 +10,23 @@ int main(int argc, char **argv)
 {
     if (argc == 1)
     {
-        MES messi;
         KEY key;
-        GUI gui(&messi, &key.input);
         Socket soc;
         OpcUa op;
-
+        MES messi(&soc, &op);
+        GUI gui(&messi, &soc, &key.input);
+        
         messi.start();
         key.start();
         gui.start();
-        // soc.start();
+        soc.start();
         // op.start();
 
         while (key.input != 'x')
             ;
 
         // op.stop();
-        // soc.stop();
+        soc.stop();
         gui.stop();
         key.stop();
         messi.stop();

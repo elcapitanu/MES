@@ -1,15 +1,9 @@
 #ifndef INPUTS_HPP
 #define INPUTS_HPP
 
-#include <iostream>
-#include <string>
-#include <stdint.h>
+#include "../main.hpp"
 
 #include "threads/Mthread.hpp"
-
-using std::cin;
-using std::cout;
-using std::endl;
 
 class KEY : public Tasks::Thread
 {

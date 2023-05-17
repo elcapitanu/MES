@@ -3,16 +3,22 @@
 
 #include <iostream>
 
+#include <stdint.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <iostream>
+#include <string>
+#include <string.h>
+#include <cstring>
+
+#include <time.h>
+
 #include <thread>
 #include <mutex>
-#include <unordered_map>
-#include <condition_variable>
-#include <cstring>
-#include <functional>
-#include <sys/socket.h>
-#include <arpa/inet.h>
 
-
+using std::cin;
+using std::cout;
+using std::endl;
 
 #define DEBUG_THR		0
 

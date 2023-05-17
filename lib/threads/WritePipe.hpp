@@ -1,9 +1,7 @@
 #ifndef WRITE_PIPE_HPP
 #define WRITE_PIPE_HPP
 
-
 #include "AbstractPipe.hpp"
-
 
 namespace Pipeline
 {

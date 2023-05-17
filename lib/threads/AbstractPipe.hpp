@@ -1,11 +1,11 @@
 #ifndef ABSTRACT_PIPE_HPP
 #define ABSTRACT_PIPE_HPP
 
+#include "../../main.hpp"
+
 #include <cstdlib>
 #include <string>
 #include <queue>
-
-#include "../../main.hpp"
 
 namespace Pipeline
 {

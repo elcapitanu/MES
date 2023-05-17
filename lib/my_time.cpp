@@ -6,7 +6,7 @@ uint64_t initTime(struct timeval time_now)
 {
     time_now = {};
     interval = 1000;
-    fps = 20;
+    fps = 10;
     step = interval / fps;
 
     init = getMillis(time_now);

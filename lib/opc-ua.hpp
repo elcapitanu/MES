@@ -10,10 +10,6 @@
 #include <open62541/client_subscriptions.h>
 #include <open62541/plugin/log_stdout.h>
 
-using std::cin;
-using std::cout;
-using std::endl;
-
 class OpcUa : public Tasks::Thread
 {
 public:

@@ -1,9 +1,9 @@
 #ifndef THREAD_HPP
 #define THREAD_HPP
 
-#include <atomic>
-
 #include "../../main.hpp"
+
+#include <atomic>
 
 namespace Tasks
 {	

@@ -65,8 +65,14 @@ void GUI::show()
              << endl
              << "\033[7;32m***********************************************\033[0m" << endl
              << endl
-             << "          " << ctime(&date) << endl
-             << "\033[7;32m***********************************************\033[0m" << endl;
+             << "          \033[7;37m" << ctime(&date) << "\033[0m" << endl;
+
+        if (!soc->isConnected())
+        {
+            cout << "            \033[5;31mNot connected to ERP\033[0m" << endl;
+        }
+
+        cout << "\033[7;32m***********************************************\033[0m" << endl;
     }
     else if (display.state == 1)
     {
@@ -76,7 +82,9 @@ void GUI::show()
              << endl
              << "Number of orders: " << messi->orders << endl
              << endl
-             << "Server: " << messi->message << endl
+             << "Day: " << messi->day << endl
+             << endl
+             << "Server: " << soc->message << endl
              << endl
              << "\033[7;31m************Ainda não faço nada :)*************\033[0m" << endl;
     }
@@ -88,7 +96,9 @@ void GUI::show()
              << endl
              << "Number of orders: " << messi->orders << endl
              << endl
-             << "Server: " << messi->message << endl
+             << "Day: " << messi->day << endl
+             << endl
+             << "Server: " << soc->message << endl
              << endl
              << "\033[7;33m************Ainda não faço nada :)*************\033[0m" << endl;
     }
@@ -100,7 +110,9 @@ void GUI::show()
              << endl
              << "Number of orders: " << messi->orders << endl
              << endl
-             << "Server: " << messi->message << endl
+             << "Day: " << messi->day << endl
+             << endl
+             << "Server: " << soc->message << endl
              << endl
              << "\033[7;36m************Ainda não faço nada :)*************\033[0m" << endl;
     }

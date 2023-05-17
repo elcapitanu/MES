@@ -1,20 +1,13 @@
 #ifndef INTERFACE_HPP
 #define INTERFACE_HPP
 
-#include <iostream>
-#include <string>
-#include <sys/time.h>
-#include <time.h>
-#include <stdint.h>
+#include "../main.hpp"
 
 #include "my_time.hpp"
 #include "mes.hpp"
+#include "tcp.hpp"
 
 #include "threads/Mthread.hpp"
-
-using std::cin;
-using std::cout;
-using std::endl;
 
 struct state_machine
 {
@@ -26,8 +19,8 @@ struct state_machine
 class GUI : public Tasks::Thread
 {
 public:
-    GUI(MES *mes, char *ptr)
-        : messi(mes), input(ptr)
+    GUI(MES *mes, Socket *s, char *ptr)
+        : messi(mes), soc(s), input(ptr)
     {
 #if DEBUG_THR
         cout << "GUI: ola" << endl;
@@ -47,6 +40,7 @@ private:
     void onMain() override;
 
     MES *messi;
+    Socket *soc;
     char *input;
 
     void show();

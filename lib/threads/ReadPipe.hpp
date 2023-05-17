@@ -1,6 +1,8 @@
 #ifndef READ_PIPE_HPP
 #define READ_PIPE_HPP
 
+#include "../../main.hpp"
+
 #include "AbstractPipe.hpp"
 
 namespace Pipeline
