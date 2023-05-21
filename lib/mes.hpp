@@ -7,11 +7,19 @@
 
 #include "threads/Mthread.hpp"
 
+struct piece
+{
+    int pos = -1;
+    int type = -1;
+};
+
 struct factory
 {
-    int war_space; // remaining space in warehouse
-    int p[9];      // total of pieces from each type
-    int m[4];      // current tool in each machine
+    int remSpaceWar = 0; // remaining space in warehouse
+    struct piece pieces[128]; // all pieces in factory
+    int total = 0; // total of pieces
+    int p[9] = {};  // total of pieces from each type
+    int m[4] = {};  // current tool in each machine
 };
 
 struct message2PLC
@@ -61,7 +69,7 @@ public:
 
     int day;
     
-    struct factory fac = {0};
+    struct factory fac;
 
 private:
     inline std::string getName() override
@@ -80,14 +88,16 @@ private:
 
     int newDay;
 
-    int order[18];
+    int order[20];
 
     struct fifoPLC fifo;
 
-    int type2pos(char *type);
     int parser(char *m);
     void planDay();
     void updateFactory();
+    void addPiece(int type);
+    void updateMachine(int machine, int newTool);
+    void savePieceWarehouse();
 };
 
 #endif

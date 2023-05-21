@@ -46,81 +46,46 @@ void MES::onMain()
             /* send feedback to ERP */
 
             /* go throught plc orders FIFO */
-                /* send order to PLC */
-                /* if order completed send next order */
+            /* send order to PLC */
+            /* if order completed send next order */
         }
 
         updateFactory();
     }
 }
 
-int MES::type2pos(char *type)
-{
-    if (!strcmp(type, "p1"))
-        return 0;
-    else if (!strcmp(type, "p2"))
-        return 1;
-    else if (!strcmp(type, "p3"))
-        return 2;
-    else if (!strcmp(type, "p4"))
-        return 3;
-    else if (!strcmp(type, "p5"))
-        return 4;
-    else if (!strcmp(type, "p6"))
-        return 5;
-    else if (!strcmp(type, "p7"))
-        return 6;
-    else if (!strcmp(type, "p8"))
-        return 7;
-    else if (!strcmp(type, "p9"))
-        return 8;
-    else if (!strcmp(type, "e1"))
-        return 9;
-    else if (!strcmp(type, "e2"))
-        return 10;
-    else if (!strcmp(type, "e3"))
-        return 11;
-    else if (!strcmp(type, "e4"))
-        return 12;
-    else if (!strcmp(type, "e5"))
-        return 13;
-    else if (!strcmp(type, "e6"))
-        return 14;
-    else if (!strcmp(type, "e7"))
-        return 15;
-    else if (!strcmp(type, "e8"))
-        return 16;
-    else if (!strcmp(type, "e9"))
-        return 17;
-
-    return -1;
-}
-
 int MES::parser(char *m)
 {
-    char *token = strtok(msg, ",");
+    newDay = 1;
+    orders = 0;
 
-    if (strcmp(token, "start"))
-        newDay = 0;
-    else
+    int pos = 1;
+    int multiplier = 0;
+
+    while (1)
     {
-        newDay = 1;
-        orders = 0;
-    }
-
-    while (newDay)
-    {
-        token = strtok(NULL, ",");
-
-        if (!strcmp(token, "*") || token == NULL)
+        if (m[pos] == '*')
             break;
 
-        int pos = type2pos(token);
-
-        if (pos < 0 || pos > 17)
+        switch (m[pos++])
+        {
+        case 'W':
+            multiplier = 0;
             break;
+        case 'D':
+            multiplier = 1;
+            break;
+        case 'B':
+            multiplier = 2;
+            break;
+        default:
+            break;
+        }
 
-        orders += order[pos] = atoi(strtok(NULL, ","));
+        int type = m[pos++];
+        int quantity = m[pos++];
+
+        orders += order[multiplier * 9 + type - '0' - 1] = quantity - '0';
     }
 
     return newDay;
@@ -140,4 +105,20 @@ void MES::planDay()
 void MES::updateFactory()
 {
     return;
+}
+
+void MES::addPiece(int type)
+{
+    fac.p[type - 1]++;
+    fac.total++;
+}
+
+void MES::updateMachine(int machine, int newTool)
+{
+    fac.m[machine - 1] = newTool;
+}
+
+void MES::savePieceWarehouse()
+{
+    fac.remSpaceWar++;
 }
