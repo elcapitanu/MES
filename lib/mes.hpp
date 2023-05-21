@@ -13,13 +13,29 @@ struct piece
     int type = -1;
 };
 
+struct machine
+{
+    int tool = 0;
+    int totalOperatingTime = 0;
+    int operatedPieces[9] = {};
+    int totalOperatedPieces = 0;
+};
+
+struct dock
+{
+    int unloadedPieces[9] = {};
+    int totalUnloadedPieces = 0;
+};
+
 struct factory
 {
-    int remSpaceWar = 0; // remaining space in warehouse
+    int remSpaceWar = 23;     // remaining space in warehouse
     struct piece pieces[128]; // all pieces in factory
-    int total = 0; // total of pieces
-    int p[9] = {};  // total of pieces from each type
-    int m[4] = {};  // current tool in each machine
+    int total = 0;
+    int p[9] = {};            // total of pieces from each type
+
+    struct dock docks[2];
+    struct machine machines[4];
 };
 
 struct message2PLC
@@ -58,6 +74,14 @@ public:
 
         day = 0;
         newDay = 0;
+
+        fac.p[0] = 15;   
+        fac.p[1] = 15;   
+
+        fac.machines[0].tool = 1;
+        fac.machines[1].tool = 1;
+        fac.machines[2].tool = 2;
+        fac.machines[3].tool = 1;
     }
 
     ~MES();
@@ -68,7 +92,7 @@ public:
     int ordersLeft;
 
     int day;
-    
+
     struct factory fac;
 
 private:

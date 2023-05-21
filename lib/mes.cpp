@@ -115,7 +115,7 @@ void MES::addPiece(int type)
 
 void MES::updateMachine(int machine, int newTool)
 {
-    fac.m[machine - 1] = newTool;
+    fac.machines[machine - 1].tool = newTool;
 }
 
 void MES::savePieceWarehouse()
