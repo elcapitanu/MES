@@ -22,7 +22,7 @@ int main(int argc, char **argv)
         soc.start();
         // op.start();
 
-        while (key.input != 'x')
+        while (key.input != 0x1b)
             ;
 
         // op.stop();
