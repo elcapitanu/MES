@@ -13,8 +13,30 @@ void KEY::onMain()
     cout << "KEY: tou vivo" << endl;
 #endif
 
+    struct termios t;
+    struct termios t_saved;
+
+    // Set terminal to single character mode.
+    tcgetattr(fileno(stdin), &t);
+    t_saved = t;
+    t.c_lflag &= (~ICANON);
+    t.c_cc[VTIME] = 0;
+    t.c_cc[VMIN] = 1;
+    tcsetattr(fileno(stdin), TCSANOW, &t);
+
+    std::streambuf *pbuf = cin.rdbuf();
+
     while (!stopRequested())
     {
-        cin >> input;
+        // Read single characters from cin.
+        if (pbuf->sgetc() == EOF)
+            input = 0x1b;
+
+        input = pbuf->sbumpc();
     }
+
+    // Restore terminal mode.
+    tcsetattr(fileno(stdin), TCSANOW, &t_saved);
+
+    return;
 }

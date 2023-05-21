@@ -3,6 +3,10 @@
 
 #include "../main.hpp"
 
+#include <iomanip>
+#include <fstream>
+#include <termios.h>
+
 #include "threads/Mthread.hpp"
 
 class KEY : public Tasks::Thread
