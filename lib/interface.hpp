@@ -9,6 +9,13 @@
 
 #include "threads/Mthread.hpp"
 
+struct factoryMap
+{
+    char warehouse[9][10];
+    char pos[41]; // piece type at each pos
+};
+
+
 struct state_machine
 {
     uint16_t state;
@@ -48,7 +55,10 @@ private:
     std::string name;
     time_t date;
 
+    struct factoryMap map;
     struct state_machine display;
+
+    void factory2map();
 };
 
 #endif
