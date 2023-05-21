@@ -32,8 +32,10 @@ private:
 
     UA_Client *client;
 
+    bool sensors[32] = {};
+
     int OpcUaConnect();
-    void OpcUaWriteVariable();
+    // void OpcUaWriteVariable();
     bool OpcUaReadVariableBool(int nodeid, char *stringid);
     int OpcUaReadVariableInt16(int nodeid, char *stringid);
     int OpcUaReadVariableInt32(int nodeid, char *stringid);
@@ -42,6 +44,11 @@ private:
     void OpcUaWriteVariableInt16(int nodeid, char *stringid, u_int16_t value);
     void OpcUaWriteVariableInt32(int nodeid, char *stringid, u_int32_t value);
     void OpcUaWriteVariableInt64(int nodeid, char *stringid, u_int64_t value);
+
+    void workPiece(int start, int final, int machine);
+    void deliverPiece(int type, int dock);
+    void changeTool(int machine, int newTool);
+    void readSensors();
 };
 
 #endif

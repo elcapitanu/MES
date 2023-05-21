@@ -86,37 +86,37 @@ char OPCUA_VARIABLES[25][58] = {"|var|CODESYS Control Win V3 x64.Application.OPC
 #define OPCUA_ST7s0 31
 
 char OPCUA_SENSORS[32][58] = {"|var|CODESYS Control Win V3 x64.Application.GVL.AT1s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.AT2s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.CT1s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.CT2s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.CT3s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.CT4s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.CT5s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.CT6s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.CT7s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.CT8s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.MT1s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.MT2s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.MT3s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.MT4s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.MT5s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.MT6s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.PT1s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.PT2s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.PT3s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.PT4s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.PT5s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.PT6s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.PT7s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.PT8s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.PT9s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.ST1s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.ST2s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.ST3s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.ST4s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.ST5s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.ST6s0",
-                                "|var|CODESYS Control Win V3 x64.Application.GVL.ST7s0"};
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.AT2s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT1s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT2s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT3s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT4s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT5s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT6s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT7s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT8s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT1s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT2s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT3s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT4s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT5s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT6s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.PT1s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.PT2s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.PT3s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.PT4s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.PT5s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.PT6s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.PT7s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.PT8s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.PT9s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST1s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST2s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST3s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST4s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST5s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST6s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST7s0"};
 
 OpcUa::~OpcUa()
 {
@@ -152,7 +152,7 @@ void OpcUa::onMain()
     OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
 
     while (!stopRequested())
-        ;
+        readSensors();
 
     UA_Client_delete(client);
 }
@@ -163,9 +163,7 @@ int OpcUa::OpcUaConnect()
 {
     UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://10.227.149.125:4840");
     if (retval != UA_STATUSCODE_GOOD)
-    {
         return -1;
-    }
 
     return 1;
 }
@@ -176,9 +174,8 @@ bool OpcUa::OpcUaReadVariableBool(int nodeid, char *stringid)
     UA_StatusCode retval = UA_Client_readValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), val);
 
     if (retval == UA_STATUSCODE_GOOD)
-    {
         return *(UA_Boolean *)val->data;
-    }
+
     UA_Variant_delete(val);
     return false;
 }
@@ -189,9 +186,8 @@ int OpcUa::OpcUaReadVariableInt16(int nodeid, char *stringid)
     UA_StatusCode retval = UA_Client_readValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), val);
 
     if (retval == UA_STATUSCODE_GOOD)
-    {
         return *(UA_Int16 *)val->data;
-    }
+
     UA_Variant_delete(val);
 
     return -1;
@@ -203,9 +199,8 @@ int OpcUa::OpcUaReadVariableInt32(int nodeid, char *stringid)
     UA_StatusCode retval = UA_Client_readValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), val);
 
     if (retval == UA_STATUSCODE_GOOD)
-    {
         return *(UA_Int32 *)val->data;
-    }
+
     UA_Variant_delete(val);
 
     return -1;
@@ -217,9 +212,8 @@ int OpcUa::OpcUaReadVariableInt64(int nodeid, char *stringid)
     UA_StatusCode retval = UA_Client_readValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), val);
 
     if (retval == UA_STATUSCODE_GOOD)
-    {
         return *(UA_Int64 *)val->data;
-    }
+
     UA_Variant_delete(val);
 
     return -1;
@@ -255,4 +249,27 @@ void OpcUa::OpcUaWriteVariableInt64(int nodeid, char *stringid, u_int64_t value)
     UA_Variant_setScalarCopy(myVariant, &value, &UA_TYPES[UA_TYPES_INT64]);
     UA_Client_writeValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), myVariant);
     UA_Variant_delete(myVariant);
+}
+
+void OpcUa::workPiece(int start, int final, int machine)
+{
+    return;
+}
+
+void OpcUa::deliverPiece(int type, int dock)
+{
+    return;
+}
+
+void OpcUa::changeTool(int machine, int newTool)
+{
+    return;
+}
+
+void OpcUa::readSensors()
+{
+    for (int i = 0; i < 32; i++)
+        sensors[i] = OpcUaReadVariableBool(4, OPCUA_SENSORS[i]);
+
+    return;
 }
