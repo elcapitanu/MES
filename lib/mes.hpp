@@ -38,6 +38,13 @@ struct factory
     struct machine machines[4];
 };
 
+struct dayPlan
+{
+    int buy[2]; // amount to buy from P1 and P2
+    int work[9]; // amount to work from each Piece
+    int deliver[9]; // amount to work from each Piece
+};
+
 struct message2PLC
 {
     /* content of message */
@@ -113,6 +120,8 @@ private:
     int newDay;
 
     int order[20];
+
+    struct dayPlan plan;
 
     struct fifoPLC fifo;
 

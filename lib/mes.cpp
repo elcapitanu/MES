@@ -60,32 +60,38 @@ int MES::parser(char *m)
     orders = 0;
 
     int pos = 1;
-    int multiplier = 0;
+
+    for (int i = 0; i < 9; i++)
+        plan.work[i] = 0;
+    for (int i = 0; i < 9; i++)
+        plan.deliver[i] = 0;
+    for (int i = 0; i < 2; i++)
+        plan.buy[i] = 0;
 
     while (1)
     {
         if (m[pos] == '*')
             break;
 
-        switch (m[pos++])
-        {
-        case 'W':
-            multiplier = 0;
-            break;
-        case 'D':
-            multiplier = 1;
-            break;
-        case 'B':
-            multiplier = 2;
-            break;
-        default:
-            break;
-        }
-
+        char job = m[pos++];
         int type = m[pos++];
         int quantity = m[pos++];
 
-        orders += order[multiplier * 9 + type - '0' - 1] = quantity - '0';
+        switch (job)
+        {
+        case 'W':
+            orders += plan.work[type - '0' - 1] = quantity - '0';
+            break;
+        case 'D':
+            orders += plan.deliver[type - '0' - 1] = quantity - '0';
+            break;
+        case 'B':
+            orders += plan.buy[type - '0' - 1] = quantity - '0';
+            break;
+
+        default:
+            break;
+        }
     }
 
     return newDay;
@@ -98,6 +104,94 @@ void MES::planDay()
     ordersLeft = orders;
 
     /* creates a FIFO with orders to PLC for the day */
+
+    /* for (int i = 0; i < 9; i++)
+        cout << "W" << i + 1 << " : " << plan.work[i] << endl;
+    for (int i = 0; i < 9; i++)
+        cout << "D" << i + 1 << " : " << plan.deliver[i] << endl;
+    for (int i = 0; i < 2; i++)
+        cout << "B" << i + 1 << " : " << plan.buy[i] << endl; */
+
+    for (int type = 1; type < 10; type++)
+    {
+        while (plan.deliver[type - 1] > 0)
+            op->deliverPiece(type--, 1);
+    }
+
+    for (int final = 1; final < 10; final++)
+    {
+        if (plan.work[final - 1] > 0)
+        {
+            int start;
+            int machine;
+            int tool;
+
+            switch (final)
+            {
+            case 3:
+                start = 2;
+                tool = 2;
+                break;
+            case 4:
+                start = 2;
+                tool = 3;
+                break;
+            case 5:
+                start = 9;
+                tool = 4;
+                break;
+            case 6:
+                start = 3;
+                tool = 1;
+                break;
+            case 7:
+                start = 4;
+                tool = 4;
+                break;
+            case 8:
+                start = 6;
+                tool = 3;
+                break;
+            case 9:
+                start = 7;
+                tool = 3;
+                break;
+
+            default:
+                break;
+            }
+
+            for (machine = 0; machine < 4; machine++)
+            {
+                if (fac.machines[machine].tool == tool)
+                {
+                    op->workPiece(start, final, machine + 1);
+                    break;
+                }
+            }
+
+            switch (tool)
+            {
+            case 1:
+                op->changeTool(1, fac.machines[0].tool, tool);
+                break;
+            case 2:
+                op->changeTool(1, fac.machines[0].tool, tool);
+                break;
+            case 3:
+                op->changeTool(1, fac.machines[0].tool, tool);
+                break;
+            case 4:
+                op->changeTool(2, fac.machines[1].tool, tool);
+                break;
+
+            default:
+                break;
+            }
+
+            op->workPiece(start, final, machine);
+        }
+    }
 
     return;
 }
