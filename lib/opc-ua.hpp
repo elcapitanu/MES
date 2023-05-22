@@ -23,8 +23,8 @@ public:
     ~OpcUa();
 
     void workPiece(int start, int final, int machine);
-    void deliverPiece(int type, int dock);
-    void changeTool(int machine, int oldTool, int newTool);
+    void deliverPiece(int type);
+    void changeTool(int machine, int newTool);
 
 private:
     inline std::string getName() override

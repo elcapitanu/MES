@@ -13,16 +13,16 @@
 #define OPCUA_MT6_rot 10
 #define OPCUA_CT7_rot 11
 #define OPCUA_M1 12
-#define OPCUA_rot1 13
+#define OPCUA_T1 13
 #define OPCUA_timer1 14
 #define OPCUA_M2 15
-#define OPCUA_rot2 16
+#define OPCUA_T2 16
 #define OPCUA_timer2 17
 #define OPCUA_M3 18
-#define OPCUA_rot3 19
+#define OPCUA_T3 19
 #define OPCUA_timer3 20
 #define OPCUA_M4 21
-#define OPCUA_rot4 22
+#define OPCUA_T4 22
 #define OPCUA_timer4 23
 #define OPCUA_Push 24
 
@@ -39,16 +39,16 @@ char OPCUA_VARIABLES[25][58] = {"|var|CODESYS Control Win V3 x64.Application.OPC
                                 "|var|CODESYS Control Win V3 x64.Application.OPC.MT6_rot",
                                 "|var|CODESYS Control Win V3 x64.Application.OPC.CT7_rot",
                                 "|var|CODESYS Control Win V3 x64.Application.OPC.M1",
-                                "|var|CODESYS Control Win V3 x64.Application.OPC.rot1",
+                                "|var|CODESYS Control Win V3 x64.Application.OPC.T1",
                                 "|var|CODESYS Control Win V3 x64.Application.OPC.timer1",
                                 "|var|CODESYS Control Win V3 x64.Application.OPC.M2",
-                                "|var|CODESYS Control Win V3 x64.Application.OPC.rot2",
+                                "|var|CODESYS Control Win V3 x64.Application.OPC.T2",
                                 "|var|CODESYS Control Win V3 x64.Application.OPC.timer2",
                                 "|var|CODESYS Control Win V3 x64.Application.OPC.M3",
-                                "|var|CODESYS Control Win V3 x64.Application.OPC.rot3",
+                                "|var|CODESYS Control Win V3 x64.Application.OPC.T3",
                                 "|var|CODESYS Control Win V3 x64.Application.OPC.timer3",
                                 "|var|CODESYS Control Win V3 x64.Application.OPC.M4",
-                                "|var|CODESYS Control Win V3 x64.Application.OPC.rot4",
+                                "|var|CODESYS Control Win V3 x64.Application.OPC.T4",
                                 "|var|CODESYS Control Win V3 x64.Application.OPC.timer4",
                                 "|var|CODESYS Control Win V3 x64.Application.OPC.Push"};
 
@@ -136,9 +136,17 @@ void OpcUa::onMain()
 
     OpcUaConnect();
 
-    /* changeTool(4, 1, 3);
-    workPiece(2, 4, 4); */
-    // workPiece(2, 3, 1);
+    //changeTool(4, 3);
+    //sleep(5);
+    changeTool(1, 3);
+    //sleep(5);
+    //workPiece(2, 4, 4);
+    //sleep(5);
+    workPiece(2, 4, 1);
+    sleep(5);
+    deliverPiece(6);
+
+    
 
     while (!stopRequested())
         readSensors();
@@ -150,7 +158,7 @@ static volatile UA_Boolean running = true;
 
 int OpcUa::OpcUaConnect()
 {
-    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://10.227.146.122:4840");
+    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://172.29.0.77:4840");
     if (retval != UA_STATUSCODE_GOOD)
         return -1;
 
@@ -265,16 +273,6 @@ void OpcUa::workPiece(int start, int final, int machine)
         OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], start);
         OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_timer1], timer);
         OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_ST2_rot], true);
-
-        while (!OpcUaReadVariableBool(4, OPCUA_SENSORS[OPCUA_ST3s0]))
-            ;
-
-        OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_ST2_rot], false);
-
-        while (!OpcUaReadVariableBool(4, OPCUA_SENSORS[OPCUA_ST4s0]))
-            ;
-
-        OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_M1], false);
     }
     else if (machine == 2)
     {
@@ -283,16 +281,6 @@ void OpcUa::workPiece(int start, int final, int machine)
         OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], start);
         OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_timer2], timer);
         OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_ST2_rot], true);
-
-        while (!OpcUaReadVariableBool(4, OPCUA_SENSORS[OPCUA_ST3s0]))
-            ;
-
-        OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_ST2_rot], false);
-
-        while (!OpcUaReadVariableBool(4, OPCUA_SENSORS[OPCUA_ST6s0]))
-            ;
-
-        OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_M2], false);
     }
     else if (machine == 3)
     {
@@ -301,16 +289,6 @@ void OpcUa::workPiece(int start, int final, int machine)
         OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], start);
         OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_timer3], timer);
         OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT2_rot], true);
-
-        while (!OpcUaReadVariableBool(4, OPCUA_SENSORS[OPCUA_PT4s0]))
-            ;
-
-        OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT2_rot], false);
-
-        while (!OpcUaReadVariableBool(4, OPCUA_SENSORS[OPCUA_PT7s0]))
-            ;
-
-        OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_M3], false);
     }
     else if (machine == 4)
     {
@@ -321,134 +299,40 @@ void OpcUa::workPiece(int start, int final, int machine)
         OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT2_rot], true);
         OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT4_slide], true);
         OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT7_slide], true);
-
-        while (!OpcUaReadVariableBool(4, OPCUA_SENSORS[OPCUA_PT4s0]))
-            ;
-
-        OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT2_rot], false);
-
-        while (!OpcUaReadVariableBool(4, OPCUA_SENSORS[OPCUA_PT6s0]))
-            ;
-
-        OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT4_slide], false);
-
-        while (!OpcUaReadVariableBool(4, OPCUA_SENSORS[OPCUA_PT9s0]))
-            ;
-
-        OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT7_slide], false);
-
-        while (!OpcUaReadVariableBool(4, OPCUA_SENSORS[OPCUA_PT7s0]))
-            ;
-
-        OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_M4], false);
     }
 
     return;
 }
 
-void OpcUa::deliverPiece(int type, int dock)
+void OpcUa::deliverPiece(int type)
 {
+    OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
+    OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], type);
+    OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_CT2_rot], true);
+    OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Push], true);
+    
     return;
 }
 
-void OpcUa::changeTool(int machine, int oldTool, int newTool)
+void OpcUa::changeTool(int machine, int newTool)
 {
     if (machine == 1)
     {
-        if (newTool == 1)
-        {
-            if (oldTool == 2)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot1], -1);
-            else if (oldTool == 3)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot1], 1);
-        }
-        if (newTool == 2)
-        {
-            if (oldTool == 1)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot1], 1);
-            else if (oldTool == 3)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot1], -1);
-        }
-        if (newTool == 3)
-        {
-            if (oldTool == 1)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot1], -1);
-            else if (oldTool == 2)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot1], 1);
-        }
+        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_T1], newTool);
     }
     else if (machine == 2)
     {
-        if (newTool == 1)
-        {
-            if (oldTool == 3)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot2], -1);
-            else if (oldTool == 4)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot2], 1);
-        }
-        if (newTool == 3)
-        {
-            if (oldTool == 1)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot2], 1);
-            else if (oldTool == 4)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot2], -1);
-        }
-        if (newTool == 4)
-        {
-            if (oldTool == 1)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot2], -1);
-            else if (oldTool == 3)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot2], 1);
-        }
+        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_T2], newTool);
     }
     else if (machine == 3)
     {
-        if (newTool == 2)
-        {
-            if (oldTool == 3)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot3], -1);
-            else if (oldTool == 4)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot3], 1);
-        }
-        if (newTool == 3)
-        {
-            if (oldTool == 2)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot3], 1);
-            else if (oldTool == 4)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot3], -1);
-        }
-        if (newTool == 4)
-        {
-            if (oldTool == 2)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot3], -1);
-            else if (oldTool == 3)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot3], 1);
-        }
+        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_T3], newTool);
     }
     else if (machine == 4)
     {
-        if (newTool == 1)
-        {
-            if (oldTool == 3)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot4], -1);
-            else if (oldTool == 4)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot4], 1);
-        }
-        if (newTool == 3)
-        {
-            if (oldTool == 1)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot4], 1);
-            else if (oldTool == 4)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot4], -1);
-        }
-        if (newTool == 4)
-        {
-            if (oldTool == 1)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot4], -1);
-            else if (oldTool == 3)
-                OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_rot4], 1);
-        }
+        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_T4], newTool);
     }
+    
 
     return;
 }
