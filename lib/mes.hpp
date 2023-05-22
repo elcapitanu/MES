@@ -6,6 +6,8 @@
 #include "opc-ua.hpp"
 
 #include "threads/Mthread.hpp"
+#include <postgresql/libpq-fe.h>
+
 
 struct piece
 {
@@ -132,5 +134,36 @@ private:
     void updateMachine(int machine, int newTool);
     void savePieceWarehouse();
 };
+
+
+class Database
+    {
+    private:
+        const std::string kDbHostIP = "10.227.240.130"; 
+        const std::string kDbName = "up201905660";
+        const std::string kDbUsername = "up201905660";
+        const std::string kDbPassword = "123456789";
+
+        std::string dbconn_str = "dbname=" + kDbName + " host=" + kDbHostIP +
+            " user=" + kDbUsername + " password=" + kDbPassword +
+            " connect_timeout=2"; 
+        int status;
+
+
+    public:
+        
+        PGconn* dbconn = PQconnectdb(dbconn_str.c_str());
+
+        int connectDatabase();
+        int checkProgressWorking();
+        void writeAlgorithm();
+        void readAlgorithm();
+        int CheckIsEmpty();
+        void print_db(std::string db_name);
+        int InsertRequest(int x);
+        
+        Database();
+        ~Database();
+    };
 
 #endif

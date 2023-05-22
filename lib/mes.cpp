@@ -56,6 +56,7 @@ void MES::onMain()
 
 int MES::parser(char *m)
 {
+    cout << "novo dia\n";
     newDay = 1;
     orders = 0;
 
@@ -115,7 +116,7 @@ void MES::planDay()
     for (int type = 1; type < 10; type++)
     {
         while (plan.deliver[type - 1] > 0)
-            op->deliverPiece(type--, 1);
+            op->deliverPiece(type--);
     }
 
     for (int final = 1; final < 10; final++)
@@ -173,16 +174,16 @@ void MES::planDay()
             switch (tool)
             {
             case 1:
-                op->changeTool(1, fac.machines[0].tool, tool);
+                op->changeTool(1, tool);
                 break;
             case 2:
-                op->changeTool(1, fac.machines[0].tool, tool);
+                op->changeTool(1, tool);
                 break;
             case 3:
-                op->changeTool(1, fac.machines[0].tool, tool);
+                op->changeTool(1, tool);
                 break;
             case 4:
-                op->changeTool(2, fac.machines[1].tool, tool);
+                op->changeTool(2, tool);
                 break;
 
             default:
@@ -215,4 +216,80 @@ void MES::updateMachine(int machine, int newTool)
 void MES::savePieceWarehouse()
 {
     fac.remSpaceWar++;
+}
+
+int Database::connectDatabase()
+{
+    PGresult* result;
+    std::string order;
+    if (PQstatus(dbconn) == CONNECTION_OK){
+        result = PQexec(dbconn, "SET search_path TO up201905660;");
+        PQclear(result);
+        result = PQexec(dbconn, "SHOW search_path;");
+        PQclear(result);
+        return 1;
+    }
+    else return 0; 
+}
+
+int Database::checkProgressWorking()
+{
+    PGresult* result;
+    std::string order;
+    int dbStatus ; //get this value from database
+    
+    if (PQstatus(dbconn) == CONNECTION_OK){
+        order = "SELECT status FROM requests;";
+        result = PQexec(dbconn, order.c_str());
+        dbStatus = atoi(PQgetvalue(result, 0, 0));
+        PQclear(result);
+    }
+
+    if(status == -1 && dbStatus == 1){ //previously working
+        return -1;
+    }
+    if(status == -1 && dbStatus == -1){ //start working
+        status = 1;
+        //write status on database
+        PGresult* result;
+        std::string order;
+        if (PQstatus(dbconn) == CONNECTION_OK){
+            order = "Update requests \n SET status = 1;";
+            result = PQexec(dbconn, order.c_str());
+            PQclear(result);
+        }   
+        return 1;
+    }
+    if(status && dbStatus){//working with connection
+        return 1;
+    }
+
+    return -1;
+}
+
+void Database::writeAlgorithm()
+{
+
+}
+
+void Database::readAlgorithm()
+{
+    
+}
+
+Database::Database()
+{
+    status = -1;
+}
+
+Database::~Database()
+{
+    //write db status = -1
+    PGresult* result;
+    std::string order;
+    if (PQstatus(dbconn) == CONNECTION_OK){
+        order = "Update requests \n SET status = -1;";
+        result = PQexec(dbconn, order.c_str());
+        PQclear(result);
+    }
 }
