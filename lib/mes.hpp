@@ -6,8 +6,7 @@
 #include "opc-ua.hpp"
 
 #include "threads/Mthread.hpp"
-#include <postgresql/libpq-fe.h>
-
+//#include <postgresql/libpq-fe.h>
 
 struct piece
 {
@@ -136,7 +135,7 @@ private:
 };
 
 
-class Database
+/* class Database
     {
     private:
         const std::string kDbHostIP = "10.227.240.130"; 
@@ -165,5 +164,5 @@ class Database
         Database();
         ~Database();
     };
-
+ */
 #endif

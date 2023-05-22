@@ -15,7 +15,7 @@ int main(int argc, char **argv)
         OpcUa op;
         MES messi(&soc, &op);
         GUI gui(&messi, &soc, &key.input);
-        Database db;
+        /* Database db;
 
         if(!db.connectDatabase()){
             cout << "Not connected to Database\n";
@@ -25,7 +25,7 @@ int main(int argc, char **argv)
             //read from db following commands to procede floor work
 
 
-        }
+        } */
         
         messi.start();
         key.start();

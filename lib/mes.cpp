@@ -218,7 +218,7 @@ void MES::savePieceWarehouse()
     fac.remSpaceWar++;
 }
 
-int Database::connectDatabase()
+/* int Database::connectDatabase()
 {
     PGresult* result;
     std::string order;
@@ -292,4 +292,4 @@ Database::~Database()
         result = PQexec(dbconn, order.c_str());
         PQclear(result);
     }
-}
+} */
