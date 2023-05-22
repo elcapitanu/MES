@@ -22,6 +22,10 @@ public:
 
     ~OpcUa();
 
+    void workPiece(int start, int final, int machine);
+    void deliverPiece(int type, int dock);
+    void changeTool(int machine, int oldTool, int newTool);
+
 private:
     inline std::string getName() override
     {
@@ -45,10 +49,8 @@ private:
     void OpcUaWriteVariableInt32(int nodeid, char *stringid, u_int32_t value);
     void OpcUaWriteVariableInt64(int nodeid, char *stringid, u_int64_t value);
 
-    void workPiece(int start, int final, int machine);
-    void deliverPiece(int type, int dock);
-    void changeTool(int machine, int newTool);
     void readSensors();
+    int time4piece(int final);
 };
 
 #endif
