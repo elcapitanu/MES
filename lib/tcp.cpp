@@ -56,11 +56,10 @@ int Socket::receiveMessage()
 
     if (bytesRead > 0)
     {
+        strcpy(message, msg);
+
         if (msg[0] == '@')
-        {
-            strcpy(message, msg);
             newMessage = true;
-        }
     }
     else if (bytesRead <= 0)
         connected = false;

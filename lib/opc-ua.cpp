@@ -84,8 +84,10 @@ char OPCUA_VARIABLES[25][58] = {"|var|CODESYS Control Win V3 x64.Application.OPC
 #define OPCUA_ST5s0 29
 #define OPCUA_ST6s0 30
 #define OPCUA_ST7s0 31
+#define OPCUA_PM1s0 32
+#define OPCUA_PM2s0 33
 
-char OPCUA_SENSORS[32][58] = {"|var|CODESYS Control Win V3 x64.Application.GVL.AT1s0",
+char OPCUA_SENSORS[34][58] = {"|var|CODESYS Control Win V3 x64.Application.GVL.AT1s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.AT2s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.CT1s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.CT2s0",
@@ -116,7 +118,9 @@ char OPCUA_SENSORS[32][58] = {"|var|CODESYS Control Win V3 x64.Application.GVL.A
                               "|var|CODESYS Control Win V3 x64.Application.GVL.ST4s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.ST5s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.ST6s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST7s0"};
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST7s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.PM1s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.PM2s0"};
 
 OpcUa::~OpcUa()
 {
@@ -136,18 +140,6 @@ void OpcUa::onMain()
 
     OpcUaConnect();
 
-    //changeTool(4, 3);
-    //sleep(5);
-    changeTool(1, 3);
-    //sleep(5);
-    //workPiece(2, 4, 4);
-    //sleep(5);
-    workPiece(2, 4, 1);
-    sleep(5);
-    deliverPiece(6);
-
-    
-
     while (!stopRequested())
         readSensors();
 
@@ -158,7 +150,7 @@ static volatile UA_Boolean running = true;
 
 int OpcUa::OpcUaConnect()
 {
-    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://172.29.0.77:4840");
+    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://10.227.147.249:4840");
     if (retval != UA_STATUSCODE_GOOD)
         return -1;
 
@@ -301,6 +293,9 @@ void OpcUa::workPiece(int start, int final, int machine)
         OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT7_slide], true);
     }
 
+    while (!OpcUaReadVariableBool(4, OPCUA_SENSORS[OPCUA_AT2s0]))
+        ;
+
     return;
 }
 
@@ -310,7 +305,10 @@ void OpcUa::deliverPiece(int type)
     OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], type);
     OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_CT2_rot], true);
     OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Push], true);
-    
+
+    while (!OpcUaReadVariableBool(4, OPCUA_SENSORS[OPCUA_CT4s0]))
+        ;
+
     return;
 }
 
@@ -332,7 +330,6 @@ void OpcUa::changeTool(int machine, int newTool)
     {
         OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_T4], newTool);
     }
-    
 
     return;
 }
@@ -340,7 +337,10 @@ void OpcUa::changeTool(int machine, int newTool)
 void OpcUa::readSensors()
 {
     for (int i = 0; i < 32; i++)
+    {
         sensors[i] = OpcUaReadVariableBool(4, OPCUA_SENSORS[i]);
+        cout << "Sensor " << i << ": "<< sensors[i] << endl;
+    }
 
     return;
 }

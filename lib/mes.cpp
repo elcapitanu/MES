@@ -56,7 +56,6 @@ void MES::onMain()
 
 int MES::parser(char *m)
 {
-    cout << "novo dia\n";
     newDay = 1;
     orders = 0;
 
@@ -115,8 +114,9 @@ void MES::planDay()
 
     for (int type = 1; type < 10; type++)
     {
-        while (plan.deliver[type - 1] > 0)
-            op->deliverPiece(type--);
+        while (plan.deliver[type - 1]-- > 0)
+            op->deliverPiece(type);
+
     }
 
     for (int final = 1; final < 10; final++)
@@ -229,7 +229,7 @@ void MES::savePieceWarehouse()
         PQclear(result);
         return 1;
     }
-    else return 0; 
+    else return 0;
 }
 
 int Database::checkProgressWorking()
@@ -237,7 +237,7 @@ int Database::checkProgressWorking()
     PGresult* result;
     std::string order;
     int dbStatus ; //get this value from database
-    
+
     if (PQstatus(dbconn) == CONNECTION_OK){
         order = "SELECT status FROM requests;";
         result = PQexec(dbconn, order.c_str());
@@ -257,7 +257,7 @@ int Database::checkProgressWorking()
             order = "Update requests \n SET status = 1;";
             result = PQexec(dbconn, order.c_str());
             PQclear(result);
-        }   
+        }
         return 1;
     }
     if(status && dbStatus){//working with connection
@@ -274,7 +274,7 @@ void Database::writeAlgorithm()
 
 void Database::readAlgorithm()
 {
-    
+
 }
 
 Database::Database()
