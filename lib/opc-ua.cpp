@@ -149,7 +149,11 @@ static volatile UA_Boolean running = true;
 
 int OpcUa::OpcUaConnect()
 {
+<<<<<<< HEAD
     UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://127.0.0.1:4840");
+=======
+    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://localhost:4840");
+>>>>>>> b0c31ed85ecd57cfc40e0e7382b4e84fe8b7f2ed
     if (retval != UA_STATUSCODE_GOOD)
         return -1;
 

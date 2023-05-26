@@ -17,13 +17,20 @@ void MES::onMain()
 
     while (!stopRequested())
     {
+        cout;
         if (soc->newMessage)
         {
+            day++;
+            state = 0;
+            totaldeliv = 0;
+            isToActuate = true;
+            
             soc->newMessage = false;
-
+            
             strcpy(msg, soc->message);
 
             parser(msg);
+<<<<<<< HEAD
 
             state = 0;
             day++;
@@ -32,12 +39,26 @@ void MES::onMain()
         if (day)
         {
             op->readSensors(fac.sensors);
+=======
+        }
+
+        if(day)
+        {
+            op->readSensors(fac.sensors);
+            
+            risingEdges();
+>>>>>>> b0c31ed85ecd57cfc40e0e7382b4e84fe8b7f2ed
 
             sendOrder2PLC();
 
             updateState();
 
             updateFactory();
+<<<<<<< HEAD
+=======
+            
+            RE_S0 = RE_S11 = RE_S16 = RE_S17 = RE_S18 = false;
+>>>>>>> b0c31ed85ecd57cfc40e0e7382b4e84fe8b7f2ed
         }
     }
 }
@@ -70,7 +91,7 @@ void MES::parser(char *m)
     pos++;
     while (m[pos] != 'M')
     {
-        plan.deliver[m[pos] - '0' - 1] = m[pos + 1] - '0';
+        totaldeliv += plan.deliver[m[pos] - '0' - 1] = m[pos + 1] - '0';
         pos += 2;
     }
     pos++;
@@ -142,7 +163,7 @@ void MES::updateState()
     }
     else if (state > 0 && state < 10)
     {
-        if (fac.sensors[0])
+        if (RE_S0)
         {
             isToActuate = true;
             plan.deliver[state - 1]--;
@@ -256,6 +277,31 @@ int MES::machineTransition(int machine)
     }
 
     return -1;
+}
+
+void MES::risingEdges()
+{
+    if(!previous_S0 && fac.sensors[0]){
+        RE_S0 = true;
+    }
+    if(!previous_S11 && fac.sensors[11]){
+        RE_S11 = true;
+    }
+    if(!previous_S16 && fac.sensors[16]){
+        RE_S16 = true;
+    }
+    if(!previous_S17 && fac.sensors[17]){
+        RE_S17 = true;
+    }
+    if(!previous_S18 && fac.sensors[18]){
+        RE_S18 = true;
+    }
+        previous_S0 = fac.sensors[0];
+        previous_S11 = fac.sensors[11];
+        previous_S16 = fac.sensors[16];
+        previous_S17 = fac.sensors[17];
+        previous_S18 = fac.sensors[18];
+
 }
 
 /* int Database::connectDatabase()
