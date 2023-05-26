@@ -289,11 +289,7 @@ void OpcUa::workPiece(int start, int final, int machine)
         OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_timer4], timer);
         OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT2_rot], true);
         OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT4_slide], true);
-        OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT7_slide], true);
     }
-
-    while (!OpcUaReadVariableBool(4, OPCUA_SENSORS[OPCUA_AT2s0]))
-        ;
 
     return;
 }
@@ -302,11 +298,7 @@ void OpcUa::deliverPiece(int type)
 {
     OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
     OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], type);
-    OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_CT2_rot], true);
     OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Push], true);
-
-    while (!OpcUaReadVariableBool(4, OPCUA_SENSORS[OPCUA_CT4s0]))
-        ;
 
     return;
 }
@@ -335,10 +327,6 @@ void OpcUa::changeTool(int machine, int newTool)
 
 void OpcUa::readSensors(bool *sensors)
 {
-    /* for (int i = 0; i < 33; i++)
-        if (sensors[i])
-            cout << "ola" << endl; */
-
     for (int i = 0; i < 33; i++)
         sensors[i] = OpcUaReadVariableBool(4, OPCUA_SENSORS[i]);
 

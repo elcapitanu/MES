@@ -6,13 +6,7 @@
 #include "opc-ua.hpp"
 
 #include "threads/Mthread.hpp"
-//#include <postgresql/libpq-fe.h>
-
-struct piece
-{
-    int pos = -1;
-    int type = -1;
-};
+// #include <postgresql/libpq-fe.h>
 
 struct machine
 {
@@ -30,10 +24,9 @@ struct dock
 
 struct factory
 {
-    int remSpaceWar = 23;     // remaining space in warehouse
-    struct piece pieces[128]; // all pieces in factory
+    int remSpaceWar = 23; // remaining space in warehouse
     int total = 0;
-    int p[9] = {};            // total of pieces from each type
+    int p[9] = {}; // total of pieces from each type
 
     bool sensors[33] = {false};
 
@@ -43,22 +36,10 @@ struct factory
 
 struct dayPlan
 {
-    int buy[2]; // amount to buy from P1 and P2
-    int work[7]; // amount to work from each Piece
+    int buy[2];     // amount to buy from P1 and P2
+    int work[7];    // amount to work from each Piece
     int deliver[9]; // amount to work from each Piece
-};
-
-struct orderPLC
-{
-    int pos;
-    struct orderPLC *next;
-};
-
-struct fifoPLC
-{
-    int total;
-
-    struct orderPLC *first;
+    int tool[4];
 };
 
 class MES : public Tasks::Thread
@@ -71,15 +52,12 @@ public:
         cout << "MES: ola" << endl;
 #endif
 
-        orders = 0;
-        memset(order, 0, sizeof(order));
         init_t = initTime(time_now);
 
         day = 0;
-        newDay = 0;
 
-        fac.p[0] = 15;   
-        fac.p[1] = 15;   
+        fac.p[0] = 15;
+        fac.p[1] = 15;
 
         fac.machines[0].tool = 1;
         fac.machines[1].tool = 1;
@@ -90,9 +68,6 @@ public:
     ~MES();
 
     struct timeval time_now;
-
-    int orders;
-    int ordersLeft;
 
     int day;
 
@@ -113,39 +88,43 @@ private:
 
     char msg[1500];
 
-    int newDay;
-
-    int order[20];
-
     struct dayPlan plan;
 
-    struct fifoPLC fifo;
+    int state = 0;
+    bool isToActuate = false;
+    int maq;
+    int totaldeliv;
 
-    int parser(char *m);
+    void parser(char *m);
     void planDay();
     void updateFactory();
     void addPiece(int type);
     void updateMachine(int machine, int newTool);
     void savePieceWarehouse();
+    void sendOrder2PLC();
+    void updateState();
+    int toolNeed(int final);
+    int chooseMachine(int final);
+    int chooseStart(int final);
+    int machineTransition(int machine);
 };
-
 
 /* class Database
     {
     private:
-        const std::string kDbHostIP = "10.227.240.130"; 
+        const std::string kDbHostIP = "10.227.240.130";
         const std::string kDbName = "up201905660";
         const std::string kDbUsername = "up201905660";
         const std::string kDbPassword = "123456789";
 
         std::string dbconn_str = "dbname=" + kDbName + " host=" + kDbHostIP +
             " user=" + kDbUsername + " password=" + kDbPassword +
-            " connect_timeout=2"; 
+            " connect_timeout=2";
         int status;
 
 
     public:
-        
+
         PGconn* dbconn = PQconnectdb(dbconn_str.c_str());
 
         int connectDatabase();
@@ -155,7 +134,7 @@ private:
         int CheckIsEmpty();
         void print_db(std::string db_name);
         int InsertRequest(int x);
-        
+
         Database();
         ~Database();
     };

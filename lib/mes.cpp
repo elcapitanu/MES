@@ -17,58 +17,29 @@ void MES::onMain()
 
     while (!stopRequested())
     {
-        op->readSensors(fac.sensors);
-
-        for (int i = 0; i < 33; i++)
-        {
-            if (fac.sensors[i])
-                cout << i << "\n";
-        }
-
-        /* if new message from ERP */
-        /* parse message */
-        /* if new day */
-        /* calculate plan for the day */
-
-        /* execute plan */
-        /* while - until last order */
-        /* send order to PLC*/
-        /* while - until order completed */
-        /* send feedback to ERP */
-
-        if (soc->newMessage) /* if new message from ERP */
+        if (soc->newMessage)
         {
             soc->newMessage = false;
 
             strcpy(msg, soc->message);
 
-            if (parser(msg) /* parse message */) /* if new day */
-            {
-                planDay(); /* calculate plan for the day */
-            }
+            parser(msg);
+
+            day++;
         }
 
-        /* execute plan */
-        if (day && ordersLeft) /* while - until last order */
-        {
-            /* send order to PLC*/
-            /* while - until order completed */
-            /* send feedback to ERP */
+        op->readSensors(fac.sensors);
 
-            /* go throught plc orders FIFO */
-            /* send order to PLC */
-            /* if order completed send next order */
-        }
+        sendOrder2PLC();
+
+        updateState();
 
         updateFactory();
     }
 }
 
-int MES::parser(char *m)
+void MES::parser(char *m)
 {
-    newDay = 1;
-    orders = 0;
-
     int pos = 1;
 
     for (int i = 0; i < 7; i++)
@@ -101,110 +72,11 @@ int MES::parser(char *m)
     pos++;
     while (m[pos] != '*')
     {
-        fac.machines[0].tool = m[pos] - '0';
-        fac.machines[1].tool = m[pos + 1] - '0';
-        fac.machines[2].tool = m[pos + 2] - '0';
-        fac.machines[3].tool = m[pos + 3] - '0';
+        plan.tool[0] = m[pos] - '0';
+        plan.tool[1] = m[pos + 1] - '0';
+        plan.tool[2] = m[pos + 2] - '0';
+        plan.tool[3] = m[pos + 3] - '0';
         pos += 4;
-    }
-
-    return 0;
-}
-
-void MES::planDay()
-{
-    day++;
-    newDay = 0;
-    ordersLeft = orders;
-
-    /* creates a FIFO with orders to PLC for the day */
-
-    /* for (int i = 0; i < 9; i++)
-        cout << "W" << i + 1 << " : " << plan.work[i] << endl;
-    for (int i = 0; i < 9; i++)
-        cout << "D" << i + 1 << " : " << plan.deliver[i] << endl;
-    for (int i = 0; i < 2; i++)
-        cout << "B" << i + 1 << " : " << plan.buy[i] << endl; */
-
-    for (int type = 1; type < 10; type++)
-    {
-        while (plan.deliver[type - 1]-- > 0)
-            op->deliverPiece(type);
-    }
-
-    for (int final = 1; final < 10; final++)
-    {
-        if (plan.work[final - 1] > 0)
-        {
-            int start;
-            int machine;
-            int tool;
-
-            switch (final)
-            {
-            case 3:
-                start = 2;
-                tool = 2;
-                break;
-            case 4:
-                start = 2;
-                tool = 3;
-                break;
-            case 5:
-                start = 9;
-                tool = 4;
-                break;
-            case 6:
-                start = 3;
-                tool = 1;
-                break;
-            case 7:
-                start = 4;
-                tool = 4;
-                break;
-            case 8:
-                start = 6;
-                tool = 3;
-                break;
-            case 9:
-                start = 7;
-                tool = 3;
-                break;
-
-            default:
-                break;
-            }
-
-            for (machine = 0; machine < 4; machine++)
-            {
-                if (fac.machines[machine].tool == tool)
-                {
-                    op->workPiece(start, final, machine + 1);
-                    break;
-                }
-            }
-
-            switch (tool)
-            {
-            case 1:
-                op->changeTool(1, tool);
-                break;
-            case 2:
-                op->changeTool(1, tool);
-                break;
-            case 3:
-                op->changeTool(1, tool);
-                break;
-            case 4:
-                op->changeTool(2, tool);
-                break;
-
-            default:
-                break;
-            }
-
-            op->workPiece(start, final, machine);
-        }
     }
 
     return;
@@ -229,6 +101,157 @@ void MES::updateMachine(int machine, int newTool)
 void MES::savePieceWarehouse()
 {
     fac.remSpaceWar++;
+}
+
+void MES::sendOrder2PLC()
+{
+    if (isToActuate)
+    {
+        if (state == 0) // update tools
+        {
+            op->changeTool(1, plan.tool[0]);
+            op->changeTool(2, plan.tool[1]);
+            op->changeTool(3, plan.tool[2]);
+            op->changeTool(4, plan.tool[3]);
+        }
+        else if (state > 0 && state < 10) // deliver
+        {
+            if (plan.deliver[state - 1] > 0)
+                op->deliverPiece(state);
+        }
+        else if (state > 9 && state < 17) // work
+        {
+            maq = chooseMachine(state - 9 + 2);
+            op->workPiece(chooseStart(state - 9 + 2), state - 9 + 2, maq);
+            plan.work[state - 1 - 9 + 2]--;
+        }
+        isToActuate = false;
+    }
+}
+
+void MES::updateState()
+{
+    if (state == 0)
+    {
+        state = 1;
+        isToActuate = true;
+    }
+    else if (state > 0 && state < 10)
+    {
+        if (fac.sensors[0])
+        {
+            isToActuate = true;
+            plan.deliver[state - 1]--;
+            totaldeliv--;
+        }
+        if (totaldeliv == 0)
+        {
+
+            state = 10;
+        }
+        if (plan.deliver[state - 1] == 0)
+        {
+            state++;
+        }
+    }
+    else if (state > 9 && state < 17)
+    {
+        if (fac.sensors[machineTransition(maq)])
+        {
+            isToActuate = true;
+            plan.work[state - 1 - 9 + 2]--;
+        }
+        if (plan.work[state - 1 - 9 + 2] == 0)
+        {
+            state++;
+        }
+    }
+}
+
+int MES::toolNeed(int final)
+{
+    switch (final)
+    {
+    case 3:
+        return 2;
+    case 4:
+        return 3;
+    case 5:
+        return 4;
+    case 6:
+        return 1;
+    case 7:
+        return 4;
+    case 8:
+        return 3;
+    case 9:
+        return 3;
+    }
+    return -1;
+}
+
+int MES::chooseMachine(int final)
+{
+    if (plan.tool[2 - 1] == toolNeed(final) && plan.tool[2 - 1])
+        return 2;
+    else if (plan.tool[4 - 1] == toolNeed(final) && plan.tool[4 - 1])
+        return 4;
+    else if (plan.tool[1 - 1] == toolNeed(final) && plan.tool[1 - 1])
+        return 1;
+    else if (plan.tool[3 - 1] == toolNeed(final) && plan.tool[3 - 1])
+        return 3;
+    else if (plan.tool[2 - 1] == toolNeed(final))
+        return 2;
+    else if (plan.tool[4 - 1] == toolNeed(final))
+        return 4;
+    else if (plan.tool[1 - 1] == toolNeed(final))
+        return 1;
+    else if (plan.tool[3 - 1] == toolNeed(final))
+        return 3;
+
+    return -1;
+}
+
+int MES::chooseStart(int final)
+{
+    switch (final)
+    {
+    case 3:
+        return 2;
+    case 4:
+        return 2;
+    case 5:
+        return 9;
+    case 6:
+        return 3;
+    case 7:
+        return 4;
+    case 8:
+        return 6;
+    case 9:
+        return 7;
+    default:
+        break;
+    }
+
+    return -1;
+}
+
+int MES::machineTransition(int machine)
+{
+    switch (machine)
+    {
+    case 1:
+        return 11;
+    case 2:
+        return 18;
+    case 3:
+        return 16;
+    case 4:
+        return 17;
+    }
+
+    return -1;
 }
 
 /* int Database::connectDatabase()

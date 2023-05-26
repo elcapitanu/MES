@@ -129,14 +129,7 @@ void GUI::show()
              << endl
              << name << "      " << ctime(&date) << endl
              << endl;
-
-        if (messi->day > 0)
-        {
-            cout << "Day: " << messi->day << endl
-                 << endl
-                 << "Number of orders: " << messi->orders << endl
-                 << endl;
-        }
+             
         cout << "\033[7;31m***********************************************\033[0m" << endl
              << "Server: " << soc->message << endl
              << "\033[7;31m************Ainda não faço nada :)*************\033[0m" << endl;

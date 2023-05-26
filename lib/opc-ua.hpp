@@ -40,7 +40,6 @@ private:
     UA_Client *client;
 
     int OpcUaConnect();
-    // void OpcUaWriteVariable();
     bool OpcUaReadVariableBool(int nodeid, char *stringid);
     int OpcUaReadVariableInt16(int nodeid, char *stringid);
     int OpcUaReadVariableInt32(int nodeid, char *stringid);
