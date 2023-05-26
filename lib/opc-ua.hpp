@@ -25,6 +25,8 @@ public:
     void workPiece(int start, int final, int machine);
     void deliverPiece(int type);
     void changeTool(int machine, int newTool);
+    void readSensors(bool *sensors);
+
 
 private:
     inline std::string getName() override
@@ -35,8 +37,6 @@ private:
     void onMain() override;
 
     UA_Client *client;
-
-    bool sensors[32] = {};
 
     int OpcUaConnect();
     // void OpcUaWriteVariable();
@@ -49,7 +49,6 @@ private:
     void OpcUaWriteVariableInt32(int nodeid, char *stringid, u_int32_t value);
     void OpcUaWriteVariableInt64(int nodeid, char *stringid, u_int64_t value);
 
-    void readSensors();
     int time4piece(int final);
 };
 

@@ -15,6 +15,8 @@ void MES::onMain()
 
     while (!stopRequested())
     {
+        op->readSensors(fac.sensors);
+        
         /* if new message from ERP */
         /* parse message */
         /* if new day */
@@ -61,40 +63,44 @@ int MES::parser(char *m)
 
     int pos = 1;
 
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < 7; i++)
         plan.work[i] = 0;
     for (int i = 0; i < 9; i++)
         plan.deliver[i] = 0;
     for (int i = 0; i < 2; i++)
         plan.buy[i] = 0;
 
-    while (1)
+    while (m[pos++] != 'W')
+        ;
+
+    while (m[pos] != 'B')
     {
-        if (m[pos] == '*')
-            break;
-
-        char job = m[pos++];
-        int type = m[pos++];
-        int quantity = m[pos++];
-
-        switch (job)
-        {
-        case 'W':
-            orders += plan.work[type - '0' - 1] = quantity - '0';
-            break;
-        case 'D':
-            orders += plan.deliver[type - '0' - 1] = quantity - '0';
-            break;
-        case 'B':
-            orders += plan.buy[type - '0' - 1] = quantity - '0';
-            break;
-
-        default:
-            break;
-        }
+        plan.work[m[pos] - '0' - 1 - 2] = m[pos + 1] - '0';
+        pos += 2;
+    }
+    pos++;
+    while (m[pos] != 'D')
+    {
+        plan.buy[m[pos] - '0' - 1] = m[pos + 1] - '0';
+        pos += 2;
+    }
+    pos++;
+    while (m[pos] != 'M')
+    {
+        plan.deliver[m[pos] - '0' - 1] = m[pos + 1] - '0';
+        pos += 2;
+    }
+    pos++;
+    while (m[pos] != '*')
+    {
+        fac.machines[0].tool = m[pos] - '0';
+        fac.machines[1].tool = m[pos + 1] - '0';
+        fac.machines[2].tool = m[pos + 2] - '0';
+        fac.machines[3].tool = m[pos + 3] - '0';
+        pos += 4;
     }
 
-    return newDay;
+    return 0;
 }
 
 void MES::planDay()
@@ -116,7 +122,6 @@ void MES::planDay()
     {
         while (plan.deliver[type - 1]-- > 0)
             op->deliverPiece(type);
-
     }
 
     for (int final = 1; final < 10; final++)

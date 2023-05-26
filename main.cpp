@@ -31,12 +31,12 @@ int main(int argc, char **argv)
         key.start();
         gui.start();
         soc.start();
-        op.start();
+        //op.start();
 
         while (key.input != 0x1b)
             ;
 
-        op.stop();
+        //op.stop();
         soc.stop();
         gui.stop();
         key.stop();

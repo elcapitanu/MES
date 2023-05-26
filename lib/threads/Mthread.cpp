@@ -89,7 +89,7 @@ namespace Tasks
 		Thread* handle = (Thread*)(object);
 		pthread_setname_np(pthread_self(), handle->getName().c_str());
 
-		handle->m_pid = gettid();
+		handle->m_pid = getpid();
 
 		handle->setState(Thread::Running);
 #if DEBUG_THR

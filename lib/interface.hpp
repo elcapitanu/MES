@@ -12,7 +12,7 @@
 struct factoryMap
 {
     char warehouse[9][10];
-    char pos[41]; // piece type at each pos
+    char pos[33]; // piece type at each pos
 };
 
 

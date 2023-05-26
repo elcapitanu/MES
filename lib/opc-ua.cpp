@@ -53,74 +53,72 @@ char OPCUA_VARIABLES[25][58] = {"|var|CODESYS Control Win V3 x64.Application.OPC
                                 "|var|CODESYS Control Win V3 x64.Application.OPC.Push"};
 
 #define OPCUA_AT1s0 0
-#define OPCUA_AT2s0 1
-#define OPCUA_CT1s0 2
-#define OPCUA_CT2s0 3
-#define OPCUA_CT3s0 4
-#define OPCUA_CT4s0 5
-#define OPCUA_CT5s0 6
-#define OPCUA_CT6s0 7
-#define OPCUA_CT7s0 8
-#define OPCUA_CT8s0 9
-#define OPCUA_MT1s0 10
-#define OPCUA_MT2s0 11
-#define OPCUA_MT3s0 12
-#define OPCUA_MT4s0 13
-#define OPCUA_MT5s0 14
-#define OPCUA_MT6s0 15
-#define OPCUA_PT1s0 16
-#define OPCUA_PT2s0 17
-#define OPCUA_PT3s0 18
-#define OPCUA_PT4s0 19
-#define OPCUA_PT5s0 20
-#define OPCUA_PT6s0 21
-#define OPCUA_PT7s0 22
-#define OPCUA_PT8s0 23
-#define OPCUA_PT9s0 24
-#define OPCUA_ST1s0 25
-#define OPCUA_ST2s0 26
-#define OPCUA_ST3s0 27
-#define OPCUA_ST4s0 28
-#define OPCUA_ST5s0 29
-#define OPCUA_ST6s0 30
-#define OPCUA_ST7s0 31
-#define OPCUA_PM1s0 32
-#define OPCUA_PM2s0 33
+#define OPCUA_ST1s0 1
+#define OPCUA_ST2s0 2
+#define OPCUA_PT1s0 3
+#define OPCUA_PT2s0 4
+#define OPCUA_PT3s0 5
+#define OPCUA_MT1s0 6
+#define OPCUA_MT2s0 7
+#define OPCUA_CT1s0 8
+#define OPCUA_CT2s0 9
+#define OPCUA_CT3s0 10
+#define OPCUA_ST3s0 11
+#define OPCUA_PT4s0 12
+#define OPCUA_MT3s0 13
+#define OPCUA_CT4s0 14
+#define OPCUA_ST4s0 15
+#define OPCUA_PT5s0 16
+#define OPCUA_PT6s0 17
+#define OPCUA_ST5s0 18
+#define OPCUA_PT7s0 19
+#define OPCUA_MT4s0 20
+#define OPCUA_CT5s0 21
+#define OPCUA_AT2s0 22
+#define OPCUA_ST7s0 23
+#define OPCUA_ST6s0 24
+#define OPCUA_PT8s0 25
+#define OPCUA_PT10s0 27
+#define OPCUA_PT9s0 26
+#define OPCUA_MT6s0 29
+#define OPCUA_MT5s0 28
+#define OPCUA_CT6s0 30
+#define OPCUA_CT7s0 31
+#define OPCUA_CT8s0 32
 
-char OPCUA_SENSORS[34][58] = {"|var|CODESYS Control Win V3 x64.Application.GVL.AT1s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.AT2s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT1s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT2s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT3s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT4s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT5s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT6s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT7s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT8s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT1s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT2s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT3s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT4s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT5s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT6s0",
+char OPCUA_SENSORS[33][58] = {"|var|CODESYS Control Win V3 x64.Application.GVL.AT1s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST1s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST2s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.PT1s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.PT2s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.PT3s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT1s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT2s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT1s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT2s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT3s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST3s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.PT4s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT3s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT4s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST4s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.PT5s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.PT6s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST5s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.PT7s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT4s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT5s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.AT2s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST7s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST6s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.PT8s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.PT9s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST1s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST2s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST3s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST4s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST5s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST6s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.ST7s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.PM1s0",
-                              "|var|CODESYS Control Win V3 x64.Application.GVL.PM2s0"};
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.PT10s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT5s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.MT6s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT6s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT7s0",
+                              "|var|CODESYS Control Win V3 x64.Application.GVL.CT8s0"};
 
 OpcUa::~OpcUa()
 {
@@ -141,7 +139,7 @@ void OpcUa::onMain()
     OpcUaConnect();
 
     while (!stopRequested())
-        readSensors();
+        ;
 
     UA_Client_delete(client);
 }
@@ -150,7 +148,7 @@ static volatile UA_Boolean running = true;
 
 int OpcUa::OpcUaConnect()
 {
-    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://10.227.147.249:4840");
+    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://127.0.0.1:4840");
     if (retval != UA_STATUSCODE_GOOD)
         return -1;
 
@@ -334,13 +332,10 @@ void OpcUa::changeTool(int machine, int newTool)
     return;
 }
 
-void OpcUa::readSensors()
+void OpcUa::readSensors(bool *sensors)
 {
-    for (int i = 0; i < 32; i++)
-    {
+    for (int i = 0; i < 33; i++)
         sensors[i] = OpcUaReadVariableBool(4, OPCUA_SENSORS[i]);
-        cout << "Sensor " << i << ": "<< sensors[i] << endl;
-    }
 
     return;
 }

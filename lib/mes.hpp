@@ -35,6 +35,8 @@ struct factory
     int total = 0;
     int p[9] = {};            // total of pieces from each type
 
+    bool sensors[33];
+
     struct dock docks[2];
     struct machine machines[4];
 };
@@ -42,21 +44,14 @@ struct factory
 struct dayPlan
 {
     int buy[2]; // amount to buy from P1 and P2
-    int work[9]; // amount to work from each Piece
+    int work[7]; // amount to work from each Piece
     int deliver[9]; // amount to work from each Piece
-};
-
-struct message2PLC
-{
-    /* content of message */
 };
 
 struct orderPLC
 {
     int pos;
     struct orderPLC *next;
-
-    struct message2PLC;
 };
 
 struct fifoPLC
