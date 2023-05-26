@@ -69,7 +69,7 @@ public:
 
     struct timeval time_now;
 
-    int day;
+    int day = 0;
 
     struct factory fac;
 
@@ -93,7 +93,12 @@ private:
     int state = 0;
     bool isToActuate = false;
     int maq;
-    int totaldeliv;
+    int totaldeliv = 0;
+    bool previous_S0 = false, RE_S0 = false; 
+    bool previous_S11 = false, RE_S11 = false; 
+    bool previous_S16 = false, RE_S16 = false; 
+    bool previous_S17 = false, RE_S17 = false; 
+    bool previous_S18 = false, RE_S18 = false; 
 
     void parser(char *m);
     void planDay();
@@ -107,6 +112,8 @@ private:
     int chooseMachine(int final);
     int chooseStart(int final);
     int machineTransition(int machine);
+    void risingEdges();
+
 };
 
 /* class Database
