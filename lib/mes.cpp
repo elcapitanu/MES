@@ -16,7 +16,13 @@ void MES::onMain()
     while (!stopRequested())
     {
         op->readSensors(fac.sensors);
-        
+
+        for (int i = 0; i < 33; i++)
+        {
+            if (fac.sensors[i])
+                cout << i << "\n";
+        }
+
         /* if new message from ERP */
         /* parse message */
         /* if new day */

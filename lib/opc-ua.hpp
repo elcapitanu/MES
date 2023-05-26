@@ -27,7 +27,6 @@ public:
     void changeTool(int machine, int newTool);
     void readSensors(bool *sensors);
 
-
 private:
     inline std::string getName() override
     {

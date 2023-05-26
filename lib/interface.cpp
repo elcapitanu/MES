@@ -329,12 +329,11 @@ void GUI::factory2map()
     }
 
     for (int i = 0; i < 33; i++)
-        map.pos[i] = ' ';
-
-    for (int i = 0; i < 33; i++)
     {
         if (messi->fac.sensors[i])
             map.pos[i] = '#';
+        else
+            map.pos[i] = ' ';
     }
 }
 
