@@ -27,6 +27,8 @@ public:
     void changeTool(int machine, int newTool);
     void readSensors(bool *sensors);
 
+    bool connected = false;
+
 private:
     inline std::string getName() override
     {

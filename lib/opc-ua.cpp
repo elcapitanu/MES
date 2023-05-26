@@ -78,10 +78,10 @@ char OPCUA_VARIABLES[25][58] = {"|var|CODESYS Control Win V3 x64.Application.OPC
 #define OPCUA_ST7s0 23
 #define OPCUA_ST6s0 24
 #define OPCUA_PT8s0 25
-#define OPCUA_PT10s0 27
 #define OPCUA_PT9s0 26
-#define OPCUA_MT6s0 29
+#define OPCUA_PT10s0 27
 #define OPCUA_MT5s0 28
+#define OPCUA_MT6s0 29
 #define OPCUA_CT6s0 30
 #define OPCUA_CT7s0 31
 #define OPCUA_CT8s0 32
@@ -136,7 +136,8 @@ void OpcUa::onMain()
     client = UA_Client_new();
     UA_ClientConfig_setDefault(UA_Client_getConfig(client));
 
-    OpcUaConnect();
+    if (OpcUaConnect())
+        connected = true;
 
     while (!stopRequested())
         ;
@@ -148,7 +149,7 @@ static volatile UA_Boolean running = true;
 
 int OpcUa::OpcUaConnect()
 {
-    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://127.0.0.1:4840");
+    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://10.227.147.249:4840");
     if (retval != UA_STATUSCODE_GOOD)
         return -1;
 
@@ -334,6 +335,10 @@ void OpcUa::changeTool(int machine, int newTool)
 
 void OpcUa::readSensors(bool *sensors)
 {
+    /* for (int i = 0; i < 33; i++)
+        if (sensors[i])
+            cout << "ola" << endl; */
+
     for (int i = 0; i < 33; i++)
         sensors[i] = OpcUaReadVariableBool(4, OPCUA_SENSORS[i]);
 

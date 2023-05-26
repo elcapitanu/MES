@@ -35,7 +35,7 @@ struct factory
     int total = 0;
     int p[9] = {};            // total of pieces from each type
 
-    bool sensors[33];
+    bool sensors[33] = {false};
 
     struct dock docks[2];
     struct machine machines[4];

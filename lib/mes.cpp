@@ -12,6 +12,8 @@ void MES::onMain()
 #if DEBUG_THR
     cout << "MES: tou vivo" << endl;
 #endif
+    while (!op->connected)
+        ;
 
     while (!stopRequested())
     {
