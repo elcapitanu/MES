@@ -25,16 +25,20 @@ void MES::onMain()
 
             parser(msg);
 
+            state = 0;
             day++;
         }
 
-        op->readSensors(fac.sensors);
+        if (day)
+        {
+            op->readSensors(fac.sensors);
 
-        sendOrder2PLC();
+            sendOrder2PLC();
 
-        updateState();
+            updateState();
 
-        updateFactory();
+            updateFactory();
+        }
     }
 }
 

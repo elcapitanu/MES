@@ -93,7 +93,7 @@ private:
     int state = 0;
     bool isToActuate = false;
     int maq;
-    int totaldeliv;
+    int totaldeliv = 0;
 
     void parser(char *m);
     void planDay();
