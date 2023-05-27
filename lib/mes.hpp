@@ -95,6 +95,8 @@ private:
     bool isToActuate = false;
     int maq;
     int totaldeliv = 0;
+<<<<<<< HEAD
+=======
     bool previous_S0 = false, RE_S0 = false; 
     bool previous_S11 = false, RE_S11 = false; 
     bool previous_S16 = false, RE_S16 = false; 
