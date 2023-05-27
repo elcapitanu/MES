@@ -33,6 +33,8 @@ void KEY::onMain()
             input = 0x1b;
 
         input = pbuf->sbumpc();
+       
+        sleep(0.01);
     }
 
     // Restore terminal mode.

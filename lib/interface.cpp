@@ -19,7 +19,7 @@ void GUI::onMain()
     {
         if (refresh(messi->time_now) /* && if state is not a state to input long text */)
         {
-            show();
+            //show();
         }
 
         if (display.state == 0)

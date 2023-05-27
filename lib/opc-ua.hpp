@@ -26,8 +26,14 @@ public:
     void deliverPiece(int type);
     void changeTool(int machine, int newTool);
     void readSensors(bool *sensors);
+    void start2();
+    void startDelivery();
+    void risingEdges();
+    
+    int machineState(struct machine *maqs, bool *sensors);
 
     bool connected = false;
+
 
 private:
     inline std::string getName() override

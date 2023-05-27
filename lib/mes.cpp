@@ -28,7 +28,6 @@ void MES::onMain()
             soc->newMessage = false;
             
             strcpy(msg, soc->message);
-
             parser(msg);
         }
 
@@ -38,14 +37,17 @@ void MES::onMain()
             
             risingEdges();
 
+            updateMachinesStatus();
+            
             sendOrder2PLC();
 
             updateState();
 
             updateFactory();
-            
-            RE_S0 = RE_S11 = RE_S16 = RE_S17 = RE_S18 = false;
+            RE_S0 = RE_S11 = RE_S16 = RE_S17 = RE_S18 = RE_OkP = FE_M1 = FE_M2 = FE_M3 = FE_M4 = false;
         }
+        sleep(0.01);
+
     }
 }
 
@@ -90,6 +92,12 @@ void MES::parser(char *m)
         pos += 4;
     }
 
+    for (int i = 0; i < 7; i++)
+        cout << "W" << i + 3 << " : " << plan.work[i] << endl;
+    for (int i = 0; i < 9; i++)
+        cout << "D" << i + 1 << " : " << plan.deliver[i] << endl;
+    for (int i = 0; i < 2; i++)
+        cout << "B" << i + 1 << " : " << plan.buy[i] << endl;
     return;
 }
 
@@ -124,6 +132,7 @@ void MES::sendOrder2PLC()
             op->changeTool(2, plan.tool[1]);
             op->changeTool(3, plan.tool[2]);
             op->changeTool(4, plan.tool[3]);
+            op->startDelivery();
         }
         else if (state > 0 && state < 10) // deliver
         {
@@ -131,10 +140,15 @@ void MES::sendOrder2PLC()
                 op->deliverPiece(state);
         }
         else if (state > 9 && state < 17) // work
-        {
-            maq = chooseMachine(state - 9 + 2);
-            op->workPiece(chooseStart(state - 9 + 2), state - 9 + 2, maq);
-            plan.work[state - 1 - 9 + 2]--;
+        {   
+            //verificar se ha pecas no armazem
+            cout << "state: " << state << " " << plan.work[state - 1 - 9];
+            if(plan.work[state - 1 - 9] > 0){
+                maq = chooseMachine(state - 9 + 2);
+                cout << "maq escolhida  "  << maq << " status maq:" << fac.machines[maq-1].free<<endl;
+                op->workPiece(chooseStart(state - 9 + 2), state - 9 + 2, maq);
+                fac.machines[maq-1].free = 0;
+            }
         }
         isToActuate = false;
     }
@@ -149,32 +163,36 @@ void MES::updateState()
     }
     else if (state > 0 && state < 10)
     {
-        if (RE_S0)
+        if (RE_S0 && totaldeliv > 0)
         {
             isToActuate = true;
             plan.deliver[state - 1]--;
             totaldeliv--;
         }
-        if (totaldeliv == 0)
+        if (totaldeliv == 0 && fac.sensors[33])
         {
-
+            
             state = 10;
+            isToActuate = true;
         }
-        if (plan.deliver[state - 1] == 0)
+        else if (plan.deliver[state - 1] == 0 && totaldeliv > 0)
         {
             state++;
+            isToActuate = true;
         }
     }
     else if (state > 9 && state < 17)
     {
-        if (fac.sensors[machineTransition(maq)])
-        {
-            isToActuate = true;
-            plan.work[state - 1 - 9 + 2]--;
-        }
-        if (plan.work[state - 1 - 9 + 2] == 0)
+        if (plan.work[state - 1 - 9] == 0 && fac.sensors[33])
         {
             state++;
+            isToActuate = true;
+        }
+        else if (RE_OkP)
+        {
+            isToActuate = true;
+            plan.work[state - 1 - 9]--;
+
         }
     }
 }
@@ -202,23 +220,26 @@ int MES::toolNeed(int final)
 }
 
 int MES::chooseMachine(int final)
-{
-    if (plan.tool[2 - 1] == toolNeed(final) && plan.tool[2 - 1])
+{      
+    //adicionar se maq esta livre
+
+    if (plan.tool[2 - 1] == toolNeed(final) && fac.machines[2-1].free)
         return 2;
-    else if (plan.tool[4 - 1] == toolNeed(final) && plan.tool[4 - 1])
+    else if (plan.tool[4 - 1] == toolNeed(final) && fac.machines[4-1].free)
         return 4;
-    else if (plan.tool[1 - 1] == toolNeed(final) && plan.tool[1 - 1])
-        return 1;
-    else if (plan.tool[3 - 1] == toolNeed(final) && plan.tool[3 - 1])
+    else if (plan.tool[3 - 1] == toolNeed(final) && fac.machines[3-1].free)
         return 3;
+    else if (plan.tool[1 - 1] == toolNeed(final) && fac.machines[1-1].free)
+        return 1;
     else if (plan.tool[2 - 1] == toolNeed(final))
         return 2;
     else if (plan.tool[4 - 1] == toolNeed(final))
         return 4;
-    else if (plan.tool[1 - 1] == toolNeed(final))
-        return 1;
     else if (plan.tool[3 - 1] == toolNeed(final))
         return 3;
+    else if (plan.tool[1 - 1] == toolNeed(final))
+        return 1;
+    
 
     return -1;
 }
@@ -253,13 +274,13 @@ int MES::machineTransition(int machine)
     switch (machine)
     {
     case 1:
-        return 11;
+        return RE_S11;
     case 2:
-        return 18;
+        return RE_S18;
     case 3:
-        return 16;
+        return RE_S16;
     case 4:
-        return 17;
+        return RE_S17;
     }
 
     return -1;
@@ -267,6 +288,7 @@ int MES::machineTransition(int machine)
 
 void MES::risingEdges()
 {
+
     if(!previous_S0 && fac.sensors[0]){
         RE_S0 = true;
     }
@@ -282,13 +304,47 @@ void MES::risingEdges()
     if(!previous_S18 && fac.sensors[18]){
         RE_S18 = true;
     }
-        previous_S0 = fac.sensors[0];
-        previous_S11 = fac.sensors[11];
-        previous_S16 = fac.sensors[16];
-        previous_S17 = fac.sensors[17];
-        previous_S18 = fac.sensors[18];
+    if(!previous_OkP && fac.sensors[33]){
+        RE_OkP = true;
+    }
+    if(previous_M1 && !fac.sensors[11]){
+        FE_M1 = true;
+    }
+    if(previous_M2 && !fac.sensors[18]){
+        FE_M2 = true;
+    }
+    if(previous_M3 && !fac.sensors[16]){
+        FE_M3 = true;
+    }
+    if(previous_M4 && !fac.sensors[17]){
+        FE_M4 = true;
+    }
+    
+    previous_S0 = fac.sensors[0];
+    previous_S11 = fac.sensors[11];
+    previous_S16 = fac.sensors[16];
+    previous_S17 = fac.sensors[17];
+    previous_S18 = fac.sensors[18];
+    previous_M1 = fac.sensors[11];
+    previous_M2 = fac.sensors[18];
+    previous_M3 = fac.sensors[16];
+    previous_M4 = fac.sensors[17];
+    previous_OkP = fac.sensors[33];
 
 }
+
+void MES::updateMachinesStatus()
+{
+    if(FE_M1)
+        fac.machines[1-1].free = 1;
+    if(FE_M2)
+        fac.machines[2-1].free = 1;
+    if(FE_M3)
+        fac.machines[3-1].free = 1;
+    if(FE_M4)
+        fac.machines[4-1].free = 1;
+}
+
 
 /* int Database::connectDatabase()
 {

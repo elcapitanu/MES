@@ -14,6 +14,7 @@ struct machine
     int totalOperatingTime = 0;
     int operatedPieces[9] = {};
     int totalOperatedPieces = 0;
+    int free = 1;
 };
 
 struct dock
@@ -36,9 +37,9 @@ struct factory
 
 struct dayPlan
 {
-    int buy[2];     // amount to buy from P1 and P2
-    int work[7];    // amount to work from each Piece
-    int deliver[9]; // amount to work from each Piece
+    int buy[2] = {};     // amount to buy from P1 and P2
+    int work[7] = {};    // amount to work from each Piece
+    int deliver[9] = {}; // amount to work from each Piece
     int tool[4];
 };
 
@@ -99,6 +100,11 @@ private:
     bool previous_S16 = false, RE_S16 = false; 
     bool previous_S17 = false, RE_S17 = false; 
     bool previous_S18 = false, RE_S18 = false; 
+    bool previous_OkP = false, RE_OkP = false;
+    bool previous_M1 = false, FE_M1 = false; 
+    bool previous_M2 = false, FE_M2 = false; 
+    bool previous_M3 = false, FE_M3 = false; 
+    bool previous_M4 = false, FE_M4 = false;  
 
     void parser(char *m);
     void planDay();
@@ -113,6 +119,8 @@ private:
     int chooseStart(int final);
     int machineTransition(int machine);
     void risingEdges();
+    void updateMachinesStatus();
+
 
 };
 

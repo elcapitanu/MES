@@ -26,8 +26,8 @@ int main(int argc, char **argv)
 
 
         } */
-        op.start();
-        
+        //op.start();
+        op.start2();
         messi.start();
         key.start();
         gui.start();
@@ -36,7 +36,7 @@ int main(int argc, char **argv)
         while (key.input != 0x1b)
             ;
 
-        op.stop();
+        //op.stop();
         soc.stop();
         gui.stop();
         key.stop();

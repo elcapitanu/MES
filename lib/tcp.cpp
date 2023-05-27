@@ -29,6 +29,7 @@ void Socket::onMain()
         {
         }
     }
+    sleep(0.01);
 }
 
 int Socket::initConnection(void)
