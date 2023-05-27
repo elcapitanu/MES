@@ -13,19 +13,10 @@ int main(int argc, char **argv)
         KEY key;
         Socket soc;
         OpcUa op;
-        MES messi(&soc, &op);
+        Database db;
+        MES messi(&soc, &op, &db);
         GUI gui(&messi, &soc, &key.input);
-        /* Database db;
 
-        if(!db.connectDatabase()){
-            cout << "Not connected to Database\n";
-            return 0;
-        }
-        if(db.checkProgressWorking() == -1){
-            //read from db following commands to procede floor work
-
-
-        } */
         //op.start();
         op.start2();
         messi.start();

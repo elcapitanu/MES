@@ -6,7 +6,7 @@
 #include "opc-ua.hpp"
 
 #include "threads/Mthread.hpp"
-// #include <postgresql/libpq-fe.h>
+#include <postgresql/libpq-fe.h>
 
 struct machine
 {
@@ -43,11 +43,43 @@ struct dayPlan
     int tool[4];
 };
 
+class Database
+    {
+    private:
+        const std::string kDbHostIP = "10.227.240.130";
+        const std::string kDbName = "up201905660";
+        const std::string kDbUsername = "up201905660";
+        const std::string kDbPassword = "123456789";
+
+        std::string dbconn_str = "dbname=" + kDbName + " host=" + kDbHostIP +
+            " user=" + kDbUsername + " password=" + kDbPassword +
+            " connect_timeout=2";
+        int status;
+
+
+    public:
+
+        PGconn* dbconn = PQconnectdb(dbconn_str.c_str());
+
+        int connectDatabase();
+        int checkProgressWorking();
+        void writeAlgorithm();
+        void readAlgorithm();
+        int CheckIsEmpty();
+        void print_db(std::string db_name);
+        int InsertRequest(int x);
+        void saveMESmessage(char* msg, int day);
+        char* getMESmessage(int *day);
+
+        Database();
+        ~Database();
+    };
+
 class MES : public Tasks::Thread
 {
 public:
-    MES(Socket *s, OpcUa *o)
-        : soc(s), op(o)
+    MES(Socket *s, OpcUa *o, Database *d)
+        : soc(s), op(o), db(d)
     {
 #if DEBUG_THR
         cout << "MES: ola" << endl;
@@ -84,6 +116,7 @@ private:
 
     Socket *soc;
     OpcUa *op;
+    Database *db;
 
     uint64_t init_t;
 
@@ -124,34 +157,6 @@ private:
 
 };
 
-/* class Database
-    {
-    private:
-        const std::string kDbHostIP = "10.227.240.130";
-        const std::string kDbName = "up201905660";
-        const std::string kDbUsername = "up201905660";
-        const std::string kDbPassword = "123456789";
-
-        std::string dbconn_str = "dbname=" + kDbName + " host=" + kDbHostIP +
-            " user=" + kDbUsername + " password=" + kDbPassword +
-            " connect_timeout=2";
-        int status;
 
 
-    public:
-
-        PGconn* dbconn = PQconnectdb(dbconn_str.c_str());
-
-        int connectDatabase();
-        int checkProgressWorking();
-        void writeAlgorithm();
-        void readAlgorithm();
-        int CheckIsEmpty();
-        void print_db(std::string db_name);
-        int InsertRequest(int x);
-
-        Database();
-        ~Database();
-    };
- */
 #endif

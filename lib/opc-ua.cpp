@@ -91,8 +91,9 @@ char OPCUA_VARIABLES[27][58] = {"|var|CODESYS Control Win V3 x64.Application.OPC
 #define OPCUA_CT7s0 31
 #define OPCUA_CT8s0 32
 #define OPCUA_OkProd 33
+#define OPCUA_EndDel 34
 
-char OPCUA_SENSORS[34][58] = {"|var|CODESYS Control Win V3 x64.Application.GVL.AT1s0",
+char OPCUA_SENSORS[35][58] = {"|var|CODESYS Control Win V3 x64.Application.GVL.AT1s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.ST1s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.ST2s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.PT1s0",
@@ -125,7 +126,8 @@ char OPCUA_SENSORS[34][58] = {"|var|CODESYS Control Win V3 x64.Application.GVL.A
                               "|var|CODESYS Control Win V3 x64.Application.GVL.CT6s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.CT7s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.CT8s0",
-                              "|var|CODESYS Control Win V3 x64.Application.OPC.Ok_prod"};
+                              "|var|CODESYS Control Win V3 x64.Application.OPC.Ok_prod",
+                              "|var|CODESYS Control Win V3 x64.Application.OPC.end_delv"};
 
 OpcUa::~OpcUa()
 {
@@ -344,10 +346,23 @@ void OpcUa::changeTool(int machine, int newTool)
 
 void OpcUa::readSensors(bool *sensors)
 {
-    for (int i = 0; i < 34; i++)
+    for (int i = 0; i < 35; i++)
         sensors[i] = OpcUaReadVariableBool(4, OPCUA_SENSORS[i]);
 
     return;
+}
+
+//reset sinais
+void OpcUa::startDay()
+{
+    OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], 5);
+
+}
+
+void OpcUa::startWork()
+{
+    OpcUaWriteVariableBool(4, OPCUA_SENSORS[OPCUA_EndDel], true);
+
 }
 
 void OpcUa::startDelivery()

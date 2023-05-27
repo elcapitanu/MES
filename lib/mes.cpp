@@ -14,6 +14,14 @@ void MES::onMain()
 #endif
     while (!op->connected)
         ;
+    
+    if(db->checkProgressWorking() == -1)
+    {
+        //read from db following commands to procede floor work
+        strcpy(soc->message, db->getMESmessage(&day));
+        soc->newMessage = true;
+    
+    }
 
     while (!stopRequested())
     {
@@ -29,6 +37,8 @@ void MES::onMain()
             
             strcpy(msg, soc->message);
             parser(msg);
+            db->saveMESmessage(msg, day);
+            op->startDay();
         }
 
         if(day)
@@ -133,16 +143,19 @@ void MES::sendOrder2PLC()
             op->changeTool(3, plan.tool[2]);
             op->changeTool(4, plan.tool[3]);
             op->startDelivery();
+            if(totaldeliv == 0)
+                op->startWork();
         }
         else if (state > 0 && state < 10) // deliver
         {
-            if (plan.deliver[state - 1] > 0)
+            if (plan.deliver[state - 1] > 0){
                 op->deliverPiece(state);
+                cout << "peca entregar:  " << state <<endl;}
         }
         else if (state > 9 && state < 17) // work
         {   
             //verificar se ha pecas no armazem
-            cout << "state: " << state << " " << plan.work[state - 1 - 9];
+            cout << "state: " << state << " " << plan.work[state - 1 - 9] << endl;
             if(plan.work[state - 1 - 9] > 0){
                 maq = chooseMachine(state - 9 + 2);
                 cout << "maq escolhida  "  << maq << " status maq:" << fac.machines[maq-1].free<<endl;
@@ -169,7 +182,7 @@ void MES::updateState()
             plan.deliver[state - 1]--;
             totaldeliv--;
         }
-        if (totaldeliv == 0 && fac.sensors[33])
+        if (totaldeliv == 0 && fac.sensors[34])
         {
             
             state = 10;
@@ -221,7 +234,6 @@ int MES::toolNeed(int final)
 
 int MES::chooseMachine(int final)
 {      
-    //adicionar se maq esta livre
 
     if (plan.tool[2 - 1] == toolNeed(final) && fac.machines[2-1].free)
         return 2;
@@ -346,7 +358,7 @@ void MES::updateMachinesStatus()
 }
 
 
-/* int Database::connectDatabase()
+int Database::connectDatabase()
 {
     PGresult* result;
     std::string order;
@@ -408,6 +420,9 @@ void Database::readAlgorithm()
 Database::Database()
 {
     status = -1;
+    while(!connectDatabase()){
+        cout << "Not connected to Database\n";
+    }
 }
 
 Database::~Database()
@@ -420,4 +435,33 @@ Database::~Database()
         result = PQexec(dbconn, order.c_str());
         PQclear(result);
     }
-} */
+}
+
+void Database::saveMESmessage(char* msg, int day){
+    PGresult* result;
+    std::string order;
+    std::string str(msg);
+    if (PQstatus(dbconn) == CONNECTION_OK) {
+        order = "INSERT INTO mesorder (day, message) VALUES ('" + std::to_string(day) + "','" + str + "');" ;
+        result = PQexec(dbconn, order.c_str());
+        PQclear(result);
+    }
+}
+
+char* Database::getMESmessage(int *day){
+    PGresult* result;
+    std::string order;
+
+    if (PQstatus(dbconn) == CONNECTION_OK) {
+        order = "SELECT * FROM mesorder ;" ;
+        result = PQexec(dbconn, order.c_str());
+        int last = PQntuples(result);
+        
+        char *message = PQgetvalue(result,last-1,1);
+        (*day) = atoi(PQgetvalue(result,last-1,0));
+
+        PQclear(result);
+        return message;
+    }
+    return NULL;
+}

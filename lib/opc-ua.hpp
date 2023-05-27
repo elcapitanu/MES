@@ -28,6 +28,8 @@ public:
     void readSensors(bool *sensors);
     void start2();
     void startDelivery();
+    void startDay();
+    void startWork();
     void risingEdges();
     
     int machineState(struct machine *maqs, bool *sensors);
