@@ -28,7 +28,6 @@
 #define OPCUA_M 25
 #define OPCUA_Timer 26
 
-
 char OPCUA_VARIABLES[27][58] = {"|var|CODESYS Control Win V3 x64.Application.OPC.Start",
                                 "|var|CODESYS Control Win V3 x64.Application.OPC.P",
                                 "|var|CODESYS Control Win V3 x64.Application.OPC.ST2_rot",
@@ -134,34 +133,16 @@ OpcUa::~OpcUa()
 #if DEBUG_THR
     cout << "OpcUa: adeus" << endl;
 #endif
-}
-
-void OpcUa::onMain()
-{
-#if DEBUG_THR
-    cout << "OpcUa: tou vivo" << endl;
-#endif
-
-    client = UA_Client_new();
-    UA_ClientConfig_setDefault(UA_Client_getConfig(client));
-
-    if (OpcUaConnect())
-        connected = true;
-
-    while (!stopRequested())
-        ;
-
     UA_Client_delete(client);
 }
 
-void OpcUa::start2()
+void OpcUa::start()
 {
     client = UA_Client_new();
     UA_ClientConfig_setDefault(UA_Client_getConfig(client));
 
     if (OpcUaConnect())
         connected = true;
-
 }
 
 static volatile UA_Boolean running = true;
@@ -278,36 +259,36 @@ void OpcUa::workPiece(int start, int final, int machine)
 
     if (machine == 1)
     {
-        //OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
+        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
         OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], machine);
         OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], start);
         OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_Timer], timer);
-        //OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_ST2_rot], true);
+        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_ST2_rot], true);
     }
     else if (machine == 2)
     {
-        //OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
+        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
         OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], machine);
         OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], start);
         OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_Timer], timer);
-        //OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_ST2_rot], true);
+        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_ST2_rot], true);
     }
     else if (machine == 3)
     {
-        //OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
+        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
         OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], machine);
         OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], start);
         OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_Timer], timer);
-        //OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT2_rot], true);
+        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT2_rot], true);
     }
     else if (machine == 4)
     {
-        //OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
+        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
         OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], machine);
         OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], start);
         OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_Timer], timer);
-        //OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT2_rot], true);
-        //OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT4_slide], true);
+        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT2_rot], true);
+        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT4_slide], true);
     }
 
     return;
@@ -315,7 +296,7 @@ void OpcUa::workPiece(int start, int final, int machine)
 
 void OpcUa::deliverPiece(int type)
 {
-    //OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
+    // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
     OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], type);
     OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Push], true);
 
@@ -352,21 +333,18 @@ void OpcUa::readSensors(bool *sensors)
     return;
 }
 
-//reset sinais
+// reset sinais
 void OpcUa::startDay()
 {
     OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], 5);
-
 }
 
 void OpcUa::startWork()
 {
     OpcUaWriteVariableBool(4, OPCUA_SENSORS[OPCUA_EndDel], true);
-
 }
 
 void OpcUa::startDelivery()
 {
     OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], 0);
-
 }
