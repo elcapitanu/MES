@@ -29,16 +29,6 @@ void MES::onMain()
             
             strcpy(msg, soc->message);
             parser(msg);
-<<<<<<< HEAD
-
-            state = 0;
-            day++;
-        }
-
-        if (day)
-        {
-            op->readSensors(fac.sensors);
-=======
         }
 
         if(day)
@@ -46,6 +36,7 @@ void MES::onMain()
             op->readSensors(fac.sensors);
             
             risingEdges();
+
             updateMachinesStatus();
             
             sendOrder2PLC();
