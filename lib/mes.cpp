@@ -17,20 +17,24 @@ void MES::onMain()
     {
         op.start();
         db.start();
+            
         commsOK = isConnected2PLC() & isConnected2DB() & isConnected2ERP();
 
         if (stopRequested())
             break;
     }
 
-    while (!stopRequested())
-    {
-        if (db.checkProgressWorking() == -1)
+    cout << "\nComs ok\n";
+
+    if (db.checkProgressWorking() == -1)
         {
             // read from db following commands to procede floor work
             strcpy(soc->message, db.getMESmessage(&day));
             soc->newMessage = true;
         }
+    while (!stopRequested())
+    {
+       
         
         sleep(0.001);
         cout;
@@ -72,6 +76,7 @@ void MES::onMain()
         sleep(0.01);
     }
 
+    cout << "fimmmmm\n";
     op.stop();
     db.stop();
 }
@@ -425,7 +430,7 @@ bool MES::isConnected2PLC()
 
 bool MES::isConnected2DB()
 {
-    if (db.status > 0)
+    if (db.connected)
         return true;
 
     return false;

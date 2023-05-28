@@ -38,6 +38,7 @@ public:
     void CleanTable(std::string dbname);
 
     int status = -1;
+    int connected = 0;
 };
 
 #endif
