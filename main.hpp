@@ -21,6 +21,6 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-#define DEBUG_THR		0
+#define DEBUG_THR   (0)
 
 #endif
