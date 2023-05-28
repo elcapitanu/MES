@@ -19,7 +19,7 @@ void GUI::onMain()
     {
         if (refresh(messi->time_now))
         {
-            show();
+            //show();
         }
 
         if (display.state == 0)
