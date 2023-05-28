@@ -280,40 +280,43 @@ int OpcUa::time4piece(int final)
 
 void OpcUa::workPiece(int start, int final, int machine)
 {
-    int timer = time4piece(final);
+    if (connected)
+    {
+        int timer = time4piece(final);
 
-    if (machine == 1)
-    {
-        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
-        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], machine);
-        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], start);
-        OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_Timer], timer);
-        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_ST2_rot], true);
-    }
-    else if (machine == 2)
-    {
-        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
-        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], machine);
-        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], start);
-        OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_Timer], timer);
-        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_ST2_rot], true);
-    }
-    else if (machine == 3)
-    {
-        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
-        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], machine);
-        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], start);
-        OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_Timer], timer);
-        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT2_rot], true);
-    }
-    else if (machine == 4)
-    {
-        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
-        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], machine);
-        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], start);
-        OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_Timer], timer);
-        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT2_rot], true);
-        // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT4_slide], true);
+        if (machine == 1)
+        {
+            // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
+            OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], machine);
+            OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], start);
+            OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_Timer], timer);
+            // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_ST2_rot], true);
+        }
+        else if (machine == 2)
+        {
+            // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
+            OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], machine);
+            OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], start);
+            OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_Timer], timer);
+            // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_ST2_rot], true);
+        }
+        else if (machine == 3)
+        {
+            // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
+            OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], machine);
+            OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], start);
+            OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_Timer], timer);
+            // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT2_rot], true);
+        }
+        else if (machine == 4)
+        {
+            // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_Start], true);
+            OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], machine);
+            OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_P], start);
+            OpcUaWriteVariableInt64(4, OPCUA_VARIABLES[OPCUA_Timer], timer);
+            // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT2_rot], true);
+            // OpcUaWriteVariableBool(4, OPCUA_VARIABLES[OPCUA_PT4_slide], true);
+        }
     }
 
     return;
@@ -330,21 +333,24 @@ void OpcUa::deliverPiece(int type)
 
 void OpcUa::changeTool(int machine, int newTool)
 {
-    if (machine == 1)
+    if (connected)
     {
-        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_T1], newTool);
-    }
-    else if (machine == 2)
-    {
-        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_T2], newTool);
-    }
-    else if (machine == 3)
-    {
-        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_T3], newTool);
-    }
-    else if (machine == 4)
-    {
-        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_T4], newTool);
+        if (machine == 1)
+        {
+            OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_T1], newTool);
+        }
+        else if (machine == 2)
+        {
+            OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_T2], newTool);
+        }
+        else if (machine == 3)
+        {
+            OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_T3], newTool);
+        }
+        else if (machine == 4)
+        {
+            OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_T4], newTool);
+        }
     }
 
     return;
@@ -368,10 +374,12 @@ void OpcUa::startDay()
 
 void OpcUa::startWork()
 {
-    OpcUaWriteVariableBool(4, OPCUA_SENSORS[OPCUA_EndDel], true);
+    if (connected)
+        OpcUaWriteVariableBool(4, OPCUA_SENSORS[OPCUA_EndDel], true);
 }
 
 void OpcUa::startDelivery()
 {
-    OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], 0);
+    if (connected)
+        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], 0);
 }

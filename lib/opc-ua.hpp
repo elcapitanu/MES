@@ -35,6 +35,7 @@ public:
 
     bool connected = false;
 
+    int time4piece(int final);
 
 private:
     UA_Client *client;
@@ -48,8 +49,6 @@ private:
     void OpcUaWriteVariableInt16(int nodeid, char *stringid, u_int16_t value);
     void OpcUaWriteVariableInt32(int nodeid, char *stringid, u_int32_t value);
     void OpcUaWriteVariableInt64(int nodeid, char *stringid, u_int64_t value);
-
-    int time4piece(int final);
 };
 
 #endif

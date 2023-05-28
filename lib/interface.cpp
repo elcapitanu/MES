@@ -19,7 +19,7 @@ void GUI::onMain()
     {
         if (refresh(messi->time_now))
         {
-            //show();
+            show();
         }
 
         if (display.state == 0)
@@ -127,7 +127,7 @@ void GUI::show()
                  << endl;
         }
 
-        if (messi->isConnected2DB())
+        if (!messi->isConnected2DB())
         {
             cout << "            \033[5;31mNot connected to DB\033[0m" << endl
                  << endl;
@@ -141,7 +141,7 @@ void GUI::show()
              << endl
              << name << "      " << ctime(&date) << endl
              << endl;
-             
+
         cout << "\033[7;31m***********************************************\033[0m" << endl
              << "Server: " << soc->message << endl
              << "\033[7;31m************Ainda não faço nada :)*************\033[0m" << endl;
@@ -264,12 +264,17 @@ void GUI::show()
     }
     else if (display.state == 3)
     {
+        float perc = 0;
+        
+        if (messi->plan.totalOrders != 0)
+            perc = (messi->plan.totalOrders - messi->plan.remOrders) / messi->plan.totalOrders;
+
         cout << "\033[7;36m***************************Factory**********************************\033[0m" << endl
              << endl
              << "                           \033[7;37m Day: " << messi->day << " \033[0m" << endl
              << endl
              << "                        \033[7;37m   PROGRESS   \033[0m" << endl
-             << "                        \033[7;37m  \033[0m          \033[7;37m  \033[0m" << endl
+             << "                        \033[7;37m  \033[0m   " << perc << "      \033[7;37m  \033[0m" << endl
              << "                        \033[7;37m              \033[0m" << endl
              << endl
              << "\033[7;36m********************************************************************\033[0m" << endl
@@ -285,7 +290,7 @@ void GUI::show()
              << " \033[7;37mH " << map.warehouse[4] << "  \033[7;37m  \033[0m        \033[7;37m  \033[0m\033[7;34m " << map.pos[15] << " \033[7;37m  \033[0m   \033[7;31mT" << messi->fac.machines[2].tool << "\033[7;34m " << map.pos[16] << " \033[7;31mT" << messi->fac.machines[0].tool << "\033[7;34m " << map.pos[17] << " \033[7;37m  \033[0m   \033[7;37m  \033[7;34m   \033[7;37m  \033[7;34m   \033[7;37m  \033[0m   \033[7;37m  \033[7;34m   \033[7;37m  \033[0m      " << endl
              << " \033[7;37mO " << map.warehouse[3] << "  \033[7;37m  \033[0m        \033[7;31mT" << messi->fac.machines[1].tool << "\033[7;34m " << map.pos[18] << " \033[7;37m  \033[0m   \033[7;37m  \033[7;34m " << map.pos[19] << " \033[7;37m  \033[7;34m   \033[7;37m  \033[0m   \033[7;37m  \033[7;34m   \033[7;37m  \033[7;34m " << map.pos[20] << " \033[7;37m  \033[0m   \033[7;37m  \033[7;34m " << map.pos[21] << " \033[7;31mD2\033[0m      " << endl
              << " \033[7;37mU " << map.warehouse[6] << "  \033[7;37m  \033[0m  \033[7;37m        \033[7;34m   \033[7;37m       \033[7;34m   \033[7;37m  \033[7;34m   \033[7;37m       \033[7;34m   \033[7;37m  \033[7;34m   \033[7;37m       \033[7;34m   \033[7;37m       \033[0m" << endl
-             << " \033[7;37mS " << map.warehouse[1] << "  \033[7;37m  \033[0m  \033[7;34m " << map.pos[22] << "   " << map.pos[23] << "   " << map.pos[24] << "    " << map.pos[25] << "      " << map.pos[26] << "       " << map.pos[27] << "    " << map.pos[28] << "    " << map.pos[29] << "    " << map.pos[30] << "    " << map.pos[31] << "    " << map.pos[32] <<  "   \033[0m" << endl
+             << " \033[7;37mS " << map.warehouse[1] << "  \033[7;37m  \033[0m  \033[7;34m " << map.pos[22] << "   " << map.pos[23] << "   " << map.pos[24] << "    " << map.pos[25] << "      " << map.pos[26] << "       " << map.pos[27] << "    " << map.pos[28] << "    " << map.pos[29] << "    " << map.pos[30] << "    " << map.pos[31] << "    " << map.pos[32] << "   \033[0m" << endl
              << " \033[7;37mE " << map.warehouse[0] << "  \033[7;37m  \033[0m  \033[7;37m                                                          \033[0m   " << endl
              << " \033[7;37m      \033[0m" << endl
              << endl;
@@ -338,7 +343,7 @@ void GUI::factory2map()
         if (messi->fac.sensors[i])
             map.pos[i] = '#';
         else
-            map.pos[i] = '#';
+            map.pos[i] = ' ';
     }
 }
 
