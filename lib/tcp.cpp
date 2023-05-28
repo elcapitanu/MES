@@ -25,9 +25,7 @@ void Socket::onMain()
         if (!connected)
             initConnection();
 
-        if (receiveMessage())
-        {
-        }
+        receiveMessage();
     }
     sleep(0.01);
 }
