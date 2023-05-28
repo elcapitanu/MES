@@ -40,7 +40,7 @@ struct dayPlan
     int totalOrders = 0;
     int remOrders = 0;
     int buy[2] = {};     // amount to buy from P1 and P2
-    int work[7] = {};    // amount to work from each Piece
+    int work[8] = {};    // amount to work from each Piece
     int deliver[9] = {}; // amount to work from each Piece
     int tool[4];
 };
@@ -109,6 +109,8 @@ private:
     bool previous_M2 = false, FE_M2 = false;
     bool previous_M3 = false, FE_M3 = false;
     bool previous_M4 = false, FE_M4 = false;
+    bool aux = false;
+    bool next = false;
 
     void parser(char *m);
     void planDay();
@@ -125,6 +127,7 @@ private:
     void risingEdges();
     void updateMachinesStatus();
     void updateMessage();
+    bool notSameSide(int next);
 };
 
 #endif

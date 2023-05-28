@@ -27,7 +27,7 @@ void MES::onMain()
     if (db.checkProgressWorking() == -1)
     {
         // read from db following commands to procede floor work
-        // strcpy(soc->message, db.getMESmessage(&day));
+        strcpy(soc->message, db.getMESmessage(&day));
         if (soc->message != NULL)
         {
             soc->newMessage = true;
@@ -45,6 +45,9 @@ void MES::onMain()
             state = 0;
             totaldeliv = 0;
             isToActuate = true;
+    	    maq = 0;
+            next = false;
+            aux = false;
 
             soc->newMessage = false;
 
@@ -84,7 +87,7 @@ void MES::parser(char *m)
     plan.totalOrders = 0;
     int pos = 1;
 
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < 8; i++)
         plan.work[i] = 0;
     for (int i = 0; i < 9; i++)
         plan.deliver[i] = 0;
@@ -96,7 +99,10 @@ void MES::parser(char *m)
 
     while (m[pos] != 'B')
     {
-        plan.totalOrders += plan.work[m[pos] - '0' - 1 - 2] = m[pos + 1] - '0';
+        if(m[pos] - '0' == 1)
+            plan.work[7] = m[pos + 1] - '0';
+        else
+            plan.totalOrders += plan.work[m[pos] - '0' - 1 - 2] = m[pos + 1] - '0';
         pos += 2;
     }
     pos++;
@@ -180,22 +186,55 @@ void MES::sendOrder2PLC()
                     plan.remOrders--;
                 }
             }
-            else if (state > 9 && state < 17) // work
-            {
-                cout << "ola\n";
 
+            else if (state > 9 && state < 18) // work
+            {
                 // verificar se ha pecas no armazem
-                if (plan.work[state - 1 - 9] > 0)
+                if(state == 17){
+                    if(plan.work[7] > 0)
+                    {
+                        if (notSameSide(chooseMachine(6)))
+                        {
+                            maq = chooseMachine(6);
+                            cout << "maq escolhida  " << maq << " status maq:" << maq << endl;
+                            op.workPiece(1, 6, maq);
+                            fac.machines[maq - 1].free = 0;
+                            next = true;
+
+                            plan.remOrders--;
+                            fac.p[0]--;
+                            fac.p[5]++;
+                            fac.machines[maq - 1].operatedPieces[5]++;
+                            fac.machines[maq - 1].totalOperatedPieces++;
+                            fac.machines[maq - 1].totalOperatingTime += op.time4piece(6);
+                            
+                        }
+                        else
+                            next = false;
+                    }
+                }
+                else
                 {
-                    maq = chooseMachine(state - 9 + 2);
-                    op.workPiece(chooseStart(state - 9 + 2), state - 9 + 2, maq);
-                    plan.remOrders--;
-                    fac.p[chooseStart(state - 9 + 2) - 1]--;
-                    fac.p[state - 9 + 2 - 1]++;
-                    fac.machines[maq - 1].operatedPieces[state - 9 + 2 - 1]++;
-                    fac.machines[maq - 1].totalOperatedPieces++;
-                    fac.machines[maq - 1].totalOperatingTime += op.time4piece(state - 9 + 2);
-                    fac.machines[maq - 1].free = 0;
+                    if(plan.work[state - 1 - 9] > 0){
+                        if (notSameSide(chooseMachine(state - 9 + 2)))
+                        {
+                            maq = chooseMachine(state - 9 + 2);
+                            cout << "maq escolhida  " << maq << " status maq:" << maq << endl;
+                            op.workPiece(chooseStart(state - 9 + 2), state - 9 + 2, maq);
+                            fac.machines[maq - 1].free = 0;
+                            next = true;
+
+                            plan.remOrders--;
+                            fac.p[chooseStart(state - 9 + 2) - 1]--;
+                            fac.p[state - 9 + 2 - 1]++;
+                            fac.machines[maq - 1].operatedPieces[state - 9 + 2 - 1]++;
+                            fac.machines[maq - 1].totalOperatedPieces++;
+                            fac.machines[maq - 1].totalOperatingTime += op.time4piece(state - 9 + 2);
+                            
+                        }
+                        else
+                            next = false;
+                    }
                 }
             }
             isToActuate = false;
@@ -232,17 +271,45 @@ void MES::updateState()
                 isToActuate = true;
             }
         }
-        else if (state > 9 && state < 17)
+        else if (state > 9 && state < 18)
         {
-            if (plan.work[state - 1 - 9] == 0 && fac.sensors[33])
+            if(state == 17)
             {
-                state++;
-                isToActuate = true;
+                if (plan.work[7] == 0)
+                {
+                    state++;
+                    isToActuate = true;
+                    aux = false;
+                }
+                else if (plan.work[7]!=0 && RE_OkP && next)
+                {
+                    isToActuate = true;
+                    plan.work[7]--;
+                    aux = false;
+                    next = false;
+                }
+                else if(!next){
+                    isToActuate = true;
+                }
             }
-            else if (RE_OkP)
+            else
             {
-                isToActuate = true;
-                plan.work[state - 1 - 9]--;
+                if (plan.work[state - 1 - 9] == 0)
+                {
+                    state++;
+                    isToActuate = true;
+                    aux = false;
+                }
+                else if (plan.work[state - 1 - 9]!=0 && RE_OkP && next)
+                {
+                    isToActuate = true;
+                    plan.work[state - 1 - 9]--;
+                    aux = false;
+                    next = false;
+                }
+                else if(!next){
+                    isToActuate = true;
+                }
             }
         }
     }
@@ -273,7 +340,7 @@ int MES::toolNeed(int final)
 int MES::chooseMachine(int final)
 {
 
-    if (plan.tool[2 - 1] == toolNeed(final) && fac.machines[2 - 1].free)
+    if (plan.tool[2 - 1] == toolNeed(final) && fac.machines[2 - 1].free && fac.machines[1 - 1].free)
         return 2;
     else if (plan.tool[4 - 1] == toolNeed(final) && fac.machines[4 - 1].free)
         return 4;
@@ -297,6 +364,8 @@ int MES::chooseStart(int final)
 {
     switch (final)
     {
+    case 1:
+        return 1;
     case 3:
         return 2;
     case 4:
@@ -361,6 +430,7 @@ void MES::risingEdges()
     if (!previous_OkP && fac.sensors[33])
     {
         RE_OkP = true;
+        aux = true;
     }
     if (previous_M1 && !fac.sensors[11])
     {
@@ -411,7 +481,10 @@ void MES::updateMessage()
 
     while (msg[pos] != 'B')
     {
-        msg[pos + 1] = char(plan.work[msg[pos] - '0' - 1 - 2]) + '0';
+        if(msg[pos] == 1)
+            msg[pos + 1] = char(plan.work[7]) + '0';
+        else
+            msg[pos + 1] = char(plan.work[msg[pos] - '0' - 1 - 2]) + '0';
         pos += 2;
     }
     pos++;
@@ -441,4 +514,35 @@ bool MES::isConnected2PLC()
 bool MES::isConnected2DB()
 {
     return db.connected;
+}
+
+
+bool MES::notSameSide(int next)
+{
+
+    switch(next)
+    {
+        case 1:
+            if(maq == 2 && !fac.sensors[18])
+                return false;
+            else
+                return true;
+        case 2:
+            if(maq == 1 && !fac.sensors[11])
+                return false;
+            else
+                return true;
+        case 3:
+            if(maq == 4 && !fac.sensors[17])
+                return false;
+            else
+                return true;
+        case 4:
+            if(maq == 3 && !fac.sensors[16])
+                return false;
+            else
+                return true;
+    } 
+
+    return false;
 }

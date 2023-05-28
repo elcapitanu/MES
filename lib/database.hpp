@@ -37,6 +37,14 @@ public:
     char *getMESmessage(int *day);
     void CleanTable(std::string dbname);
 
+    int UpdateTablePiece(int piece[9]);
+    int UpdateTableDelivery(int delivery[2]);
+    int UpdateTableMachine(int machine, int tool, int optime, int pieces[7]);
+
+    int *GetTablePiece();
+    int *GetTableDelivery();
+    int *GetTableMachine(int Machine);
+    
     int status = -1;
     bool connected = false;
 };
