@@ -17,7 +17,7 @@ void GUI::onMain()
 
     while (!stopRequested())
     {
-        if (refresh(messi->time_now))
+        if (refresh(messi->time_now) /* && if state is not a state to input long text */)
         {
             //show();
         }

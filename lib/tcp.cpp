@@ -34,18 +34,6 @@ void Socket::onMain()
 
 int Socket::initConnection(void)
 {
-    while ((clientSd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-        ;
-
-    bzero(&servaddr, sizeof(servaddr));
-
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    servaddr.sin_port = htons(2223);
-
-    connected = false;
-    newMessage = false;
-    
     return connect(clientSd, (struct sockaddr *)&servaddr, sizeof(servaddr));
 }
 

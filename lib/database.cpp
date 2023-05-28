@@ -1,57 +1,5 @@
 #include "database.hpp"
 
-Database::Database()
-{
-#if DEBUG_THR
-    cout << "Database: olá" << endl;
-#endif
-
-    /* status = -1;
-    while (!connectDatabase())
-    {
-        cout << "Not connected to Database\n";
-    } */
-}
-
-Database::~Database()
-{
-#if DEBUG_THR
-    cout << "Database: adeus" << endl;
-#endif
-
-    /* // write db status = -1
-    PGresult *result;
-    std::string order;
-    if (PQstatus(dbconn) == CONNECTION_OK)
-    {
-        order = "Update requests \n SET status = -1;";
-        result = PQexec(dbconn, order.c_str());
-        PQclear(result);
-    } */
-}
-
-void Database::start()
-{
-    status = -1;
-    while (!connectDatabase())
-    {
-        cout << "Not connected to Database\n";
-    }
-}
-
-void Database::stop()
-{
-    // write db status = -1
-    PGresult *result;
-    std::string order;
-    if (PQstatus(dbconn) == CONNECTION_OK)
-    {
-        order = "Update requests \n SET status = -1;";
-        result = PQexec(dbconn, order.c_str());
-        PQclear(result);
-    }
-}
-
 int Database::connectDatabase()
 {
     PGresult *result;
@@ -114,6 +62,35 @@ void Database::writeAlgorithm()
 
 void Database::readAlgorithm()
 {
+}
+
+Database::Database()
+{
+#if DEBUG_THR
+    cout << "Database: olá" << endl;
+#endif
+
+    status = -1;
+    while (!connectDatabase())
+    {
+        cout << "Not connected to Database\n";
+    }
+}
+
+Database::~Database()
+{
+#if DEBUG_THR
+    cout << "Database: adeus" << endl;
+#endif
+    // write db status = -1
+    PGresult *result;
+    std::string order;
+    if (PQstatus(dbconn) == CONNECTION_OK)
+    {
+        order = "Update requests \n SET status = -1;";
+        result = PQexec(dbconn, order.c_str());
+        PQclear(result);
+    }
 }
 
 void Database::saveMESmessage(char *msg, int day)

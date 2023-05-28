@@ -21,9 +21,6 @@ private:
 public:
     PGconn *dbconn = PQconnectdb(dbconn_str.c_str());
 
-    void start();
-    void stop();
-
     int connectDatabase();
     int checkProgressWorking();
     void writeAlgorithm();
