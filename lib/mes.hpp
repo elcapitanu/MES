@@ -122,10 +122,6 @@ private:
     void risingEdges();
     void updateMachinesStatus();
     void updateMessage();
-
-
 };
-
-
 
 #endif
