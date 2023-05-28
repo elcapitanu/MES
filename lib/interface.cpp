@@ -19,7 +19,7 @@ void GUI::onMain()
     {
         if (refresh(messi->time_now) /* && if state is not a state to input long text */)
         {
-            //show();
+            show();
         }
 
         if (display.state == 0)
@@ -115,9 +115,21 @@ void GUI::show()
              << endl
              << "          \033[7;37m" << ctime(&date) << "\033[0m" << endl;
 
-        if (!soc->isConnected())
+        if (!messi->isConnected2ERP())
         {
             cout << "            \033[5;31mNot connected to ERP\033[0m" << endl
+                 << endl;
+        }
+
+        if (!messi->isConnected2PLC())
+        {
+            cout << "            \033[5;31mNot connected to PLC\033[0m" << endl
+                 << endl;
+        }
+
+        if (messi->isConnected2DB())
+        {
+            cout << "            \033[5;31mNot connected to DB\033[0m" << endl
                  << endl;
         }
 

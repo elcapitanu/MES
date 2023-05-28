@@ -74,6 +74,10 @@ public:
 
     struct factory fac;
 
+    bool isConnected2ERP();
+    bool isConnected2PLC();
+    bool isConnected2DB();
+
 private:
     inline std::string getName() override
     {
