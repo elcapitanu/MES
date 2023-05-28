@@ -28,12 +28,14 @@ void Database::stop()
     // write db status = -1
     PGresult *result;
     std::string order;
+    CleanTable("mesorder");
     if (PQstatus(dbconn) == CONNECTION_OK)
     {
         order = "Update requests \n SET status = -1;";
         result = PQexec(dbconn, order.c_str());
         PQclear(result);
     }
+
 }
 
 int Database::connectDatabase()
@@ -100,14 +102,17 @@ void Database::readAlgorithm()
 {
 }
 
-void Database::saveMESmessage(char *msg, int day)
+void Database::saveMESmessage(char *msg, int day, int new_)
 {
     PGresult *result;
     std::string order;
     std::string str(msg);
     if (PQstatus(dbconn) == CONNECTION_OK)
     {
-        order = "INSERT INTO mesorder (day, message) VALUES ('" + std::to_string(day) + "','" + str + "');";
+        if(new_)
+            order = "INSERT INTO mesorder (day, message) VALUES ('" + std::to_string(day) + "','" + str + "');";
+        else
+            order = "UPDATE  mesorder SET message = '" + str + "' WHERE day = '" + std::to_string(day) + "' ;" ;
         result = PQexec(dbconn, order.c_str());
         PQclear(result);
     }
@@ -131,4 +136,14 @@ char *Database::getMESmessage(int *day)
         return message;
     }
     return NULL;
+}
+
+void Database::CleanTable(std::string dbname){
+    PGresult* result;
+    std::string order;
+    if (PQstatus(dbconn) == CONNECTION_OK) {
+        order = "DELETE FROM " + dbname + ";" ;
+        result = PQexec(dbconn, order.c_str());
+        PQclear(result);
+    }
 }
