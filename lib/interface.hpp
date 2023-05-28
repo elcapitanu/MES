@@ -19,8 +19,6 @@ struct factoryMap
 struct state_machine
 {
     uint16_t state;
-
-    /* add more features to state machine */
 };
 
 class GUI : public Tasks::Thread
