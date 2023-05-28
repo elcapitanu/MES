@@ -133,6 +133,8 @@ OpcUa::~OpcUa()
 #if DEBUG_THR
     cout << "OpcUa: adeus" << endl;
 #endif
+
+    stop();
 }
 
 bool OpcUa::start()

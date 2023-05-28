@@ -87,9 +87,6 @@ void MES::onMain()
         }
         sleep(0.01);
     }
-
-    op.stop();
-    db.stop();
 }
 
 void MES::parser(char *m)
