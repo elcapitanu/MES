@@ -28,12 +28,14 @@ void Database::stop()
     // write db status = -1
     PGresult *result;
     std::string order;
+    CleanTable("mesorder");
     if (PQstatus(dbconn) == CONNECTION_OK)
     {
         order = "Update requests \n SET status = -1;";
         result = PQexec(dbconn, order.c_str());
         PQclear(result);
     }
+
 }
 
 int Database::connectDatabase()
@@ -134,4 +136,14 @@ char *Database::getMESmessage(int *day)
         return message;
     }
     return NULL;
+}
+
+void Database::CleanTable(std::string dbname){
+    PGresult* result;
+    std::string order;
+    if (PQstatus(dbconn) == CONNECTION_OK) {
+        order = "DELETE FROM " + dbname + ";" ;
+        result = PQexec(dbconn, order.c_str());
+        PQclear(result);
+    }
 }

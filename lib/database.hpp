@@ -30,6 +30,7 @@ public:
     int InsertRequest(int x);
     void saveMESmessage(char *msg, int day, int new_);
     char *getMESmessage(int *day);
+    void CleanTable(std::string dbname);
 
     void start();
     void stop();
