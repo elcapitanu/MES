@@ -5,7 +5,6 @@
 #include "lib/mes.hpp"
 #include "lib/tcp.hpp"
 #include "lib/opc-ua.hpp"
-#include "lib/database.hpp"
 
 int main(int argc, char **argv)
 {
@@ -18,7 +17,8 @@ int main(int argc, char **argv)
         MES messi(&soc, &op, &db);
         GUI gui(&messi, &soc, &key.input);
 
-        op.start();
+        //op.start();
+        op.start2();
         messi.start();
         key.start();
         gui.start();
@@ -27,6 +27,7 @@ int main(int argc, char **argv)
         while (key.input != 0x1b)
             ;
 
+        //op.stop();
         soc.stop();
         gui.stop();
         key.stop();
