@@ -100,14 +100,17 @@ void Database::readAlgorithm()
 {
 }
 
-void Database::saveMESmessage(char *msg, int day)
+void Database::saveMESmessage(char *msg, int day, int new_)
 {
     PGresult *result;
     std::string order;
     std::string str(msg);
     if (PQstatus(dbconn) == CONNECTION_OK)
     {
-        order = "INSERT INTO mesorder (day, message) VALUES ('" + std::to_string(day) + "','" + str + "');";
+        if(new_)
+            order = "INSERT INTO mesorder (day, message) VALUES ('" + std::to_string(day) + "','" + str + "');";
+        else
+            order = "UPDATE  mesorder SET message = '" + str + "' WHERE day = '" + std::to_string(day) + "' ;" ;
         result = PQexec(dbconn, order.c_str());
         PQclear(result);
     }

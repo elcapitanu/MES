@@ -28,7 +28,7 @@ public:
     int CheckIsEmpty();
     void print_db(std::string db_name);
     int InsertRequest(int x);
-    void saveMESmessage(char *msg, int day);
+    void saveMESmessage(char *msg, int day, int new_);
     char *getMESmessage(int *day);
 
     void start();

@@ -38,7 +38,7 @@ void MES::onMain()
             
             strcpy(msg, soc->message);
             parser(msg);
-            db->saveMESmessage(msg, day);
+            db->saveMESmessage(msg, day, 1);
             op->startDay();
         }
 
@@ -57,7 +57,7 @@ void MES::onMain()
             updateFactory();
 
             updateMessage();
-            db->saveMESmessage(msg, day);
+            db->saveMESmessage(msg, day, 0);
             RE_S0 = RE_S11 = RE_S16 = RE_S17 = RE_S18 = RE_OkP = FE_M1 = FE_M2 = FE_M3 = FE_M4 = false;
         }
         sleep(0.01);
