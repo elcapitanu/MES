@@ -24,8 +24,8 @@ public:
         bzero(&servaddr, sizeof(servaddr));
 
         servaddr.sin_family = AF_INET;
-        servaddr.sin_addr.s_addr = inet_addr("172.29.0.44");
-        servaddr.sin_port = htons(2223);
+        servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+        servaddr.sin_port = htons(4321);
 
         connected = false;
         newMessage = false;

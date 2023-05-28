@@ -105,7 +105,7 @@ void GUI::show()
     {
         cout << "\033[7;32m*********************Menu**********************\033[0m" << endl
              << endl
-             << "a. MES1" << endl
+             << "a. Feedback ERP" << endl
              << "b. Show statistics" << endl
              << "c. Show factory" << endl
              << endl
@@ -137,14 +137,9 @@ void GUI::show()
     }
     else if (display.state == 1)
     {
-        cout << "\033[7;31m*********************MES***********************\033[0m" << endl
-             << endl
-             << name << "      " << ctime(&date) << endl
-             << endl;
-
-        cout << "\033[7;31m***********************************************\033[0m" << endl
-             << "Server: " << soc->message << endl
-             << "\033[7;31m************Ainda não faço nada :)*************\033[0m" << endl;
+        cout << "\033[7;31m*******************Feedback********************\033[0m" << endl
+             << "ERP: " << soc->message << endl
+             << "\033[7;31m***********************************************\033[0m" << endl;
 
         cout << endl
              << "q. Return to MENU" << endl
@@ -269,7 +264,7 @@ void GUI::show()
 
         cout << "\033[7;36m***************************Factory**********************************\033[0m" << endl
              << endl
-             << "                    \033[7;37m Day: " << messi->day << " Progress: " << std::setprecision(2) << perc * 100.0f<< "% \033[0m" << endl
+             << "                    \033[7;37m Day: " << messi->day << " Progress: " << std::setprecision(3) << perc * 100.0f<< "% \033[0m" << endl
              << endl
              /* << "                        \033[7;37m   PROGRESS   \033[0m" << endl
              << "                        \033[7;37m  \033[0m   " << perc << "      \033[7;37m  \033[0m" << endl
@@ -321,7 +316,7 @@ void GUI::factory2map()
 
     for (int i = 0; i < 9; i++)
     {
-        if (perc >= (float)(i + 1.0f) / 9.0f)
+        if (perc >= (float)(i) / 9.0f)
         {
             if (perc >= 0.0f && perc < 0.34f)
                 sprintf(map.warehouse[i], "\033[7;32m");

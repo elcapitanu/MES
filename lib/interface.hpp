@@ -33,7 +33,6 @@ public:
         cout << "GUI: ola" << endl;
 #endif
 
-        name.append("Bernardo Gabriel");
     }
 
     ~GUI();
