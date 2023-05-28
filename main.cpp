@@ -4,8 +4,6 @@
 #include "lib/inputs.hpp"
 #include "lib/mes.hpp"
 #include "lib/tcp.hpp"
-#include "lib/opc-ua.hpp"
-#include "lib/database.hpp"
 
 int main(int argc, char **argv)
 {
@@ -13,27 +11,21 @@ int main(int argc, char **argv)
     {
         KEY key;
         Socket soc;
-        OpcUa op;
-        Database db;
-        MES messi(&soc, &op, &db);
+        MES messi(&soc);
         GUI gui(&messi, &soc, &key.input);
 
-        db.start();
-        op.start();
+        soc.start();
         messi.start();
         key.start();
         gui.start();
-        soc.start();
 
         while (key.input != 0x1b)
             ;
 
-        soc.stop();
         gui.stop();
         key.stop();
+        soc.stop();
         messi.stop();
-        op.stop();
-        db.stop();
 
         system("clear");
 

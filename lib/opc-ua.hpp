@@ -20,7 +20,7 @@ public:
 
     ~OpcUa();
 
-    void start();
+    bool start();
     void stop();
     void workPiece(int start, int final, int machine);
     void deliverPiece(int type);

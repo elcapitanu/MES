@@ -13,11 +13,11 @@ void GUI::onMain()
     cout << "GUI: tou vivo" << endl;
 #endif
 
-    display.state = 0;
+    display.state = 3;
 
     while (!stopRequested())
     {
-        if (refresh(messi->time_now) /* && if state is not a state to input long text */)
+        if (refresh(messi->time_now))
         {
             show();
         }
@@ -338,7 +338,7 @@ void GUI::factory2map()
         if (messi->fac.sensors[i])
             map.pos[i] = '#';
         else
-            map.pos[i] = ' ';
+            map.pos[i] = '#';
     }
 }
 

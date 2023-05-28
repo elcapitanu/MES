@@ -18,7 +18,6 @@ void Socket::onMain()
     while (initConnection() != 0)
         ;
 
-    cout << "connected bogays" << endl;
     connected = true;
 
     while (!stopRequested())

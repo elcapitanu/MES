@@ -16,10 +16,15 @@ private:
     std::string dbconn_str = "dbname=" + kDbName + " host=" + kDbHostIP +
                              " user=" + kDbUsername + " password=" + kDbPassword +
                              " connect_timeout=2";
-    int status;
 
 public:
+    Database();
+    ~Database();
+
     PGconn *dbconn = PQconnectdb(dbconn_str.c_str());
+
+    int start();
+    void stop();
 
     int connectDatabase();
     int checkProgressWorking();
@@ -32,11 +37,7 @@ public:
     char *getMESmessage(int *day);
     void CleanTable(std::string dbname);
 
-    void start();
-    void stop();
-
-    Database();
-    ~Database();
+    int status = -1;
 };
 
 #endif

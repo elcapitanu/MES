@@ -12,18 +12,26 @@ void MES::onMain()
 #if DEBUG_THR
     cout << "MES: tou vivo" << endl;
 #endif
-    while (!op->connected)
-        ;
-
-    if (db->checkProgressWorking() == -1)
+    bool commsOK = isConnected2PLC() & isConnected2DB() & isConnected2ERP();
+    while (!commsOK)
     {
-        // read from db following commands to procede floor work
-        strcpy(soc->message, db->getMESmessage(&day));
-        soc->newMessage = true;
+        op.start();
+        db.start();
+        commsOK = isConnected2PLC() & isConnected2DB() & isConnected2ERP();
+
+        if (stopRequested())
+            break;
     }
 
     while (!stopRequested())
     {
+        if (db.checkProgressWorking() == -1)
+        {
+            // read from db following commands to procede floor work
+            strcpy(soc->message, db.getMESmessage(&day));
+            soc->newMessage = true;
+        }
+        
         sleep(0.001);
         cout;
         if (soc->newMessage)
@@ -37,13 +45,13 @@ void MES::onMain()
 
             strcpy(msg, soc->message);
             parser(msg);
-            db->saveMESmessage(msg, day, 1);
-            op->startDay();
+            db.saveMESmessage(msg, day, 1);
+            op.startDay();
         }
 
         if (day)
         {
-            op->readSensors(fac.sensors);
+            op.readSensors(fac.sensors);
 
             risingEdges();
 
@@ -56,11 +64,16 @@ void MES::onMain()
             updateFactory();
 
             updateMessage();
-            db->saveMESmessage(msg, day, 0);
+
+            db.saveMESmessage(msg, day, 0);
+
             RE_S0 = RE_S11 = RE_S16 = RE_S17 = RE_S18 = RE_OkP = FE_M1 = FE_M2 = FE_M3 = FE_M4 = false;
         }
         sleep(0.01);
     }
+
+    op.stop();
+    db.stop();
 }
 
 void MES::parser(char *m)
@@ -136,80 +149,86 @@ void MES::savePieceWarehouse()
 
 void MES::sendOrder2PLC()
 {
-    if (isToActuate)
+    if (op.connected)
     {
-        if (state == 0) // update tools
+        if (isToActuate)
         {
-            op->changeTool(1, plan.tool[0]);
-            op->changeTool(2, plan.tool[1]);
-            op->changeTool(3, plan.tool[2]);
-            op->changeTool(4, plan.tool[3]);
-            op->startDelivery();
-            if (totaldeliv == 0)
-                op->startWork();
-        }
-        else if (state > 0 && state < 10) // deliver
-        {
-            if (plan.deliver[state - 1] > 0)
+            if (state == 0) // update tools
             {
-                op->deliverPiece(state);
-                cout << "peca entregar:  " << state << endl;
+                op.changeTool(1, plan.tool[0]);
+                op.changeTool(2, plan.tool[1]);
+                op.changeTool(3, plan.tool[2]);
+                op.changeTool(4, plan.tool[3]);
+                op.startDelivery();
+                if (totaldeliv == 0)
+                    op.startWork();
             }
-        }
-        else if (state > 9 && state < 17) // work
-        {
-            // verificar se ha pecas no armazem
-            cout << "state: " << state << " " << plan.work[state - 1 - 9] << endl;
-            if (plan.work[state - 1 - 9] > 0)
+            else if (state > 0 && state < 10) // deliver
             {
-                maq = chooseMachine(state - 9 + 2);
-                cout << "maq escolhida  " << maq << " status maq:" << fac.machines[maq - 1].free << endl;
-                op->workPiece(chooseStart(state - 9 + 2), state - 9 + 2, maq);
-                fac.machines[maq - 1].free = 0;
+                if (plan.deliver[state - 1] > 0)
+                {
+                    op.deliverPiece(state);
+                    cout << "peca entregar:  " << state << endl;
+                }
             }
+            else if (state > 9 && state < 17) // work
+            {
+                // verificar se ha pecas no armazem
+                cout << "state: " << state << " " << plan.work[state - 1 - 9] << endl;
+                if (plan.work[state - 1 - 9] > 0)
+                {
+                    maq = chooseMachine(state - 9 + 2);
+                    cout << "maq escolhida  " << maq << " status maq:" << fac.machines[maq - 1].free << endl;
+                    op.workPiece(chooseStart(state - 9 + 2), state - 9 + 2, maq);
+                    fac.machines[maq - 1].free = 0;
+                }
+            }
+            isToActuate = false;
         }
-        isToActuate = false;
     }
 }
 
 void MES::updateState()
 {
-    if (state == 0)
+    if (op.connected)
     {
-        state = 1;
-        isToActuate = true;
-    }
-    else if (state > 0 && state < 10)
-    {
-        if (RE_S0 && totaldeliv > 0)
+        if (state == 0)
         {
+            state = 1;
             isToActuate = true;
-            plan.deliver[state - 1]--;
-            totaldeliv--;
         }
-        if (totaldeliv == 0 && fac.sensors[34])
+        else if (state > 0 && state < 10)
         {
+            if (RE_S0 && totaldeliv > 0)
+            {
+                isToActuate = true;
+                plan.deliver[state - 1]--;
+                totaldeliv--;
+            }
+            if (totaldeliv == 0 && fac.sensors[34])
+            {
 
-            state = 10;
-            isToActuate = true;
+                state = 10;
+                isToActuate = true;
+            }
+            else if (plan.deliver[state - 1] == 0 && totaldeliv > 0)
+            {
+                state++;
+                isToActuate = true;
+            }
         }
-        else if (plan.deliver[state - 1] == 0 && totaldeliv > 0)
+        else if (state > 9 && state < 17)
         {
-            state++;
-            isToActuate = true;
-        }
-    }
-    else if (state > 9 && state < 17)
-    {
-        if (plan.work[state - 1 - 9] == 0 && fac.sensors[33])
-        {
-            state++;
-            isToActuate = true;
-        }
-        else if (RE_OkP)
-        {
-            isToActuate = true;
-            plan.work[state - 1 - 9]--;
+            if (plan.work[state - 1 - 9] == 0 && fac.sensors[33])
+            {
+                state++;
+                isToActuate = true;
+            }
+            else if (RE_OkP)
+            {
+                isToActuate = true;
+                plan.work[state - 1 - 9]--;
+            }
         }
     }
 }
@@ -401,12 +420,12 @@ bool MES::isConnected2ERP()
 
 bool MES::isConnected2PLC()
 {
-    return op->connected;
+    return op.connected;
 }
 
 bool MES::isConnected2DB()
 {
-    if (db->status > 0)
+    if (db.status > 0)
         return true;
 
     return false;

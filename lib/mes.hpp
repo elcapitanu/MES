@@ -46,8 +46,8 @@ struct dayPlan
 class MES : public Tasks::Thread
 {
 public:
-    MES(Socket *s, OpcUa *o, Database *d)
-        : soc(s), op(o), db(d)
+    MES(Socket *s)
+        : soc(s)
     {
 #if DEBUG_THR
         cout << "MES: ola" << endl;
@@ -87,8 +87,9 @@ private:
     void onMain() override;
 
     Socket *soc;
-    OpcUa *op;
-    Database *db;
+    
+    OpcUa op;
+    Database db;
 
     uint64_t init_t;
 
@@ -126,10 +127,6 @@ private:
     void risingEdges();
     void updateMachinesStatus();
     void updateMessage();
-
-
 };
-
-
 
 #endif

@@ -135,24 +135,33 @@ OpcUa::~OpcUa()
 #endif
 }
 
-void OpcUa::start()
+bool OpcUa::start()
 {
-    client = UA_Client_new();
-    UA_ClientConfig_setDefault(UA_Client_getConfig(client));
+    if (!connected)
+    {
+        client = UA_Client_new();
+        UA_ClientConfig_setDefault(UA_Client_getConfig(client));
 
-    if (OpcUaConnect())
-        connected = true;
+        if (OpcUaConnect())
+            connected = true;
+        else
+            connected = false;
+    }
+
+    return connected;
 }
 
 void OpcUa::stop()
 {
     UA_Client_delete(client);
 }
+
 static volatile UA_Boolean running = true;
 
 int OpcUa::OpcUaConnect()
 {
     UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://localhost:4840");
+
     if (retval != UA_STATUSCODE_GOOD)
         return -1;
 
@@ -164,10 +173,13 @@ bool OpcUa::OpcUaReadVariableBool(int nodeid, char *stringid)
     UA_Variant *val = UA_Variant_new();
     UA_StatusCode retval = UA_Client_readValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), val);
 
-    if (retval == UA_STATUSCODE_GOOD)
-        return *(UA_Boolean *)val->data;
+    bool result = *(UA_Boolean *)val->data;
 
     UA_Variant_delete(val);
+
+    if (retval == UA_STATUSCODE_GOOD)
+        return result;
+
     return false;
 }
 
@@ -176,10 +188,12 @@ int OpcUa::OpcUaReadVariableInt16(int nodeid, char *stringid)
     UA_Variant *val = UA_Variant_new();
     UA_StatusCode retval = UA_Client_readValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), val);
 
-    if (retval == UA_STATUSCODE_GOOD)
-        return *(UA_Int16 *)val->data;
+    int result = *(UA_Int16 *)val->data;
 
     UA_Variant_delete(val);
+
+    if (retval == UA_STATUSCODE_GOOD)
+        return result;
 
     return -1;
 }
@@ -189,10 +203,12 @@ int OpcUa::OpcUaReadVariableInt32(int nodeid, char *stringid)
     UA_Variant *val = UA_Variant_new();
     UA_StatusCode retval = UA_Client_readValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), val);
 
-    if (retval == UA_STATUSCODE_GOOD)
-        return *(UA_Int32 *)val->data;
+    int result = *(UA_Int32 *)val->data;
 
     UA_Variant_delete(val);
+
+    if (retval == UA_STATUSCODE_GOOD)
+        return result;
 
     return -1;
 }
@@ -202,10 +218,12 @@ int OpcUa::OpcUaReadVariableInt64(int nodeid, char *stringid)
     UA_Variant *val = UA_Variant_new();
     UA_StatusCode retval = UA_Client_readValueAttribute(client, UA_NODEID_STRING(nodeid, stringid), val);
 
-    if (retval == UA_STATUSCODE_GOOD)
-        return *(UA_Int64 *)val->data;
+    int result = *(UA_Int64 *)val->data;
 
     UA_Variant_delete(val);
+
+    if (retval == UA_STATUSCODE_GOOD)
+        return result;
 
     return -1;
 }
@@ -330,8 +348,9 @@ void OpcUa::changeTool(int machine, int newTool)
 
 void OpcUa::readSensors(bool *sensors)
 {
-    for (int i = 0; i < 35; i++)
-        sensors[i] = OpcUaReadVariableBool(4, OPCUA_SENSORS[i]);
+    if (connected)
+        for (int i = 0; i < 35; i++)
+            sensors[i] = OpcUaReadVariableBool(4, OPCUA_SENSORS[i]);
 
     return;
 }
@@ -339,7 +358,8 @@ void OpcUa::readSensors(bool *sensors)
 // reset sinais
 void OpcUa::startDay()
 {
-    OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], 5);
+    if (connected)
+        OpcUaWriteVariableInt16(4, OPCUA_VARIABLES[OPCUA_M], 5);
 }
 
 void OpcUa::startWork()
