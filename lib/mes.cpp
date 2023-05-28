@@ -480,7 +480,7 @@ void MES::risingEdges()
 
 void MES::updateMachinesStatus()
 {
-    int time;
+    //int time;
     if (FE_M1)
     {
         fac.machines[1 - 1].free = 1;
