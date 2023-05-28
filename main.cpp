@@ -18,6 +18,7 @@ int main(int argc, char **argv)
         MES messi(&soc, &op, &db);
         GUI gui(&messi, &soc, &key.input);
 
+        db.start();
         op.start();
         messi.start();
         key.start();
@@ -27,11 +28,12 @@ int main(int argc, char **argv)
         while (key.input != 0x1b)
             ;
 
-        op.stop();
         soc.stop();
         gui.stop();
         key.stop();
         messi.stop();
+        op.stop();
+        db.stop();
 
         system("clear");
 

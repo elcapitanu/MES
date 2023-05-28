@@ -31,6 +31,9 @@ public:
     void saveMESmessage(char *msg, int day);
     char *getMESmessage(int *day);
 
+    void start();
+    void stop();
+
     Database();
     ~Database();
 };
