@@ -12,6 +12,7 @@ Database::~Database()
 #if DEBUG_THR
     cout << "Database: adeus" << endl;
 #endif
+    stop();
 }
 
 void Database::start()
@@ -135,6 +136,8 @@ char *Database::getMESmessage(int *day)
         order = "SELECT * FROM mesorder ;";
         result = PQexec(dbconn, order.c_str());
         int last = PQntuples(result);
+        if(last == 0)
+            return NULL;
 
         char *message = PQgetvalue(result, last - 1, 1);
         (*day) = atoi(PQgetvalue(result, last - 1, 0));

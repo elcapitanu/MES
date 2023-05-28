@@ -38,8 +38,12 @@ void MES::onMain()
     if (db.checkProgressWorking() == -1)
     {
         // read from db following commands to procede floor work
-        strcpy(soc->message, db.getMESmessage(&day));
-        soc->newMessage = true;
+        //strcpy(soc->message, db.getMESmessage(&day));
+        if(soc->message != NULL){    
+            soc->newMessage = true;
+            day--;
+        }
+        cout << " msg: " << soc->message;
     }
 
     while (!stopRequested())
