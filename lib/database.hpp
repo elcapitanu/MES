@@ -23,10 +23,10 @@ public:
 
     PGconn *dbconn = PQconnectdb(dbconn_str.c_str());
 
-    int start();
+    void start();
     void stop();
 
-    int connectDatabase();
+    bool connectDatabase();
     int checkProgressWorking();
     void writeAlgorithm();
     void readAlgorithm();
@@ -38,7 +38,7 @@ public:
     void CleanTable(std::string dbname);
 
     int status = -1;
-    int connected = 0;
+    bool connected = false;
 };
 
 #endif

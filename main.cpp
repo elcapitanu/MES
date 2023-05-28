@@ -26,8 +26,8 @@ int main(int argc, char **argv)
         key.stop();
         soc.stop();
         messi.stop();
-
-        //system("clear");
+        
+        system("clear");
 
         return 0;
     }

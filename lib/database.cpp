@@ -14,15 +14,9 @@ Database::~Database()
 #endif
 }
 
-int Database::start()
+void Database::start()
 {
-   
-    while (!connectDatabase())
-        cout << "Not connected to Database\n";
-    
-    connected = 1;
-
-    return 1;
+    connected = connectDatabase();
 }
 
 void Database::stop()
@@ -39,9 +33,10 @@ void Database::stop()
         PQclear(result);
     }
 
+    connected = false;
 }
 
-int Database::connectDatabase()
+bool Database::connectDatabase()
 {
     PGresult *result;
     std::string order;
@@ -51,10 +46,10 @@ int Database::connectDatabase()
         PQclear(result);
         result = PQexec(dbconn, "SHOW search_path;");
         PQclear(result);
-        return 1;
+        return true;
     }
     else
-        return 0;
+        return false;
 }
 
 int Database::checkProgressWorking()
@@ -70,6 +65,8 @@ int Database::checkProgressWorking()
         dbStatus = atoi(PQgetvalue(result, 0, 0));
         PQclear(result);
     }
+    else
+        connected = false;
 
     if (status == -1 && dbStatus == 1)
     { // previously working
@@ -87,6 +84,9 @@ int Database::checkProgressWorking()
             result = PQexec(dbconn, order.c_str());
             PQclear(result);
         }
+        else
+            connected = false;
+
         return 1;
     }
     if (status && dbStatus)
@@ -120,11 +120,13 @@ void Database::saveMESmessage(char *msg, int day, int new_)
         result = PQexec(dbconn, order.c_str());
         PQclear(result);
     }
+    else
+        connected = false;
 }
 
 char *Database::getMESmessage(int *day)
 {
-    
+
     PGresult *result;
     std::string order;
 
@@ -140,7 +142,9 @@ char *Database::getMESmessage(int *day)
         PQclear(result);
         return message;
     }
-    
+    else
+        connected = false;
+
     return NULL;
 }
 
@@ -155,5 +159,6 @@ void Database::CleanTable(std::string dbname)
         result = PQexec(dbconn, order.c_str());
         PQclear(result);
     }
-    
+    else
+        connected = false;
 }

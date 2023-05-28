@@ -154,6 +154,8 @@ bool OpcUa::start()
 void OpcUa::stop()
 {
     UA_Client_delete(client);
+
+    connected = false;
 }
 
 static volatile UA_Boolean running = true;
