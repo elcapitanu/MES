@@ -10,7 +10,7 @@
 #include <open62541/client_subscriptions.h>
 #include <open62541/plugin/log_stdout.h>
 
-class OpcUa
+class OpcUa : public Tasks::Thread
 {
 public:
     OpcUa()
@@ -22,11 +22,11 @@ public:
 
     ~OpcUa();
 
-    void start();
     void workPiece(int start, int final, int machine);
     void deliverPiece(int type);
     void changeTool(int machine, int newTool);
     void readSensors(bool *sensors);
+    void start2();
     void startDelivery();
     void startDay();
     void startWork();
@@ -38,6 +38,13 @@ public:
 
 
 private:
+    inline std::string getName() override
+    {
+        return "OPCUA";
+    }
+
+    void onMain() override;
+
     UA_Client *client;
 
     int OpcUaConnect();
