@@ -121,6 +121,7 @@ private:
     int machineTransition(int machine);
     void risingEdges();
     void updateMachinesStatus();
+    void updateMessage();
 
 
 };

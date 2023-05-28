@@ -25,6 +25,8 @@ void MES::onMain()
 
     while (!stopRequested())
     {
+        sleep(0.001);
+        cout;
         if (soc->newMessage)
         {
             day++;
@@ -53,6 +55,9 @@ void MES::onMain()
             updateState();
 
             updateFactory();
+
+            updateMessage();
+            db->saveMESmessage(msg, day);
             RE_S0 = RE_S11 = RE_S16 = RE_S17 = RE_S18 = RE_OkP = FE_M1 = FE_M2 = FE_M3 = FE_M4 = false;
         }
         sleep(0.01);
@@ -354,4 +359,30 @@ void MES::updateMachinesStatus()
         fac.machines[3-1].free = 1;
     if(FE_M4)
         fac.machines[4-1].free = 1;
+}
+
+void MES::updateMessage()
+{
+    int pos = 0;
+    while (msg[pos++] != 'W')
+        ;
+
+    while (msg[pos] != 'B')
+    {
+        msg[pos+1] = char(plan.work[msg[pos] - '0' - 1 - 2]) + '0';
+        pos += 2;
+    }
+    pos++;
+    while (msg[pos] != 'D')
+    {
+        msg[pos+1] = char(plan.buy[msg[pos] - '0' - 1]) + '0';
+        pos += 2;
+    }
+    pos++;
+    while (msg[pos] != 'M')
+    {
+        msg[pos+1] = char(plan.deliver[msg[pos] - '0' - 1]) + '0';
+        pos += 2;
+    }
+
 }
