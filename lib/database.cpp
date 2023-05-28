@@ -27,6 +27,7 @@ void Database::stop()
     PGresult *result;
     std::string order;
     CleanTable("mesorder");
+    UpdateDefault();
     if (PQstatus(dbconn) == CONNECTION_OK)
     {
         order = "Update requests \n SET status = -1;";
@@ -164,4 +165,159 @@ void Database::CleanTable(std::string dbname)
     }
     else
         connected = false;
+}
+
+
+int Database::UpdateTablePiece(int piece[9]){
+    PGresult* result;
+    std::string order;
+    if (PQstatus(dbconn) == CONNECTION_OK) {
+        for(int i=1; i<10; i++){
+            order = "UPDATE table_piece \n SET number_total_piece ='" + std::to_string(piece[i-1]) + 
+                    "'WHERE piece = '" + std::to_string(i) + "';";
+            result = PQexec(dbconn, order.c_str());
+            PQclear(result);
+        }
+        return 1;
+    }
+    return -1;
+}
+
+int Database::UpdateTableDelivery(int delivery[2]){
+    PGresult* result;
+    std::string order;
+    if (PQstatus(dbconn) == CONNECTION_OK) {
+
+        std::string order = "UPDATE table_delivery SET delivered_1 = " + std::to_string(delivery[0]) +", delivered_2 = " + std::to_string(delivery[1]) + ";";
+        result = PQexec(dbconn, order.c_str());
+        PQclear(result);
+
+        return 1;
+    }
+    return -1;
+}
+
+int Database::UpdateTableMachine(int machine, int tool, int optime, int pieces[7]){
+    PGresult* result;
+    std::string order;
+    if (PQstatus(dbconn) == CONNECTION_OK) {
+
+        order = "UPDATE table_machine SET tool = " + std::to_string(tool) +
+                            ", total_op_time = " + std::to_string(optime) +
+                            ", piece_3 = " + std::to_string(pieces[0]) +
+                            ", piece_4 = " + std::to_string(pieces[1]) +
+                            ", piece_5 = " + std::to_string(pieces[2]) +
+                            ", piece_6 = " + std::to_string(pieces[3]) +
+                            ", piece_7 = " + std::to_string(pieces[4]) +
+                            ", piece_8 = " + std::to_string(pieces[5]) +
+                            ", piece_9 = " + std::to_string(pieces[6]) +
+                            " WHERE machine = " + std::to_string(machine) + " ;";
+
+        result = PQexec(dbconn, order.c_str());
+        PQclear(result);
+
+        return 1;
+    }
+    return -1;
+}
+
+void Database::GetTablePiece(int p[9]) {
+    PGresult* result;
+    std::string order;
+    if (PQstatus(dbconn) == CONNECTION_OK) {
+        order = "SELECT number_total_piece FROM table_piece;";
+        result = PQexec(dbconn, order.c_str());
+
+        for (int i = 0; i < 9; i++) {
+            p[i] = atoi(PQgetvalue(result, i, 0));
+        }
+        PQclear(result);
+
+        return;
+    }
+    return ;
+}
+
+int Database::GetTableDelivery(int dock) {
+    PGresult* result;
+    std::string order;
+    if (PQstatus(dbconn) == CONNECTION_OK) {
+        order = "SELECT * FROM table_delivery;";
+        result = PQexec(dbconn, order.c_str());
+
+        int pieces = atoi(PQgetvalue(result, 0, dock-1));
+
+        PQclear(result);
+
+        return pieces;
+    }
+    return 0;
+}
+
+void Database::GetTableMachine(int machine, int *tool, int *tottime, int piece[7]) {
+    PGresult* result;
+    std::string order;
+    if (PQstatus(dbconn) == CONNECTION_OK) {
+        order = "SELECT tool, total_op_time, piece_3, piece_4, piece_5, piece_6, piece_7, piece_8, piece_9 FROM table_machine WHERE machine = " + std::to_string(machine) + ";";
+        result = PQexec(dbconn, order.c_str());
+
+        int* pieces = new int[9];
+        for (int i = 0; i < 9; i++) {
+            pieces[i] = atoi(PQgetvalue(result, 0, i));
+        }
+        *tool = pieces[0];
+        *tottime = pieces[1];
+        for (int i = 0; i < 7; i++) {
+            piece[i] = pieces[i+2];
+        }
+
+        PQclear(result);
+        return;
+    
+        PQclear(result);
+    }
+    return;
+}
+
+int Database::UpdateDefault(){
+    PGresult* result;
+    std::string order;
+
+    if (PQstatus(dbconn) == CONNECTION_OK) {
+
+        std::string order;
+        order = "UPDATE table_delivery SET delivered_1 = " + std::to_string(0) +", delivered_2 = " + std::to_string(0) + ";";
+        result = PQexec(dbconn, order.c_str());
+        PQclear(result);
+
+        for(int i=1; i<10; i++){
+            order = "UPDATE table_piece \n SET number_total_piece ='" + std::to_string(0) + 
+                        "'WHERE piece = '" + std::to_string(i) + "';";
+            result = PQexec(dbconn, order.c_str());
+            PQclear(result);
+        }
+
+        for(int i=1; i<5; i++){
+            order = "UPDATE table_machine SET tool = " + std::to_string(1) +
+                    ", total_op_time = " + std::to_string(0) +
+                    ", piece_3 = " + std::to_string(0) +
+                    ", piece_4 = " + std::to_string(0) +
+                    ", piece_5 = " + std::to_string(0) +
+                    ", piece_6 = " + std::to_string(0) +
+                    ", piece_7 = " + std::to_string(0) +
+                    ", piece_8 = " + std::to_string(0) +
+                    ", piece_9 = " + std::to_string(0) +
+                    " WHERE machine = " + std::to_string(i) + " ;";
+
+            result = PQexec(dbconn, order.c_str());
+            PQclear(result);
+            }
+
+        order = "UPDATE table_machine SET tool = " + std::to_string(2) + " WHERE machine = 3;";
+        result = PQexec(dbconn, order.c_str());
+        PQclear(result);
+
+        return 1;
+    }
+    return -1;
 }

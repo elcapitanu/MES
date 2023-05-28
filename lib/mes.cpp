@@ -27,6 +27,16 @@ void MES::onMain()
     if (db.checkProgressWorking() == -1)
     {
         // read from db following commands to procede floor work
+        fac.docks[0].totalUnloadedPieces = db.GetTableDelivery(1);
+        fac.docks[1].totalUnloadedPieces = db.GetTableDelivery(2);
+
+        db.GetTableMachine(1, &fac.machines[0].tool, &fac.machines[0].totalOperatingTime, fac.machines[0].operatedPieces);
+        db.GetTableMachine(2, &fac.machines[1].tool, &fac.machines[1].totalOperatingTime, fac.machines[1].operatedPieces);
+        db.GetTableMachine(3, &fac.machines[2].tool, &fac.machines[2].totalOperatingTime, fac.machines[2].operatedPieces);
+        db.GetTableMachine(4, &fac.machines[3].tool, &fac.machines[3].totalOperatingTime, fac.machines[3].operatedPieces);
+
+        db.GetTablePiece(fac.p);
+
         strcpy(soc->message, db.getMESmessage(&day));
         if (soc->message != NULL)
         {
@@ -38,7 +48,7 @@ void MES::onMain()
     while (!stopRequested())
     {
         sleep(0.001);
-        cout;
+        cout << "";
         if (soc->newMessage)
         {
             day++;
@@ -73,6 +83,14 @@ void MES::onMain()
             updateMessage();
 
             db.saveMESmessage(msg, day, 0);
+            
+            int docksx[2] = {fac.docks[0].totalUnloadedPieces, fac.docks[1].totalUnloadedPieces };
+            db.UpdateTableDelivery(docksx);
+            db.UpdateTableMachine(1, fac.machines[0].tool, fac.machines[0].totalOperatingTime, fac.machines[0].operatedPieces);
+            db.UpdateTableMachine(2, fac.machines[1].tool, fac.machines[1].totalOperatingTime, fac.machines[1].operatedPieces);
+            db.UpdateTableMachine(3, fac.machines[2].tool, fac.machines[2].totalOperatingTime, fac.machines[2].operatedPieces);
+            db.UpdateTableMachine(4, fac.machines[3].tool, fac.machines[3].totalOperatingTime, fac.machines[3].operatedPieces);
+            db.UpdateTablePiece(fac.p);
 
             RE_S0 = RE_S11 = RE_S16 = RE_S17 = RE_S18 = RE_OkP = FE_M1 = FE_M2 = FE_M3 = FE_M4 = false;
 
@@ -143,6 +161,10 @@ void MES::updateFactory()
     for (int i = 0; i < 4; i++)
         fac.machines[i].tool = plan.tool[i];
 
+    fac.docks[0].totalUnloadedPieces = op.OpcUaReadVariableInt16(4, (char*)"|var|CODESYS Control Win V3 x64.Application.OPC.dock1");
+    fac.docks[1].totalUnloadedPieces = op.OpcUaReadVariableInt16(4, (char*)"|var|CODESYS Control Win V3 x64.Application.OPC.dock2");
+    fac.remSpaceWar = 32 - op.OpcUaReadVariableInt16(4, (char*)"|var|CODESYS Control Win V3 x64.Application.OPC.arm");
+
     return;
 }
 
@@ -155,11 +177,6 @@ void MES::addPiece(int type)
 void MES::updateMachine(int machine, int newTool)
 {
     fac.machines[machine - 1].tool = newTool;
-}
-
-void MES::savePieceWarehouse()
-{
-    fac.remSpaceWar--;
 }
 
 void MES::sendOrder2PLC()
@@ -179,7 +196,7 @@ void MES::sendOrder2PLC()
             }
             else if (state > 0 && state < 10) // deliver
             {
-                if (plan.deliver[state - 1] > 0)
+                if (plan.deliver[state - 1] > 0 && fac.p[state - 1]>0)
                 {
                     op.deliverPiece(state);
                     fac.p[state - 1]--;
@@ -189,9 +206,9 @@ void MES::sendOrder2PLC()
 
             else if (state > 9 && state < 18) // work
             {
-                // verificar se ha pecas no armazem
+
                 if(state == 17){
-                    if(plan.work[7] > 0)
+                    if(plan.work[7] > 0 && fac.p[0]>0)
                     {
                         if (notSameSide(chooseMachine(6)))
                         {
@@ -215,7 +232,7 @@ void MES::sendOrder2PLC()
                 }
                 else
                 {
-                    if(plan.work[state - 1 - 9] > 0){
+                    if(plan.work[state - 1 - 9] > 0 && fac.p[chooseStart(state - 9 + 2) - 1]>0){
                         if (notSameSide(chooseMachine(state - 9 + 2)))
                         {
                             maq = chooseMachine(state - 9 + 2);
@@ -463,14 +480,36 @@ void MES::risingEdges()
 
 void MES::updateMachinesStatus()
 {
+    int time;
     if (FE_M1)
+    {
         fac.machines[1 - 1].free = 1;
+        time = op.OpcUaReadVariableInt64(4, (char*)"|var|CODESYS Control Win V3 x64.Application.GVL.duration_M1");
+        sendTotalProductionTime2ERP(machpiece[0], time);
+        machpiece[0] = 0;
+    }
     if (FE_M2)
+    {
         fac.machines[2 - 1].free = 1;
+        time = op.OpcUaReadVariableInt64(4, (char*)"|var|CODESYS Control Win V3 x64.Application.GVL.duration_M2");
+        sendTotalProductionTime2ERP(machpiece[1], time);
+        machpiece[1] = 0;
+    }
     if (FE_M3)
+    {
         fac.machines[3 - 1].free = 1;
+        time = op.OpcUaReadVariableInt64(4, (char*)"|var|CODESYS Control Win V3 x64.Application.GVL.duration_M3");
+        sendTotalProductionTime2ERP(machpiece[2], time);
+        machpiece[2] = 0;
+    }
     if (FE_M4)
+    {
         fac.machines[4 - 1].free = 1;
+        time = op.OpcUaReadVariableInt64(4, (char*)"|var|CODESYS Control Win V3 x64.Application.GVL.duration_M4");
+        sendTotalProductionTime2ERP(machpiece[3], time);
+        machpiece[3] = 0;
+    }
+
 }
 
 void MES::updateMessage()
@@ -481,7 +520,7 @@ void MES::updateMessage()
 
     while (msg[pos] != 'B')
     {
-        if(msg[pos] == 1)
+        if(msg[pos] - '0' == 1)
             msg[pos + 1] = char(plan.work[7]) + '0';
         else
             msg[pos + 1] = char(plan.work[msg[pos] - '0' - 1 - 2]) + '0';
@@ -545,4 +584,11 @@ bool MES::notSameSide(int next)
     } 
 
     return false;
+}
+
+void MES::sendTotalProductionTime2ERP(int type, int time)
+{
+    char message[128];
+    sprintf(message, "@P%d,%d,*", type,time);
+    soc->sendMessage(message);
 }

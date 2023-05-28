@@ -41,9 +41,11 @@ public:
     int UpdateTableDelivery(int delivery[2]);
     int UpdateTableMachine(int machine, int tool, int optime, int pieces[7]);
 
-    int *GetTablePiece();
-    int *GetTableDelivery();
-    int *GetTableMachine(int Machine);
+    int UpdateDefault();
+
+    void GetTablePiece(int p[9]);
+    int GetTableDelivery(int dock);
+    void GetTableMachine(int machine, int *tool, int *tottime, int piece[7]);
     
     int status = -1;
     bool connected = false;

@@ -91,8 +91,12 @@ char OPCUA_VARIABLES[27][58] = {"|var|CODESYS Control Win V3 x64.Application.OPC
 #define OPCUA_CT8s0 32
 #define OPCUA_OkProd 33
 #define OPCUA_EndDel 34
+#define OPCUA_Dock1 35
+#define OPCUA_Dock2 36
+#define OPCUA_Wareh 37
 
-char OPCUA_SENSORS[35][58] = {"|var|CODESYS Control Win V3 x64.Application.GVL.AT1s0",
+
+char OPCUA_SENSORS[38][58] = {"|var|CODESYS Control Win V3 x64.Application.GVL.AT1s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.ST1s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.ST2s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.PT1s0",
@@ -126,7 +130,10 @@ char OPCUA_SENSORS[35][58] = {"|var|CODESYS Control Win V3 x64.Application.GVL.A
                               "|var|CODESYS Control Win V3 x64.Application.GVL.CT7s0",
                               "|var|CODESYS Control Win V3 x64.Application.GVL.CT8s0",
                               "|var|CODESYS Control Win V3 x64.Application.OPC.Ok_prod",
-                              "|var|CODESYS Control Win V3 x64.Application.OPC.end_delv"};
+                              "|var|CODESYS Control Win V3 x64.Application.OPC.end_delv",
+                              "|var|CODESYS Control Win V3 x64.Application.OPC.dock1",
+                              "|var|CODESYS Control Win V3 x64.Application.OPC.dock2",
+                              "|var|CODESYS Control Win V3 x64.Application.OPC.arm"};
 
 OpcUa::~OpcUa()
 {
@@ -134,7 +141,7 @@ OpcUa::~OpcUa()
     cout << "OpcUa: adeus" << endl;
 #endif
 
-    stop();
+    //stop();
 }
 
 bool OpcUa::start()

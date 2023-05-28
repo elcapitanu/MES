@@ -245,8 +245,6 @@ void GUI::show()
              << endl;
 
         cout << "                         Unloaded Pieces" << endl
-             << "            | P1: " << messi->fac.docks[dock - 1].unloadedPieces[0] << " | P2: " << messi->fac.docks[dock - 1].unloadedPieces[1] << " | P3: " << messi->fac.docks[dock - 1].unloadedPieces[2] << " | P4: " << messi->fac.docks[dock - 1].unloadedPieces[3] << " | P5: " << messi->fac.docks[dock - 1].unloadedPieces[4] << " |" << endl
-             << "                | P6: " << messi->fac.docks[dock - 1].unloadedPieces[5] << " | P7: " << messi->fac.docks[dock - 1].unloadedPieces[6] << " | P8: " << messi->fac.docks[dock - 1].unloadedPieces[7] << " | P9: " << messi->fac.docks[dock - 1].unloadedPieces[8] << " |" << endl
              << "                           | Total: " << messi->fac.docks[dock - 1].totalUnloadedPieces << " |" << endl
              << endl;
 
@@ -267,15 +265,15 @@ void GUI::show()
         float perc = 0;
         
         if (messi->plan.totalOrders != 0)
-            perc = (messi->plan.totalOrders - messi->plan.remOrders) / messi->plan.totalOrders;
+            perc = (float)(((float)messi->plan.totalOrders-(float)messi->plan.remOrders)/(float)messi->plan.totalOrders);
 
         cout << "\033[7;36m***************************Factory**********************************\033[0m" << endl
              << endl
-             << "                           \033[7;37m Day: " << messi->day << " \033[0m" << endl
+             << "                    \033[7;37m Day: " << messi->day << " Progress: " << std::setprecision(2) << perc * 100.0f<< "% \033[0m" << endl
              << endl
-             << "                        \033[7;37m   PROGRESS   \033[0m" << endl
+             /* << "                        \033[7;37m   PROGRESS   \033[0m" << endl
              << "                        \033[7;37m  \033[0m   " << perc << "      \033[7;37m  \033[0m" << endl
-             << "                        \033[7;37m              \033[0m" << endl
+             << "                        \033[7;37m              \033[0m" << endl */
              << endl
              << "\033[7;36m********************************************************************\033[0m" << endl
              << endl;

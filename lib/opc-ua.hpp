@@ -37,14 +37,14 @@ public:
 
     int time4piece(int final);
 
+    int OpcUaReadVariableInt16(int nodeid, char *stringid);
+    int OpcUaReadVariableInt64(int nodeid, char *stringid);
 private:
     UA_Client *client;
 
     int OpcUaConnect();
     bool OpcUaReadVariableBool(int nodeid, char *stringid);
-    int OpcUaReadVariableInt16(int nodeid, char *stringid);
     int OpcUaReadVariableInt32(int nodeid, char *stringid);
-    int OpcUaReadVariableInt64(int nodeid, char *stringid);
     void OpcUaWriteVariableBool(int nodeid, char *stringid, bool value);
     void OpcUaWriteVariableInt16(int nodeid, char *stringid, u_int16_t value);
     void OpcUaWriteVariableInt32(int nodeid, char *stringid, u_int32_t value);

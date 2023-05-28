@@ -37,6 +37,7 @@ public:
     {
         return connected;
     }
+    int sendMessage(char *message);
 
     bool newMessage;
 
@@ -54,7 +55,6 @@ private:
     struct sockaddr_in servaddr;
     int clientSd;
     int initConnection(void);
-    int sendMessage(uint16_t orders);
     int receiveMessage();
 
     bool connected;

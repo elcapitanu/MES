@@ -5,7 +5,7 @@
 #include "tcp.hpp"
 #include "opc-ua.hpp"
 #include "database.hpp"
-
+#include <iomanip>
 #include "threads/Mthread.hpp"
 
 struct machine
@@ -19,7 +19,6 @@ struct machine
 
 struct dock
 {
-    int unloadedPieces[9] = {};
     int totalUnloadedPieces = 0;
 };
 
@@ -112,12 +111,13 @@ private:
     bool aux = false;
     bool next = false;
 
+    int machpiece[4]={};
+
     void parser(char *m);
     void planDay();
     void updateFactory();
     void addPiece(int type);
     void updateMachine(int machine, int newTool);
-    void savePieceWarehouse();
     void sendOrder2PLC();
     void updateState();
     int toolNeed(int final);
@@ -128,6 +128,8 @@ private:
     void updateMachinesStatus();
     void updateMessage();
     bool notSameSide(int next);
+    void sendTotalProductionTime2ERP(int type, int time);
+
 };
 
 #endif

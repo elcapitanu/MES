@@ -35,13 +35,7 @@ int Socket::initConnection(void)
     return connect(clientSd, (struct sockaddr *)&servaddr, sizeof(servaddr));
 }
 
-int Socket::sendMessage(uint16_t orders)
-{
-    char msg[1500];
-    bzero(msg, sizeof(msg));
-    sprintf(msg, "%hd", orders);
-    return send(clientSd, (char *)&msg, strlen(msg), MSG_DONTWAIT);
-}
+
 
 int Socket::receiveMessage()
 {
@@ -64,4 +58,13 @@ int Socket::receiveMessage()
         connected = false;
 
     return bytesRead;
+}
+
+
+int Socket::sendMessage(char *message)
+{
+    char msg[128];
+    bzero(msg, sizeof(msg));
+    strcpy(msg, message);
+    return send(clientSd, (char*)&msg, strlen(msg), MSG_DONTWAIT);
 }
