@@ -83,7 +83,7 @@ void MES::onMain()
             updateMessage();
 
             db.saveMESmessage(msg, day, 0);
-            
+
             int docksx[2] = {fac.docks[0].totalUnloadedPieces, fac.docks[1].totalUnloadedPieces };
             db.UpdateTableDelivery(docksx);
             db.UpdateTableMachine(1, fac.machines[0].tool, fac.machines[0].totalOperatingTime, fac.machines[0].operatedPieces);
@@ -484,29 +484,29 @@ void MES::updateMachinesStatus()
     if (FE_M1)
     {
         fac.machines[1 - 1].free = 1;
-        time = op.OpcUaReadVariableInt64(4, (char*)"|var|CODESYS Control Win V3 x64.Application.GVL.duration_M1");
-        sendTotalProductionTime2ERP(machpiece[0], time);
+        //time = op.OpcUaReadVariableInt64(4, (char*)"|var|CODESYS Control Win V3 x64.Application.GVL.duration_M1");
+        //sendTotalProductionTime2ERP(machpiece[0], time);
         machpiece[0] = 0;
     }
     if (FE_M2)
     {
         fac.machines[2 - 1].free = 1;
-        time = op.OpcUaReadVariableInt64(4, (char*)"|var|CODESYS Control Win V3 x64.Application.GVL.duration_M2");
-        sendTotalProductionTime2ERP(machpiece[1], time);
+        //time = op.OpcUaReadVariableInt64(4, (char*)"|var|CODESYS Control Win V3 x64.Application.GVL.duration_M2");
+        //sendTotalProductionTime2ERP(machpiece[1], time);
         machpiece[1] = 0;
     }
     if (FE_M3)
     {
         fac.machines[3 - 1].free = 1;
-        time = op.OpcUaReadVariableInt64(4, (char*)"|var|CODESYS Control Win V3 x64.Application.GVL.duration_M3");
-        sendTotalProductionTime2ERP(machpiece[2], time);
+        //time = op.OpcUaReadVariableInt64(4, (char*)"|var|CODESYS Control Win V3 x64.Application.GVL.duration_M3");
+        //sendTotalProductionTime2ERP(machpiece[2], time);
         machpiece[2] = 0;
     }
     if (FE_M4)
     {
         fac.machines[4 - 1].free = 1;
-        time = op.OpcUaReadVariableInt64(4, (char*)"|var|CODESYS Control Win V3 x64.Application.GVL.duration_M4");
-        sendTotalProductionTime2ERP(machpiece[3], time);
+        //time = op.OpcUaReadVariableInt64(4, (char*)"|var|CODESYS Control Win V3 x64.Application.GVL.duration_M4");
+        //sendTotalProductionTime2ERP(machpiece[3], time);
         machpiece[3] = 0;
     }
 
